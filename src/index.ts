@@ -2,11 +2,43 @@ import type { App, Plugin } from 'vue';
 import { VRipple } from './directives/vRipple';
 import VScrollReveal from './components/VScrollReveal.vue';
 import VParticleField from './components/VParticleField.vue';
+import VGradientBackground from './components/VGradientBackground.vue';
+import VStarfield from './components/VStarfield.vue';
+import VParallax from './components/VParallax.vue';
+import VScrollSnap from './components/VScrollSnap.vue';
+import VTypingText from './components/VTypingText.vue';
+import VTextMask from './components/VTextMask.vue';
+import VNeonText from './components/VNeonText.vue';
+import VHover3D from './components/VHover3D.vue';
+import VMagneticButton from './components/VMagneticButton.vue';
+import VGlitch from './components/VGlitch.vue';
+import VCarousel3D from './components/VCarousel3D.vue';
+import VImageComparison from './components/VImageComparison.vue';
+import VLightbox from './components/VLightbox.vue';
+import VDivider from './components/VDivider.vue';
+import VScrollProgress from './components/VScrollProgress.vue';
+import VConfetti from './components/VConfetti.vue';
 import './styles/themes.css';
 
 const components = {
   VScrollReveal,
   VParticleField,
+  VGradientBackground,
+  VStarfield,
+  VParallax,
+  VScrollSnap,
+  VTypingText,
+  VTextMask,
+  VNeonText,
+  VHover3D,
+  VMagneticButton,
+  VGlitch,
+  VCarousel3D,
+  VImageComparison,
+  VLightbox,
+  VDivider,
+  VScrollProgress,
+  VConfetti,
 };
 
 const directives = {
@@ -58,5 +90,25 @@ export const createSupremeEffects = (options: SupremeEffectsOptions = {}): Plugi
 // Default export for convenience
 export default createSupremeEffects();
 
-export { VScrollReveal, VParticleField, VRipple };
+export { 
+  VScrollReveal, 
+  VParticleField, 
+  VGradientBackground,
+  VStarfield,
+  VParallax,
+  VScrollSnap,
+  VTypingText,
+  VTextMask,
+  VNeonText,
+  VHover3D,
+  VMagneticButton,
+  VGlitch,
+  VCarousel3D,
+  VImageComparison,
+  VLightbox,
+  VDivider,
+  VScrollProgress,
+  VConfetti,
+  VRipple 
+};
 

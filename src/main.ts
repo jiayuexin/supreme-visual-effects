@@ -1,8 +1,8 @@
 import { createApp } from 'vue';
-import App from './App.vue';
+import Playground from './Playground.vue';
 import SupremeVisualEffects from './index';
 
-const app = createApp(App);
+const app = createApp(Playground);
 
 app.use(SupremeVisualEffects);
 
