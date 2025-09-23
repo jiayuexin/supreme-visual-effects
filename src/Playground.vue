@@ -127,6 +127,7 @@
             :show-arrows="true"
             :show-indicators="true"
             class="carousel-demo"
+            :rotation-y="80"
           />
         </div>
 
