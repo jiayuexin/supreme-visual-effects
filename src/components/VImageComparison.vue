@@ -1,5 +1,5 @@
 <template>
-  <div 
+  <div
     ref="container"
     class="image-comparison-container"
     :style="containerStyle"
@@ -13,46 +13,33 @@
   >
     <!-- Before image -->
     <div class="image-before">
-      <img 
-        :src="beforeImage" 
-        :alt="beforeAlt"
-        class="comparison-image"
-        :style="beforeImageStyle"
-      />
+      <img :src="beforeImage" :alt="beforeAlt" class="comparison-image" :style="beforeImageStyle" />
       <div v-if="beforeLabel" class="image-label image-label-before">
         {{ beforeLabel }}
       </div>
     </div>
-    
+
     <!-- After image -->
     <div class="image-after">
-      <img 
-        :src="afterImage" 
-        :alt="afterAlt"
-        class="comparison-image"
-        :style="afterImageStyle"
-      />
+      <img :src="afterImage" :alt="afterAlt" class="comparison-image" :style="afterImageStyle" />
       <div v-if="afterLabel" class="image-label image-label-after">
         {{ afterLabel }}
       </div>
     </div>
-    
+
     <!-- Slider line -->
-    <div 
-      class="slider-line"
-      :style="sliderLineStyle"
-    >
+    <div class="slider-line" :style="sliderLineStyle">
       <div class="slider-handle">
         <div class="slider-handle-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M8.5 12l3.5 3.5 3.5-3.5-3.5-3.5L8.5 12z"/>
+            <path d="M8.5 12l3.5 3.5 3.5-3.5-3.5-3.5L8.5 12z" />
           </svg>
         </div>
       </div>
     </div>
-    
+
     <!-- Slider area for interaction -->
-    <div 
+    <div
       class="slider-area"
       :style="sliderAreaStyle"
       @mousedown="handleSliderMouseDown"
@@ -62,97 +49,97 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 
 const props = defineProps({
   beforeImage: {
     type: String,
-    required: true
+    required: true,
   },
   afterImage: {
     type: String,
-    required: true
+    required: true,
   },
   beforeAlt: {
     type: String,
-    default: 'Before image'
+    default: 'Before image',
   },
   afterAlt: {
     type: String,
-    default: 'After image'
+    default: 'After image',
   },
   beforeLabel: {
     type: String,
-    default: 'Before'
+    default: 'Before',
   },
   afterLabel: {
     type: String,
-    default: 'After'
+    default: 'After',
   },
   initialPosition: {
     type: Number,
-    default: 50
+    default: 50,
   },
   sliderColor: {
     type: String,
-    default: '#ffffff'
+    default: '#ffffff',
   },
   sliderSize: {
     type: Number,
-    default: 4
+    default: 4,
   },
   handleSize: {
     type: Number,
-    default: 40
+    default: 40,
   },
   showLabels: {
     type: Boolean,
-    default: true
+    default: true,
   },
   keyboardControl: {
     type: Boolean,
-    default: true
+    default: true,
   },
   animationDuration: {
     type: Number,
-    default: 300
-  }
-});
+    default: 300,
+  },
+})
 
 const emit = defineEmits<{
-  'position-change': [position: number];
-  'slider-start': [];
-  'slider-end': [];
-}>();
+  'position-change': [position: number]
+  'slider-start': []
+  'slider-end': []
+}>()
 
-const container = ref<HTMLElement | null>(null);
-const position = ref(props.initialPosition);
-const isDragging = ref(false);
-const startX = ref(0);
-const startPosition = ref(0);
+const container = ref<HTMLElement | null>(null)
+const position = ref(props.initialPosition)
+const isDragging = ref(false)
+const startX = ref(0)
+const startPosition = ref(0)
 
 const containerStyle = computed(() => ({
   position: 'relative',
   width: '100%',
   height: '100%',
   overflow: 'hidden',
-  cursor: isDragging.value ? 'grabbing' : 'grab'
-}));
+  cursor: isDragging.value ? 'grabbing' : 'grab',
+}))
 
 const beforeImageStyle = computed(() => ({
   width: '100%',
   height: '100%',
   objectFit: 'cover',
-  display: 'block'
-}));
+  display: 'block',
+}))
 
 const afterImageStyle = computed(() => ({
   width: '100%',
   height: '100%',
   objectFit: 'cover',
   display: 'block',
-  clipPath: `inset(0 ${100 - position.value}% 0 0)`
-}));
+  clipPath: `inset(0 ${100 - position.value}% 0 0)`,
+}))
 
 const sliderLineStyle = computed(() => ({
   position: 'absolute',
@@ -163,8 +150,8 @@ const sliderLineStyle = computed(() => ({
   backgroundColor: props.sliderColor,
   transform: 'translateX(-50%)',
   zIndex: 2,
-  transition: isDragging.value ? 'none' : `left ${props.animationDuration}ms ease`
-}));
+  transition: isDragging.value ? 'none' : `left ${props.animationDuration}ms ease`,
+}))
 
 const sliderAreaStyle = computed(() => ({
   position: 'absolute',
@@ -173,136 +160,136 @@ const sliderAreaStyle = computed(() => ({
   width: '100%',
   height: '100%',
   zIndex: 3,
-  cursor: isDragging.value ? 'grabbing' : 'grab'
-}));
+  cursor: isDragging.value ? 'grabbing' : 'grab',
+}))
 
 const updatePosition = (clientX: number) => {
-  if (!container.value) return;
-  
-  const rect = container.value.getBoundingClientRect();
-  const x = clientX - rect.left;
-  const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
-  
-  position.value = percentage;
-  emit('position-change', percentage);
-};
+  if (!container.value) return
+
+  const rect = container.value.getBoundingClientRect()
+  const x = clientX - rect.left
+  const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100))
+
+  position.value = percentage
+  emit('position-change', percentage)
+}
 
 const handleMouseDown = (e: MouseEvent) => {
-  e.preventDefault();
-  isDragging.value = true;
-  startX.value = e.clientX;
-  startPosition.value = position.value;
-  emit('slider-start');
-  
-  document.addEventListener('mousemove', handleMouseMove);
-  document.addEventListener('mouseup', handleMouseUp);
-};
+  e.preventDefault()
+  isDragging.value = true
+  startX.value = e.clientX
+  startPosition.value = position.value
+  emit('slider-start')
+
+  document.addEventListener('mousemove', handleMouseMove)
+  document.addEventListener('mouseup', handleMouseUp)
+}
 
 const handleMouseMove = (e: MouseEvent) => {
-  if (!isDragging.value) return;
-  
-  e.preventDefault();
-  updatePosition(e.clientX);
-};
+  if (!isDragging.value) return
+
+  e.preventDefault()
+  updatePosition(e.clientX)
+}
 
 const handleMouseUp = () => {
-  if (!isDragging.value) return;
-  
-  isDragging.value = false;
-  emit('slider-end');
-  
-  document.removeEventListener('mousemove', handleMouseMove);
-  document.removeEventListener('mouseup', handleMouseUp);
-};
+  if (!isDragging.value) return
+
+  isDragging.value = false
+  emit('slider-end')
+
+  document.removeEventListener('mousemove', handleMouseMove)
+  document.removeEventListener('mouseup', handleMouseUp)
+}
 
 const handleTouchStart = (e: TouchEvent) => {
-  e.preventDefault();
-  isDragging.value = true;
-  startX.value = e.touches[0].clientX;
-  startPosition.value = position.value;
-  emit('slider-start');
-};
+  e.preventDefault()
+  isDragging.value = true
+  startX.value = e.touches[0].clientX
+  startPosition.value = position.value
+  emit('slider-start')
+}
 
 const handleTouchMove = (e: TouchEvent) => {
-  if (!isDragging.value) return;
-  
-  e.preventDefault();
-  updatePosition(e.touches[0].clientX);
-};
+  if (!isDragging.value) return
+
+  e.preventDefault()
+  updatePosition(e.touches[0].clientX)
+}
 
 const handleTouchEnd = () => {
-  if (!isDragging.value) return;
-  
-  isDragging.value = false;
-  emit('slider-end');
-};
+  if (!isDragging.value) return
+
+  isDragging.value = false
+  emit('slider-end')
+}
 
 const handleSliderMouseDown = (e: MouseEvent) => {
-  e.stopPropagation();
-  handleMouseDown(e);
-};
+  e.stopPropagation()
+  handleMouseDown(e)
+}
 
 const handleSliderTouchStart = (e: TouchEvent) => {
-  e.stopPropagation();
-  handleTouchStart(e);
-};
+  e.stopPropagation()
+  handleTouchStart(e)
+}
 
 const handleKeydown = (e: KeyboardEvent) => {
-  if (!props.keyboardControl) return;
-  
-  const step = 5;
-  let newPosition = position.value;
-  
+  if (!props.keyboardControl) return
+
+  const step = 5
+  let newPosition = position.value
+
   switch (e.key) {
     case 'ArrowLeft':
-      e.preventDefault();
-      newPosition = Math.max(0, position.value - step);
-      break;
+      e.preventDefault()
+      newPosition = Math.max(0, position.value - step)
+      break
     case 'ArrowRight':
-      e.preventDefault();
-      newPosition = Math.min(100, position.value + step);
-      break;
+      e.preventDefault()
+      newPosition = Math.min(100, position.value + step)
+      break
     case 'Home':
-      e.preventDefault();
-      newPosition = 0;
-      break;
+      e.preventDefault()
+      newPosition = 0
+      break
     case 'End':
-      e.preventDefault();
-      newPosition = 100;
-      break;
+      e.preventDefault()
+      newPosition = 100
+      break
     default:
-      return;
+      return
   }
-  
-  position.value = newPosition;
-  emit('position-change', newPosition);
-};
+
+  position.value = newPosition
+  emit('position-change', newPosition)
+}
 
 const reset = () => {
-  position.value = props.initialPosition;
-  emit('position-change', props.initialPosition);
-};
+  position.value = props.initialPosition
+  emit('position-change', props.initialPosition)
+}
 
 // 暴露方法给父组件
 defineExpose({
   reset,
   setPosition: (newPosition: number) => {
-    position.value = Math.max(0, Math.min(100, newPosition));
-    emit('position-change', position.value);
-  }
-});
+    position.value = Math.max(0, Math.min(100, newPosition))
+    emit('position-change', position.value)
+  },
+})
 
 onMounted(() => {
   if (props.keyboardControl) {
-    document.addEventListener('keydown', handleKeydown);
+    document.addEventListener('keydown', handleKeydown)
   }
-});
+})
 
 onUnmounted(() => {
-  document.removeEventListener('keydown', handleKeydown);
-  document.removeEventListener('mousemove', handleMouseMove);
-  document.removeEventListener('mouseup', handleMouseUp);
-});
+  document.removeEventListener('keydown', handleKeydown)
+  document.removeEventListener('mousemove', handleMouseMove)
+  document.removeEventListener('mouseup', handleMouseUp)
+})
 </script>
 
 <style scoped>

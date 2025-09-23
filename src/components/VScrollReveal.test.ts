@@ -6,8 +6,8 @@ describe('VScrollReveal', () => {
   it('renders slot content', () => {
     const wrapper = mount(VScrollReveal, {
       slots: {
-        default: '<p>hello</p>'
-      }
+        default: '<p>hello</p>',
+      },
     })
     expect(wrapper.text()).toContain('hello')
   })

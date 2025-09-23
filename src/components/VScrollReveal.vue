@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue'
 
 const props = defineProps({
   threshold: {
@@ -16,49 +16,50 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
-});
+})
 
-const target = ref<HTMLElement | null>(null);
-const isVisible = ref(false);
+const target = ref<HTMLElement | null>(null)
+const isVisible = ref(false)
 
-let observer: IntersectionObserver | null = null;
+let observer: IntersectionObserver | null = null
 
 onMounted(() => {
-  if (!target.value) return;
+  if (!target.value) return
 
   observer = new IntersectionObserver(
     ([entry]) => {
       if (entry.isIntersecting) {
-        isVisible.value = true;
+        isVisible.value = true
         if (props.once && observer) {
-          observer.disconnect();
+          observer.disconnect()
         }
       } else {
         if (!props.once) {
-          isVisible.value = false;
+          isVisible.value = false
         }
       }
     },
     {
       threshold: props.threshold,
     }
-  );
+  )
 
-  observer.observe(target.value);
-});
+  observer.observe(target.value)
+})
 
 onUnmounted(() => {
   if (observer) {
-    observer.disconnect();
+    observer.disconnect()
   }
-});
+})
 </script>
 
 <style scoped>
 div {
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+  transition:
+    opacity 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275),
     transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 

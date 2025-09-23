@@ -3,17 +3,13 @@
     <VParticleField />
     <main>
       <h1>Supreme Visual Effects - Complete Playground</h1>
-      
+
       <!-- Background Effects -->
       <section>
         <h2>Background Effects</h2>
         <div class="demo-container">
           <h3>VGradientBackground</h3>
-          <VGradientBackground 
-            :layers="gradientLayers"
-            :animation="true"
-            class="gradient-demo"
-          >
+          <VGradientBackground :layers="gradientLayers" :animation="true" class="gradient-demo">
             <div class="gradient-content">
               <h4>Gradient Background</h4>
               <p>Animated gradient layers</p>
@@ -23,12 +19,7 @@
 
         <div class="demo-container">
           <h3>VStarfield</h3>
-          <VStarfield 
-            :star-count="150"
-            :speed="0.3"
-            :mouse-interaction="true"
-            class="starfield-demo"
-          >
+          <VStarfield :star-count="150" :speed="0.3" :mouse-interaction="true" class="starfield-demo">
             <div class="starfield-content">
               <h4>3D Starfield</h4>
               <p>Interactive starfield background</p>
@@ -42,11 +33,7 @@
         <h2>Scroll Effects</h2>
         <div class="demo-container">
           <h3>VParallax</h3>
-          <VParallax 
-            :layers="parallaxLayers"
-            :enabled="true"
-            class="parallax-demo"
-          >
+          <VParallax :layers="parallaxLayers" :enabled="true" class="parallax-demo">
             <template #layer-0>
               <div class="parallax-bg">Background Layer</div>
             </template>
@@ -61,7 +48,7 @@
 
         <div class="demo-container">
           <h3>VScrollSnap</h3>
-          <VScrollSnap 
+          <VScrollSnap
             :sections="scrollSnapSections"
             :show-indicators="true"
             :show-arrows="true"
@@ -75,18 +62,12 @@
         <h2>Text Effects</h2>
         <div class="demo-container">
           <h3>VTypingText</h3>
-          <VTypingText 
-            :text="typingTexts"
-            :speed="100"
-            :loop="true"
-            :cursor="true"
-            class="typing-demo"
-          />
+          <VTypingText :text="typingTexts" :speed="100" :loop="true" :cursor="true" class="typing-demo" />
         </div>
 
         <div class="demo-container">
           <h3>VNeonText</h3>
-          <VNeonText 
+          <VNeonText
             text="NEON TEXT"
             :animation="true"
             animation-type="flicker"
@@ -103,11 +84,7 @@
         <h2>Interaction Effects</h2>
         <div class="demo-container">
           <h3>VHover3D</h3>
-          <VHover3D 
-            :intensity="20"
-            :scale="1.1"
-            class="hover3d-demo"
-          >
+          <VHover3D :intensity="20" :scale="1.1" class="hover3d-demo">
             <div class="hover3d-content">
               <h4>3D Hover Effect</h4>
               <p>Move your mouse over this element</p>
@@ -117,7 +94,7 @@
 
         <div class="demo-container">
           <h3>VMagneticButton</h3>
-          <VMagneticButton 
+          <VMagneticButton
             :magnetic-strength="0.4"
             :magnetic-range="120"
             :ripple="true"
@@ -130,13 +107,7 @@
 
         <div class="demo-container">
           <h3>VGlitch</h3>
-          <VGlitch 
-            :enabled="true"
-            :auto-trigger="true"
-            :trigger-interval="3000"
-            :intensity="0.8"
-            class="glitch-demo"
-          >
+          <VGlitch :enabled="true" :auto-trigger="true" :trigger-interval="3000" :intensity="0.8" class="glitch-demo">
             <div class="glitch-content">
               <h4>GLITCH EFFECT</h4>
               <p>Hover or wait for auto-trigger</p>
@@ -150,7 +121,7 @@
         <h2>Media Components</h2>
         <div class="demo-container">
           <h3>VCarousel3D</h3>
-          <VCarousel3D 
+          <VCarousel3D
             :items="carouselItems"
             :auto-play="true"
             :show-arrows="true"
@@ -161,7 +132,7 @@
 
         <div class="demo-container">
           <h3>VImageComparison</h3>
-          <VImageComparison 
+          <VImageComparison
             before-image="https://picsum.photos/400/300?random=1"
             after-image="https://picsum.photos/400/300?random=2"
             before-label="Before"
@@ -176,48 +147,20 @@
         <h2>Decoration Components</h2>
         <div class="demo-container">
           <h3>VDivider</h3>
-          <VDivider 
-            type="wave"
-            :animation="true"
-            color="#667eea"
-            class="divider-demo"
-          />
-          <VDivider 
-            type="dots"
-            :animation="true"
-            color="#764ba2"
-            :dot-count="7"
-            class="divider-demo"
-          />
-          <VDivider 
-            type="gradient"
-            :gradient-colors="['#667eea', '#764ba2']"
-            class="divider-demo"
-          />
+          <VDivider type="wave" :animation="true" color="#667eea" class="divider-demo" />
+          <VDivider type="dots" :animation="true" color="#764ba2" :dot-count="7" class="divider-demo" />
+          <VDivider type="gradient" :gradient-colors="['#667eea', '#764ba2']" class="divider-demo" />
         </div>
 
         <div class="demo-container">
           <h3>VScrollProgress</h3>
-          <VScrollProgress 
-            position="top"
-            color="#667eea"
-            :show-percentage="true"
-            :glow="true"
-            class="progress-demo"
-          />
+          <VScrollProgress position="top" color="#667eea" :show-percentage="true" :glow="true" class="progress-demo" />
         </div>
 
         <div class="demo-container">
           <h3>VConfetti</h3>
-          <VConfetti 
-            ref="confettiRef"
-            :enabled="true"
-            :particle-count="50"
-            class="confetti-demo"
-          />
-          <button @click="triggerConfetti" class="confetti-trigger">
-            🎉 Trigger Confetti
-          </button>
+          <VConfetti ref="confettiRef" :enabled="true" :particle-count="50" class="confetti-demo" />
+          <button class="confetti-trigger" @click="triggerConfetti">🎉 Trigger Confetti</button>
         </div>
       </section>
 
@@ -227,9 +170,7 @@
         <div class="demo-container">
           <h3>v-ripple Directive</h3>
           <button v-ripple class="ripple-btn">Click Me</button>
-          <button v-ripple="{ color: 'rgba(255, 0, 0, 0.5)' }" class="ripple-btn">
-            Red Ripple
-          </button>
+          <button v-ripple="{ color: 'rgba(255, 0, 0, 0.5)' }" class="ripple-btn">Red Ripple</button>
         </div>
 
         <div class="demo-container">
@@ -248,23 +189,23 @@
 </template>
 
 <script setup lang="ts">
-import VScrollReveal from './components/VScrollReveal.vue';
-import VParticleField from './components/VParticleField.vue';
-import VGradientBackground from './components/VGradientBackground.vue';
-import VStarfield from './components/VStarfield.vue';
-import VParallax from './components/VParallax.vue';
-import VScrollSnap from './components/VScrollSnap.vue';
-import VTypingText from './components/VTypingText.vue';
-import VNeonText from './components/VNeonText.vue';
-import VHover3D from './components/VHover3D.vue';
-import VMagneticButton from './components/VMagneticButton.vue';
-import VGlitch from './components/VGlitch.vue';
-import VCarousel3D from './components/VCarousel3D.vue';
-import VImageComparison from './components/VImageComparison.vue';
-import VDivider from './components/VDivider.vue';
-import VScrollProgress from './components/VScrollProgress.vue';
-import VConfetti from './components/VConfetti.vue';
-import {ref} from 'vue';
+import VScrollReveal from './components/VScrollReveal.vue'
+import VParticleField from './components/VParticleField.vue'
+import VGradientBackground from './components/VGradientBackground.vue'
+import VStarfield from './components/VStarfield.vue'
+import VParallax from './components/VParallax.vue'
+import VScrollSnap from './components/VScrollSnap.vue'
+import VTypingText from './components/VTypingText.vue'
+import VNeonText from './components/VNeonText.vue'
+import VHover3D from './components/VHover3D.vue'
+import VMagneticButton from './components/VMagneticButton.vue'
+import VGlitch from './components/VGlitch.vue'
+import VCarousel3D from './components/VCarousel3D.vue'
+import VImageComparison from './components/VImageComparison.vue'
+import VDivider from './components/VDivider.vue'
+import VScrollProgress from './components/VScrollProgress.vue'
+import VConfetti from './components/VConfetti.vue'
+import { ref } from 'vue'
 // Demo data
 const gradientLayers = [
   {
@@ -272,59 +213,55 @@ const gradientLayers = [
     direction: '45deg',
     stops: [
       { color: '#667eea', position: 0 },
-      { color: '#764ba2', position: 100 }
+      { color: '#764ba2', position: 100 },
     ],
     animation: {
       type: 'flow',
       duration: 8,
-      intensity: 0.3
-    }
-  }
-];
+      intensity: 0.3,
+    },
+  },
+]
 
 const parallaxLayers = [
   { speed: 0.5, content: 'Background Layer' },
   { speed: 0.8, content: 'Middle Layer' },
-  { speed: 1, content: 'Foreground Layer' }
-];
+  { speed: 1, content: 'Foreground Layer' },
+]
 
 const scrollSnapSections = [
   { content: 'First section', backgroundColor: '#667eea' },
   { content: 'Second section', backgroundColor: '#764ba2' },
-  { content: 'Third section', backgroundColor: '#f093fb' }
-];
+  { content: 'Third section', backgroundColor: '#f093fb' },
+]
 
-const typingTexts = [
-  'Hello World!',
-  'This is a typing effect',
-  'Made with Vue 3',
-  'Supreme Visual Effects'
-];
+const typingTexts = ['Hello World!', 'This is a typing effect', 'Made with Vue 3', 'Supreme Visual Effects']
 
 const carouselItems = [
   { title: 'Item 1', image: 'https://picsum.photos/300/200?random=1' },
   { title: 'Item 2', image: 'https://picsum.photos/300/200?random=2' },
   { title: 'Item 3', image: 'https://picsum.photos/300/200?random=3' },
-  { title: 'Item 4', image: 'https://picsum.photos/300/200?random=4' }
-];
+  { title: 'Item 4', image: 'https://picsum.photos/300/200?random=4' },
+]
 
-const confettiRef = ref();
+const confettiRef = ref()
 
 const handleMagneticClick = () => {
-  console.log('Magnetic button clicked!');
-};
+  console.log('Magnetic button clicked!')
+}
 
 const triggerConfetti = () => {
   if (confettiRef.value) {
-    confettiRef.value.burst();
+    confettiRef.value.burst()
   }
-};
+}
 </script>
 
 <style>
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
+    sans-serif;
   background-color: #1a1a1a;
   color: #e2e8f0;
   line-height: 1.6;
@@ -348,7 +285,8 @@ main {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-h1, h2 {
+h1,
+h2 {
   border-bottom: 1px solid #4a5568;
   padding-bottom: 0.5rem;
   margin-bottom: 1rem;
@@ -440,7 +378,9 @@ section {
   position: relative;
 }
 
-.parallax-bg, .parallax-mid, .parallax-fg {
+.parallax-bg,
+.parallax-mid,
+.parallax-fg {
   position: absolute;
   top: 0;
   left: 0;

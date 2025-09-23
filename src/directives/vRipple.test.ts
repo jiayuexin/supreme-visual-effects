@@ -4,7 +4,7 @@ import { VRipple } from './vRipple'
 
 const TestComponent = {
   template: '<button v-ripple>Click</button>',
-  directives: { ripple: VRipple }
+  directives: { ripple: VRipple },
 }
 
 describe('VRipple Directive', () => {

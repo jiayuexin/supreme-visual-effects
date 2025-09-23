@@ -1,28 +1,11 @@
 <template>
-  <div 
-    ref="container"
-    class="scroll-progress-container"
-    :style="containerStyle"
-    :class="progressClasses"
-  >
-    <div 
-      class="scroll-progress-bar"
-      :style="progressBarStyle"
-    >
-      <div 
-        class="scroll-progress-fill"
-        :style="progressFillStyle"
-      ></div>
-      
-      <div 
-        v-if="showPercentage"
-        class="scroll-progress-text"
-        :style="textStyle"
-      >
-        {{ Math.round(progress) }}%
-      </div>
+  <div ref="container" class="scroll-progress-container" :style="containerStyle" :class="progressClasses">
+    <div class="scroll-progress-bar" :style="progressBarStyle">
+      <div class="scroll-progress-fill" :style="progressFillStyle"></div>
+
+      <div v-if="showPercentage" class="scroll-progress-text" :style="textStyle">{{ Math.round(progress) }}%</div>
     </div>
-    
+
     <!-- Custom content slot -->
     <div v-if="$slots.default" class="scroll-progress-content">
       <slot :progress="progress" :percentage="Math.round(progress)"></slot>
@@ -31,95 +14,95 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 
 const props = defineProps({
   position: {
     type: String as () => 'top' | 'bottom' | 'left' | 'right',
-    default: 'top'
+    default: 'top',
   },
   color: {
     type: String,
-    default: '#4f46e5'
+    default: '#4f46e5',
   },
   height: {
     type: String,
-    default: '4px'
+    default: '4px',
   },
   width: {
     type: String,
-    default: '100%'
+    default: '100%',
   },
   showPercentage: {
     type: Boolean,
-    default: false
+    default: false,
   },
   textColor: {
     type: String,
-    default: '#333'
+    default: '#333',
   },
   textSize: {
     type: String,
-    default: '12px'
+    default: '12px',
   },
   animation: {
     type: Boolean,
-    default: true
+    default: true,
   },
   animationDuration: {
     type: Number,
-    default: 200
+    default: 200,
   },
   gradient: {
     type: Boolean,
-    default: false
+    default: false,
   },
   gradientColors: {
     type: Array as () => string[],
-    default: () => ['#667eea', '#764ba2']
+    default: () => ['#667eea', '#764ba2'],
   },
   glow: {
     type: Boolean,
-    default: false
+    default: false,
   },
   glowIntensity: {
     type: Number,
-    default: 10
+    default: 10,
   },
   target: {
     type: String,
-    default: ''
+    default: '',
   },
   offset: {
     type: Number,
-    default: 0
-  }
-});
+    default: 0,
+  },
+})
 
 const emit = defineEmits<{
-  'progress-change': [progress: number];
-  'scroll-start': [];
-  'scroll-end': [];
-}>();
+  'progress-change': [progress: number]
+  'scroll-start': []
+  'scroll-end': []
+}>()
 
-const container = ref<HTMLElement | null>(null);
-const progress = ref(0);
-const isScrolling = ref(false);
-let scrollTimer: number | null = null;
+const container = ref<HTMLElement | null>(null)
+const progress = ref(0)
+const isScrolling = ref(false)
+let scrollTimer: number | null = null
 
 const progressClasses = computed(() => ({
   'scroll-progress-animated': props.animation,
   'scroll-progress-glow': props.glow,
-  [`scroll-progress-${props.position}`]: true
-}));
+  [`scroll-progress-${props.position}`]: true,
+}))
 
 const containerStyle = computed(() => {
   const baseStyle = {
     position: 'fixed',
     zIndex: 9999,
-    transition: props.animation ? `all ${props.animationDuration}ms ease` : 'none'
-  };
-  
+    transition: props.animation ? `all ${props.animationDuration}ms ease` : 'none',
+  }
+
   switch (props.position) {
     case 'top':
       return {
@@ -128,8 +111,8 @@ const containerStyle = computed(() => {
         left: 0,
         right: 0,
         width: '100%',
-        height: props.height
-      };
+        height: props.height,
+      }
     case 'bottom':
       return {
         ...baseStyle,
@@ -137,8 +120,8 @@ const containerStyle = computed(() => {
         left: 0,
         right: 0,
         width: '100%',
-        height: props.height
-      };
+        height: props.height,
+      }
     case 'left':
       return {
         ...baseStyle,
@@ -146,8 +129,8 @@ const containerStyle = computed(() => {
         left: 0,
         bottom: 0,
         width: props.height,
-        height: '100%'
-      };
+        height: '100%',
+      }
     case 'right':
       return {
         ...baseStyle,
@@ -155,12 +138,12 @@ const containerStyle = computed(() => {
         right: 0,
         bottom: 0,
         width: props.height,
-        height: '100%'
-      };
+        height: '100%',
+      }
     default:
-      return baseStyle;
+      return baseStyle
   }
-});
+})
 
 const progressBarStyle = computed(() => {
   const baseStyle = {
@@ -168,25 +151,23 @@ const progressBarStyle = computed(() => {
     width: '100%',
     height: '100%',
     backgroundColor: 'rgba(0, 0, 0, 0.1)',
-    overflow: 'hidden'
-  };
-  
+    overflow: 'hidden',
+  }
+
   if (props.position === 'left' || props.position === 'right') {
     return {
       ...baseStyle,
       width: '100%',
-      height: '100%'
-    };
+      height: '100%',
+    }
   }
-  
-  return baseStyle;
-});
+
+  return baseStyle
+})
 
 const progressFillStyle = computed(() => {
-  const fillColor = props.gradient ? 
-    `linear-gradient(90deg, ${props.gradientColors.join(', ')})` : 
-    props.color;
-  
+  const fillColor = props.gradient ? `linear-gradient(90deg, ${props.gradientColors.join(', ')})` : props.color
+
   const baseStyle = {
     position: 'absolute',
     top: 0,
@@ -194,21 +175,21 @@ const progressFillStyle = computed(() => {
     width: `${progress.value}%`,
     height: '100%',
     background: fillColor,
-    transition: props.animation ? `width ${props.animationDuration}ms ease` : 'none'
-  };
-  
+    transition: props.animation ? `width ${props.animationDuration}ms ease` : 'none',
+  }
+
   if (props.position === 'left' || props.position === 'right') {
     return {
       ...baseStyle,
       width: '100%',
       height: `${progress.value}%`,
       top: 'auto',
-      bottom: 0
-    };
+      bottom: 0,
+    }
   }
-  
-  return baseStyle;
-});
+
+  return baseStyle
+})
 
 const textStyle = computed(() => ({
   position: 'absolute',
@@ -219,67 +200,70 @@ const textStyle = computed(() => ({
   fontSize: props.textSize,
   fontWeight: 'bold',
   zIndex: 1,
-  textShadow: '0 1px 2px rgba(0, 0, 0, 0.5)'
-}));
+  textShadow: '0 1px 2px rgba(0, 0, 0, 0.5)',
+}))
 
 const updateProgress = () => {
-  const target = props.target ? document.querySelector(props.target) : document.documentElement;
-  if (!target) return;
-  
-  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  const scrollHeight = target.scrollHeight - window.innerHeight;
-  const newProgress = Math.min(100, Math.max(0, (scrollTop / scrollHeight) * 100));
-  
-  progress.value = newProgress;
-  emit('progress-change', newProgress);
-};
+  const target = props.target ? document.querySelector(props.target) : document.documentElement
+  if (!target) return
+
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+  const scrollHeight = target.scrollHeight - window.innerHeight
+  const newProgress = Math.min(100, Math.max(0, (scrollTop / scrollHeight) * 100))
+
+  progress.value = newProgress
+  emit('progress-change', newProgress)
+}
 
 const handleScroll = () => {
   if (!isScrolling.value) {
-    isScrolling.value = true;
-    emit('scroll-start');
+    isScrolling.value = true
+    emit('scroll-start')
   }
-  
-  updateProgress();
-  
+
+  updateProgress()
+
   if (scrollTimer) {
-    clearTimeout(scrollTimer);
+    clearTimeout(scrollTimer)
   }
-  
+
   scrollTimer = window.setTimeout(() => {
-    isScrolling.value = false;
-    emit('scroll-end');
-  }, 150);
-};
+    isScrolling.value = false
+    emit('scroll-end')
+  }, 150)
+}
 
 const handleResize = () => {
-  updateProgress();
-};
+  updateProgress()
+}
 
 onMounted(() => {
-  window.addEventListener('scroll', handleScroll, { passive: true });
-  window.addEventListener('resize', handleResize);
-  updateProgress();
-});
+  window.addEventListener('scroll', handleScroll, { passive: true })
+  window.addEventListener('resize', handleResize)
+  updateProgress()
+})
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll);
-  window.removeEventListener('resize', handleResize);
-  
-  if (scrollTimer) {
-    clearTimeout(scrollTimer);
-  }
-});
+  window.removeEventListener('scroll', handleScroll)
+  window.removeEventListener('resize', handleResize)
 
-watch(() => props.target, () => {
-  updateProgress();
-});
+  if (scrollTimer) {
+    clearTimeout(scrollTimer)
+  }
+})
+
+watch(
+  () => props.target,
+  () => {
+    updateProgress()
+  }
+)
 
 // 暴露方法给父组件
 defineExpose({
   updateProgress,
-  getProgress: () => progress.value
-});
+  getProgress: () => progress.value,
+})
 </script>
 
 <style scoped>

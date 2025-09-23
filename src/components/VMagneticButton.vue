@@ -1,5 +1,5 @@
 <template>
-  <div 
+  <div
     ref="container"
     class="magnetic-button-container"
     :style="containerStyle"
@@ -7,118 +7,114 @@
     @mouseleave="handleMouseLeave"
     @mousemove="handleMouseMove"
   >
-    <button 
+    <button
       ref="button"
       class="magnetic-button"
       :class="buttonClasses"
       :style="buttonStyle"
-      @click="handleClick"
       :disabled="disabled"
+      @click="handleClick"
     >
       <span class="button-content">
         <slot></slot>
       </span>
-      
-      <div 
-        v-if="showRipple" 
-        class="ripple-effect"
-        :style="rippleStyle"
-      ></div>
+
+      <div v-if="showRipple" class="ripple-effect" :style="rippleStyle"></div>
     </button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 
 const props = defineProps({
   magneticStrength: {
     type: Number,
-    default: 0.3
+    default: 0.3,
   },
   magneticRange: {
     type: Number,
-    default: 100
+    default: 100,
   },
   animationDuration: {
     type: Number,
-    default: 300
+    default: 300,
   },
   disabled: {
     type: Boolean,
-    default: false
+    default: false,
   },
   ripple: {
     type: Boolean,
-    default: true
+    default: true,
   },
   rippleColor: {
     type: String,
-    default: 'rgba(255, 255, 255, 0.3)'
+    default: 'rgba(255, 255, 255, 0.3)',
   },
   scale: {
     type: Number,
-    default: 1.1
+    default: 1.1,
   },
   backgroundColor: {
     type: String,
-    default: '#4f46e5'
+    default: '#4f46e5',
   },
   textColor: {
     type: String,
-    default: '#ffffff'
+    default: '#ffffff',
   },
   borderRadius: {
     type: String,
-    default: '8px'
+    default: '8px',
   },
   padding: {
     type: String,
-    default: '12px 24px'
+    default: '12px 24px',
   },
   fontSize: {
     type: String,
-    default: '16px'
+    default: '16px',
   },
   fontWeight: {
     type: String,
-    default: '500'
-  }
-});
+    default: '500',
+  },
+})
 
 const emit = defineEmits<{
-  'click': [event: MouseEvent];
-  'mouse-enter': [];
-  'mouse-leave': [];
-  'mouse-move': [event: MouseEvent];
-}>();
+  click: [event: MouseEvent]
+  'mouse-enter': []
+  'mouse-leave': []
+  'mouse-move': [event: MouseEvent]
+}>()
 
-const container = ref<HTMLElement | null>(null);
-const button = ref<HTMLButtonElement | null>(null);
-const isHovered = ref(false);
-const mouseX = ref(0);
-const mouseY = ref(0);
-const centerX = ref(0);
-const centerY = ref(0);
-const translateX = ref(0);
-const translateY = ref(0);
-const scale = ref(1);
-const showRipple = ref(false);
-const rippleX = ref(0);
-const rippleY = ref(0);
+const container = ref<HTMLElement | null>(null)
+const button = ref<HTMLButtonElement | null>(null)
+const isHovered = ref(false)
+const mouseX = ref(0)
+const mouseY = ref(0)
+const centerX = ref(0)
+const centerY = ref(0)
+const translateX = ref(0)
+const translateY = ref(0)
+const hoveredScale = ref(1)
+const showRipple = ref(false)
+const rippleX = ref(0)
+const rippleY = ref(0)
 
 const buttonClasses = computed(() => ({
   'magnetic-active': isHovered.value,
-  'magnetic-disabled': props.disabled
-}));
+  'magnetic-disabled': props.disabled,
+}))
 
 const containerStyle = computed(() => ({
   display: 'inline-block',
-  position: 'relative'
-}));
+  position: 'relative',
+}))
 
 const buttonStyle = computed(() => ({
-  transform: `translate(${translateX.value}px, ${translateY.value}px) scale(${scale.value})`,
+  transform: `translate(${translateX.value}px, ${translateY.value}px) scale(${hoveredScale.value})`,
   transition: `transform ${props.animationDuration}ms cubic-bezier(0.25, 0.46, 0.45, 0.94)`,
   backgroundColor: props.backgroundColor,
   color: props.textColor,
@@ -132,10 +128,8 @@ const buttonStyle = computed(() => ({
   position: 'relative',
   overflow: 'hidden',
   outline: 'none',
-  boxShadow: isHovered.value 
-    ? `0 8px 25px ${props.backgroundColor}40` 
-    : `0 4px 15px ${props.backgroundColor}20`
-}));
+  boxShadow: isHovered.value ? `0 8px 25px ${props.backgroundColor}40` : `0 4px 15px ${props.backgroundColor}20`,
+}))
 
 const rippleStyle = computed(() => ({
   position: 'absolute',
@@ -147,88 +141,88 @@ const rippleStyle = computed(() => ({
   backgroundColor: props.rippleColor,
   transform: 'translate(-50%, -50%)',
   animation: 'ripple 0.6s ease-out',
-  pointerEvents: 'none'
-}));
+  pointerEvents: 'none',
+}))
 
 const calculateMagneticForce = () => {
-  if (!isHovered.value || props.disabled) return;
-  
-  const deltaX = mouseX.value - centerX.value;
-  const deltaY = mouseY.value - centerY.value;
-  const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-  
+  if (!isHovered.value || props.disabled) return
+
+  const deltaX = mouseX.value - centerX.value
+  const deltaY = mouseY.value - centerY.value
+  const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY)
+
   if (distance < props.magneticRange) {
-    const force = (props.magneticRange - distance) / props.magneticRange;
-    const strength = force * props.magneticStrength;
-    
-    translateX.value = deltaX * strength;
-    translateY.value = deltaY * strength;
-    scale.value = 1 + (force * (props.scale - 1));
+    const force = (props.magneticRange - distance) / props.magneticRange
+    const strength = force * props.magneticStrength
+
+    translateX.value = deltaX * strength
+    translateY.value = deltaY * strength
+    hoveredScale.value = 1 + force * (props.scale - 1)
   } else {
-    translateX.value = 0;
-    translateY.value = 0;
-    scale.value = 1;
+    translateX.value = 0
+    translateY.value = 0
+    hoveredScale.value = 1
   }
-};
+}
 
 const updateCenter = () => {
-  if (!container.value) return;
-  
-  const rect = container.value.getBoundingClientRect();
-  centerX.value = rect.width / 2;
-  centerY.value = rect.height / 2;
-};
+  if (!container.value) return
+
+  const rect = container.value.getBoundingClientRect()
+  centerX.value = rect.width / 2
+  centerY.value = rect.height / 2
+}
 
 const handleMouseEnter = () => {
-  isHovered.value = true;
-  emit('mouse-enter');
-};
+  isHovered.value = true
+  emit('mouse-enter')
+}
 
 const handleMouseLeave = () => {
-  isHovered.value = false;
-  translateX.value = 0;
-  translateY.value = 0;
-  scale.value = 1;
-  emit('mouse-leave');
-};
+  isHovered.value = false
+  translateX.value = 0
+  translateY.value = 0
+  hoveredScale.value = 1
+  emit('mouse-leave')
+}
 
 const handleMouseMove = (event: MouseEvent) => {
-  if (!container.value || props.disabled) return;
-  
-  const rect = container.value.getBoundingClientRect();
-  mouseX.value = event.clientX - rect.left;
-  mouseY.value = event.clientY - rect.top;
-  
-  calculateMagneticForce();
-  emit('mouse-move', event);
-};
+  if (!container.value || props.disabled) return
+
+  const rect = container.value.getBoundingClientRect()
+  mouseX.value = event.clientX - rect.left
+  mouseY.value = event.clientY - rect.top
+
+  calculateMagneticForce()
+  emit('mouse-move', event)
+}
 
 const handleClick = (event: MouseEvent) => {
-  if (props.disabled) return;
-  
+  if (props.disabled) return
+
   // 创建涟漪效果
   if (props.ripple && container.value) {
-    const rect = container.value.getBoundingClientRect();
-    rippleX.value = event.clientX - rect.left;
-    rippleY.value = event.clientY - rect.top;
-    showRipple.value = true;
-    
+    const rect = container.value.getBoundingClientRect()
+    rippleX.value = event.clientX - rect.left
+    rippleY.value = event.clientY - rect.top
+    showRipple.value = true
+
     setTimeout(() => {
-      showRipple.value = false;
-    }, 600);
+      showRipple.value = false
+    }, 600)
   }
-  
-  emit('click', event);
-};
+
+  emit('click', event)
+}
 
 onMounted(() => {
-  updateCenter();
-  window.addEventListener('resize', updateCenter);
-});
+  updateCenter()
+  window.addEventListener('resize', updateCenter)
+})
 
 onUnmounted(() => {
-  window.removeEventListener('resize', updateCenter);
-});
+  window.removeEventListener('resize', updateCenter)
+})
 </script>
 
 <style scoped>
