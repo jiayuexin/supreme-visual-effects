@@ -1,144 +1,99 @@
 <template>
-  <div 
-    ref="container"
-    class="divider-container"
-    :style="containerStyle"
-    :class="dividerClasses"
-  >
-    <div 
-      v-if="type === 'line'"
-      class="divider-line"
-      :style="lineStyle"
-    ></div>
-    
-    <div 
-      v-else-if="type === 'wave'"
-      class="divider-wave"
-      :style="waveStyle"
-    >
-      <svg 
-        :width="width" 
-        :height="height" 
-        viewBox="0 0 100 20"
-        preserveAspectRatio="none"
-      >
-        <path 
-          :d="wavePath" 
-          :stroke="color"
-          :stroke-width="strokeWidth"
-          fill="none"
-          :style="pathStyle"
-        />
+  <div ref="container" class="divider-container" :style="containerStyle" :class="dividerClasses">
+    <div v-if="type === 'line'" class="divider-line" :style="lineStyle"></div>
+
+    <div v-else-if="type === 'wave'" class="divider-wave" :style="waveStyle">
+      <svg :width="width" :height="height" viewBox="0 0 100 20" preserveAspectRatio="none">
+        <path :d="wavePath" :stroke="color" :stroke-width="strokeWidth" fill="none" :style="pathStyle" />
       </svg>
     </div>
-    
-    <div 
-      v-else-if="type === 'dots'"
-      class="divider-dots"
-      :style="dotsStyle"
-    >
-      <span 
-        v-for="(dot, index) in dots" 
-        :key="index"
-        class="divider-dot"
-        :style="getDotStyle(index)"
-      ></span>
+
+    <div v-else-if="type === 'dots'" class="divider-dots" :style="dotsStyle">
+      <span v-for="(dot, index) in dots" :key="index" class="divider-dot" :style="getDotStyle(index)"></span>
     </div>
-    
-    <div 
-      v-else-if="type === 'gradient'"
-      class="divider-gradient"
-      :style="gradientStyle"
-    ></div>
-    
-    <div 
-      v-else-if="type === 'animated'"
-      class="divider-animated"
-      :style="animatedStyle"
-    >
+
+    <div v-else-if="type === 'gradient'" class="divider-gradient" :style="gradientStyle"></div>
+
+    <div v-else-if="type === 'animated'" class="divider-animated" :style="animatedStyle">
       <div class="animated-line"></div>
     </div>
-    
-    <div 
-      v-if="text && type !== 'animated'"
-      class="divider-text"
-      :style="textStyle"
-    >
+
+    <div v-if="text && type !== 'animated'" class="divider-text" :style="textStyle">
       {{ text }}
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 
 const props = defineProps({
   type: {
     type: String as () => 'line' | 'wave' | 'dots' | 'gradient' | 'animated',
-    default: 'line'
+    default: 'line',
   },
   color: {
     type: String,
-    default: '#e2e8f0'
+    default: '#e2e8f0',
   },
   width: {
     type: String,
-    default: '100%'
+    default: '100%',
   },
   height: {
     type: String,
-    default: '1px'
+    default: '1px',
   },
   strokeWidth: {
     type: Number,
-    default: 2
+    default: 2,
   },
   text: {
     type: String,
-    default: ''
+    default: '',
   },
   textColor: {
     type: String,
-    default: '#666'
+    default: '#666',
   },
   textSize: {
     type: String,
-    default: '14px'
+    default: '14px',
   },
   animation: {
     type: Boolean,
-    default: true
+    default: true,
   },
   animationSpeed: {
     type: Number,
-    default: 2
+    default: 2,
   },
   gradientColors: {
     type: Array as () => string[],
-    default: () => ['#667eea', '#764ba2']
+    default: () => ['#667eea', '#764ba2'],
   },
   dotCount: {
     type: Number,
-    default: 5
+    default: 5,
   },
   dotSize: {
     type: Number,
-    default: 6
+    default: 6,
   },
   spacing: {
     type: String,
-    default: '20px'
-  }
-});
+    default: '20px',
+  },
+})
 
-const container = ref<HTMLElement | null>(null);
-const time = ref(0);
-let animationId: number | null = null;
+const container = ref<HTMLElement | null>(null)
+const time = ref(0)
+let animationId: number | null = null
 
 const dividerClasses = computed(() => ({
   'divider-animated': props.animation && props.type === 'animated',
-  'divider-with-text': !!props.text
-}));
+  'divider-with-text': !!props.text,
+}))
 
 const containerStyle = computed(() => ({
   width: props.width,
@@ -146,67 +101,66 @@ const containerStyle = computed(() => ({
   position: 'relative',
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center'
-}));
+  justifyContent: 'center',
+}))
 
 const lineStyle = computed(() => ({
   width: '100%',
   height: props.height,
   backgroundColor: props.color,
-  borderRadius: '1px'
-}));
+  borderRadius: '1px',
+}))
 
 const waveStyle = computed(() => ({
   width: '100%',
   height: props.height,
-  overflow: 'hidden'
-}));
+  overflow: 'hidden',
+}))
 
 const wavePath = computed(() => {
-  const amplitude = 8;
-  const frequency = 0.5;
-  const phase = time.value * props.animationSpeed;
-  
-  let path = 'M 0,10 ';
+  const amplitude = 8
+  const frequency = 0.5
+  const phase = time.value * props.animationSpeed
+
+  let path = 'M 0,10 '
   for (let x = 0; x <= 100; x += 2) {
-    const y = 10 + amplitude * Math.sin((x * frequency + phase) * Math.PI / 180);
-    path += `L ${x},${y} `;
+    const y = 10 + amplitude * Math.sin(((x * frequency + phase) * Math.PI) / 180)
+    path += `L ${x},${y} `
   }
-  
-  return path;
-});
+
+  return path
+})
 
 const pathStyle = computed(() => ({
   strokeDasharray: props.animation ? '5,5' : 'none',
   strokeDashoffset: props.animation ? -time.value * props.animationSpeed : 0,
-  transition: props.animation ? 'none' : 'all 0.3s ease'
-}));
+  transition: props.animation ? 'none' : 'all 0.3s ease',
+}))
 
 const dotsStyle = computed(() => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  gap: props.spacing
-}));
+  gap: props.spacing,
+}))
 
 const dots = computed(() => {
-  return Array.from({ length: props.dotCount }, (_, i) => i);
-});
+  return Array.from({ length: props.dotCount }, (_, i) => i)
+})
 
 const getDotStyle = (index: number) => {
-  const delay = index * 0.1;
-  const scale = props.animation ? 
-    1 + 0.3 * Math.sin((time.value + delay) * props.animationSpeed) : 1;
-  
+  const delay = index * 0.1
+  const scale = props.animation ? 1 + 0.3 * Math.sin((time.value + delay) * props.animationSpeed) : 1
+
   return {
     width: `${props.dotSize}px`,
     height: `${props.dotSize}px`,
     backgroundColor: props.color,
     borderRadius: '50%',
     transform: `scale(${scale})`,
-    transition: props.animation ? 'none' : 'all 0.3s ease'
-  };
-};
+    transition: props.animation ? 'none' : 'all 0.3s ease',
+  }
+}
 
 const gradientStyle = computed(() => ({
   width: '100%',
@@ -214,15 +168,15 @@ const gradientStyle = computed(() => ({
   background: `linear-gradient(90deg, ${props.gradientColors.join(', ')})`,
   borderRadius: '1px',
   position: 'relative',
-  overflow: 'hidden'
-}));
+  overflow: 'hidden',
+}))
 
 const animatedStyle = computed(() => ({
   width: '100%',
   height: props.height,
   position: 'relative',
-  overflow: 'hidden'
-}));
+  overflow: 'hidden',
+}))
 
 const textStyle = computed(() => ({
   color: props.textColor,
@@ -230,46 +184,46 @@ const textStyle = computed(() => ({
   backgroundColor: 'white',
   padding: '0 10px',
   position: 'relative',
-  zIndex: 1
-}));
+  zIndex: 1,
+}))
 
 const animate = () => {
-  time.value += 0.016; // 约60fps
-  animationId = requestAnimationFrame(animate);
-};
+  time.value += 0.016 // 约60fps
+  animationId = requestAnimationFrame(animate)
+}
 
 const startAnimation = () => {
-  if (!props.animation) return;
-  
+  if (!props.animation) return
+
   if (animationId) {
-    cancelAnimationFrame(animationId);
+    cancelAnimationFrame(animationId)
   }
-  
-  animate();
-};
+
+  animate()
+}
 
 const stopAnimation = () => {
   if (animationId) {
-    cancelAnimationFrame(animationId);
-    animationId = null;
+    cancelAnimationFrame(animationId)
+    animationId = null
   }
-};
+}
 
 onMounted(() => {
   if (props.animation) {
-    startAnimation();
+    startAnimation()
   }
-});
+})
 
 onUnmounted(() => {
-  stopAnimation();
-});
+  stopAnimation()
+})
 
 // 暴露方法给父组件
 defineExpose({
   startAnimation,
-  stopAnimation
-});
+  stopAnimation,
+})
 </script>
 
 <style scoped>

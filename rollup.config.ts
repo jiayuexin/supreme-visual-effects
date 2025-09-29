@@ -13,28 +13,28 @@ export default defineConfig([
       {
         file: pkg.main,
         format: 'cjs',
-        exports: 'named'
+        exports: 'named',
       },
       {
         file: pkg.module,
-        format: 'es'
-      }
+        format: 'es',
+      },
     ],
     plugins: [
       resolve(),
       commonjs(),
       vue({ target: 'browser' }),
-      typescript({ tsconfig: './tsconfig.json', declaration: false })
+      typescript({ tsconfig: './tsconfig.json', declaration: false }),
     ],
-    external: ['vue']
+    external: ['vue'],
   },
   {
     input: 'src/index.ts',
     output: {
       file: 'dist/supreme-visual-effects.d.ts',
-      format: 'es'
+      format: 'es',
     },
     plugins: [dts()],
-    external: ['vue']
-  }
+    external: ['vue'],
+  },
 ])

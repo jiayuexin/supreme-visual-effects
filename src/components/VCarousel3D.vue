@@ -1,5 +1,5 @@
 <template>
-  <div 
+  <div
     ref="container"
     class="carousel-3d-container"
     :style="containerStyle"
@@ -9,12 +9,9 @@
     @touchmove="handleTouchMove"
     @touchend="handleTouchEnd"
   >
-    <div 
-      class="carousel-3d-wrapper"
-      :style="wrapperStyle"
-    >
-      <div 
-        v-for="(item, index) in items" 
+    <div class="carousel-3d-wrapper" :style="wrapperStyle">
+      <div
+        v-for="(item, index) in items"
         :key="index"
         class="carousel-3d-item"
         :class="{ active: index === currentIndex }"
@@ -22,12 +19,7 @@
       >
         <slot :name="`item-${index}`" :item="item" :index="index">
           <div class="carousel-item-content">
-            <img 
-              v-if="item.image" 
-              :src="item.image" 
-              :alt="item.title || `Item ${index + 1}`"
-              class="carousel-image"
-            />
+            <img v-if="item.image" :src="item.image" :alt="item.title || `Item ${index + 1}`" class="carousel-image" />
             <div v-if="item.title || item.description" class="carousel-text">
               <h3 v-if="item.title" class="carousel-title">{{ item.title }}</h3>
               <p v-if="item.description" class="carousel-description">{{ item.description }}</p>
@@ -36,27 +28,27 @@
         </slot>
       </div>
     </div>
-    
+
     <!-- Navigation arrows -->
-    <button 
+    <button
       v-if="showArrows"
       class="carousel-arrow carousel-arrow-prev"
       :disabled="!canGoPrev"
-      @click="goToPrev"
       aria-label="Previous item"
+      @click="goToPrev"
     >
       ‹
     </button>
-    <button 
+    <button
       v-if="showArrows"
       class="carousel-arrow carousel-arrow-next"
       :disabled="!canGoNext"
-      @click="goToNext"
       aria-label="Next item"
+      @click="goToNext"
     >
       ›
     </button>
-    
+
     <!-- Indicators -->
     <div v-if="showIndicators" class="carousel-indicators">
       <button
@@ -64,8 +56,8 @@
         :key="index"
         class="carousel-indicator"
         :class="{ active: index === currentIndex }"
-        @click="goToIndex(index)"
         :aria-label="`Go to item ${index + 1}`"
+        @click="goToIndex(index)"
       >
         <span class="indicator-dot"></span>
       </button>
@@ -74,232 +66,240 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 
 interface CarouselItem {
-  id?: string | number;
-  title?: string;
-  description?: string;
-  image?: string;
-  [key: string]: any;
+  id?: string | number
+  title?: string
+  description?: string
+  image?: string
+  [key: string]: unknown
 }
 
 const props = defineProps({
   items: {
     type: Array as () => CarouselItem[],
-    required: true
+    required: true,
   },
   currentIndex: {
     type: Number,
-    default: 0
+    default: 0,
   },
   autoPlay: {
     type: Boolean,
-    default: false
+    default: false,
   },
   autoPlayInterval: {
     type: Number,
-    default: 3000
+    default: 3000,
   },
   showArrows: {
     type: Boolean,
-    default: true
+    default: true,
   },
   showIndicators: {
     type: Boolean,
-    default: true
+    default: true,
   },
   perspective: {
     type: Number,
-    default: 1000
+    default: 1000,
   },
   itemSpacing: {
     type: Number,
-    default: 200
+    default: 200,
   },
   rotationY: {
     type: Number,
-    default: 45
+    default: 45,
   },
   scale: {
     type: Number,
-    default: 0.8
+    default: 0.8,
   },
   transitionDuration: {
     type: Number,
-    default: 500
+    default: 500,
   },
   loop: {
     type: Boolean,
-    default: true
+    default: true,
   },
   touchSensitivity: {
     type: Number,
-    default: 50
-  }
-});
+    default: 50,
+  },
+})
 
 const emit = defineEmits<{
-  'update:currentIndex': [index: number];
-  'item-change': [index: number, item: CarouselItem];
-  'item-click': [index: number, item: CarouselItem];
-}>();
+  'update:currentIndex': [index: number]
+  'item-change': [index: number, item: CarouselItem]
+  'item-click': [index: number, item: CarouselItem]
+}>()
 
-const container = ref<HTMLElement | null>(null);
-const currentIndex = ref(props.currentIndex);
-const isHovered = ref(false);
-const isTransitioning = ref(false);
-const touchStartX = ref(0);
-const touchStartTime = ref(0);
-let autoPlayTimer: number | null = null;
+const container = ref<HTMLElement | null>(null)
+const currentIndex = ref(props.currentIndex)
+const isHovered = ref(false)
+const isTransitioning = ref(false)
+const touchStartX = ref(0)
+const touchStartTime = ref(0)
+let autoPlayTimer: number | null = null
 
 const containerStyle = computed(() => ({
   perspective: `${props.perspective}px`,
   transformStyle: 'preserve-3d',
   position: 'relative',
-  overflow: 'hidden'
-}));
+  overflow: 'hidden',
+}))
 
 const wrapperStyle = computed(() => ({
   transformStyle: 'preserve-3d',
-  transition: isTransitioning.value ? `transform ${props.transitionDuration}ms cubic-bezier(0.25, 0.46, 0.45, 0.94)` : 'none'
-}));
+  transition: isTransitioning.value
+    ? `transform ${props.transitionDuration}ms cubic-bezier(0.25, 0.46, 0.45, 0.94)`
+    : 'none',
+}))
 
 const canGoPrev = computed(() => {
-  return props.loop || currentIndex.value > 0;
-});
+  return props.loop || currentIndex.value > 0
+})
 
 const canGoNext = computed(() => {
-  return props.loop || currentIndex.value < props.items.length - 1;
-});
+  return props.loop || currentIndex.value < props.items.length - 1
+})
 
 const getItemStyle = (index: number) => {
-  const totalItems = props.items.length;
-  const angle = (360 / totalItems) * index;
-  const radius = props.itemSpacing;
-  
-  const x = Math.sin((angle * Math.PI) / 180) * radius;
-  const z = Math.cos((angle * Math.PI) / 180) * radius;
-  
-  const isActive = index === currentIndex.value;
-  const scale = isActive ? 1 : props.scale;
-  const opacity = isActive ? 1 : 0.6;
-  
+  const totalItems = props.items.length
+  const angle = (360 / totalItems) * index
+  const radius = props.itemSpacing
+
+  const x = Math.sin((angle * Math.PI) / 180) * radius
+  const z = Math.cos((angle * Math.PI) / 180) * radius
+
+  const isActive = index === currentIndex.value
+  const scale = isActive ? 1 : props.scale
+  const opacity = isActive ? 1 : 0.6
+
   return {
     transform: `translateX(${x}px) translateZ(${z}px) rotateY(${angle}deg) scale(${scale})`,
     opacity,
-    zIndex: isActive ? 10 : 1
-  };
-};
+    zIndex: isActive ? 10 : 1,
+  }
+}
 
 const goToIndex = (index: number) => {
-  if (index === currentIndex.value || isTransitioning.value) return;
-  
-  isTransitioning.value = true;
-  currentIndex.value = index;
-  
-  emit('update:currentIndex', index);
-  emit('item-change', index, props.items[index]);
-  
+  if (index === currentIndex.value || isTransitioning.value) return
+
+  isTransitioning.value = true
+  currentIndex.value = index
+
+  emit('update:currentIndex', index)
+  emit('item-change', index, props.items[index])
+
   setTimeout(() => {
-    isTransitioning.value = false;
-  }, props.transitionDuration);
-};
+    isTransitioning.value = false
+  }, props.transitionDuration)
+}
 
 const goToNext = () => {
-  if (!canGoNext.value) return;
-  
-  const nextIndex = currentIndex.value === props.items.length - 1 ? 0 : currentIndex.value + 1;
-  goToIndex(nextIndex);
-};
+  if (!canGoNext.value) return
+
+  const nextIndex = currentIndex.value === props.items.length - 1 ? 0 : currentIndex.value + 1
+  goToIndex(nextIndex)
+}
 
 const goToPrev = () => {
-  if (!canGoPrev.value) return;
-  
-  const prevIndex = currentIndex.value === 0 ? props.items.length - 1 : currentIndex.value - 1;
-  goToIndex(prevIndex);
-};
+  if (!canGoPrev.value) return
+
+  const prevIndex = currentIndex.value === 0 ? props.items.length - 1 : currentIndex.value - 1
+  goToIndex(prevIndex)
+}
 
 const startAutoPlay = () => {
-  if (!props.autoPlay || isHovered.value) return;
-  
+  if (!props.autoPlay || isHovered.value) return
+
   autoPlayTimer = window.setInterval(() => {
-    goToNext();
-  }, props.autoPlayInterval);
-};
+    goToNext()
+  }, props.autoPlayInterval)
+}
 
 const stopAutoPlay = () => {
   if (autoPlayTimer) {
-    clearInterval(autoPlayTimer);
-    autoPlayTimer = null;
+    clearInterval(autoPlayTimer)
+    autoPlayTimer = null
   }
-};
+}
 
 const handleMouseEnter = () => {
-  isHovered.value = true;
-  stopAutoPlay();
-};
+  isHovered.value = true
+  stopAutoPlay()
+}
 
 const handleMouseLeave = () => {
-  isHovered.value = false;
+  isHovered.value = false
   if (props.autoPlay) {
-    startAutoPlay();
+    startAutoPlay()
   }
-};
+}
 
 const handleTouchStart = (e: TouchEvent) => {
-  touchStartX.value = e.touches[0].clientX;
-  touchStartTime.value = Date.now();
-  stopAutoPlay();
-};
+  touchStartX.value = e.touches[0].clientX
+  touchStartTime.value = Date.now()
+  stopAutoPlay()
+}
 
 const handleTouchMove = (e: TouchEvent) => {
-  e.preventDefault();
-};
+  e.preventDefault()
+}
 
 const handleTouchEnd = (e: TouchEvent) => {
-  const touchEndX = e.changedTouches[0].clientX;
-  const touchEndTime = Date.now();
-  
-  const deltaX = touchEndX - touchStartX.value;
-  const deltaTime = touchEndTime - touchStartTime.value;
-  
+  const touchEndX = e.changedTouches[0].clientX
+  const touchEndTime = Date.now()
+
+  const deltaX = touchEndX - touchStartX.value
+  const deltaTime = touchEndTime - touchStartTime.value
+
   if (Math.abs(deltaX) > props.touchSensitivity && deltaTime < 500) {
     if (deltaX > 0) {
-      goToPrev();
+      goToPrev()
     } else {
-      goToNext();
+      goToNext()
     }
   }
-  
+
   if (props.autoPlay) {
-    startAutoPlay();
+    startAutoPlay()
   }
-};
+}
 
 onMounted(() => {
   if (props.autoPlay) {
-    startAutoPlay();
+    startAutoPlay()
   }
-});
+})
 
 onUnmounted(() => {
-  stopAutoPlay();
-});
+  stopAutoPlay()
+})
 
-watch(() => props.autoPlay, (newVal) => {
-  if (newVal && !isHovered.value) {
-    startAutoPlay();
-  } else {
-    stopAutoPlay();
+watch(
+  () => props.autoPlay,
+  newVal => {
+    if (newVal && !isHovered.value) {
+      startAutoPlay()
+    } else {
+      stopAutoPlay()
+    }
   }
-});
+)
 
-watch(() => props.currentIndex, (newVal) => {
-  if (newVal !== currentIndex.value) {
-    goToIndex(newVal);
+watch(
+  () => props.currentIndex,
+  newVal => {
+    if (newVal !== currentIndex.value) {
+      goToIndex(newVal)
+    }
   }
-});
+)
 
 // 暴露方法给父组件
 defineExpose({
@@ -307,8 +307,8 @@ defineExpose({
   goToPrev,
   goToIndex,
   startAutoPlay,
-  stopAutoPlay
-});
+  stopAutoPlay,
+})
 </script>
 
 <style scoped>

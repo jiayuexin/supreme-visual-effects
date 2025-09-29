@@ -1,17 +1,17 @@
 <template>
-  <div 
-    ref="container" 
+  <div
+    ref="container"
     class="scroll-snap-container"
     :style="containerStyle"
+    tabindex="0"
     @wheel="handleWheel"
     @touchstart="handleTouchStart"
     @touchmove="handleTouchMove"
     @touchend="handleTouchEnd"
     @keydown="handleKeydown"
-    tabindex="0"
   >
-    <div 
-      v-for="(section, index) in sections" 
+    <div
+      v-for="(section, index) in sections"
       :key="index"
       class="scroll-snap-section"
       :class="{ active: currentIndex === index }"
@@ -24,7 +24,7 @@
         </div>
       </slot>
     </div>
-    
+
     <!-- Navigation indicators -->
     <div v-if="showIndicators" class="scroll-indicators">
       <button
@@ -32,28 +32,28 @@
         :key="index"
         class="indicator"
         :class="{ active: currentIndex === index }"
-        @click="goToSection(index)"
         :aria-label="`Go to section ${index + 1}`"
+        @click="goToSection(index)"
       >
         <span class="indicator-dot"></span>
       </button>
     </div>
-    
+
     <!-- Navigation arrows -->
     <div v-if="showArrows" class="scroll-arrows">
-      <button 
+      <button
         class="arrow arrow-up"
         :disabled="currentIndex === 0"
-        @click="goToSection(currentIndex - 1)"
         aria-label="Previous section"
+        @click="goToSection(currentIndex - 1)"
       >
         ↑
       </button>
-      <button 
+      <button
         class="arrow arrow-down"
         :disabled="currentIndex === sections.length - 1"
-        @click="goToSection(currentIndex + 1)"
         aria-label="Next section"
+        @click="goToSection(currentIndex + 1)"
       >
         ↓
       </button>
@@ -62,13 +62,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue';
+import { ref, computed, onMounted, watch, nextTick } from 'vue'
 
 interface ScrollSection {
-  content?: string;
-  style?: Record<string, any>;
-  backgroundColor?: string;
-  color?: string;
+  content?: string
+  style?: Record<string, unknown>
+  backgroundColor?: string
+  color?: string
 }
 
 const props = defineProps({
@@ -77,59 +77,59 @@ const props = defineProps({
     default: () => [
       { content: 'First section', backgroundColor: '#667eea' },
       { content: 'Second section', backgroundColor: '#764ba2' },
-      { content: 'Third section', backgroundColor: '#f093fb' }
-    ]
+      { content: 'Third section', backgroundColor: '#f093fb' },
+    ],
   },
   duration: {
     type: Number,
-    default: 800
+    default: 800,
   },
   easing: {
     type: String,
-    default: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+    default: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
   },
   showIndicators: {
     type: Boolean,
-    default: true
+    default: true,
   },
   showArrows: {
     type: Boolean,
-    default: true
+    default: true,
   },
   keyboardNavigation: {
     type: Boolean,
-    default: true
+    default: true,
   },
   wheelSensitivity: {
     type: Number,
-    default: 1
+    default: 1,
   },
   touchSensitivity: {
     type: Number,
-    default: 50
-  }
-});
+    default: 50,
+  },
+})
 
 const emit = defineEmits<{
-  'section-change': [index: number, section: ScrollSection];
-  'section-enter': [index: number, section: ScrollSection];
-  'section-leave': [index: number, section: ScrollSection];
-}>();
+  'section-change': [index: number, section: ScrollSection]
+  'section-enter': [index: number, section: ScrollSection]
+  'section-leave': [index: number, section: ScrollSection]
+}>()
 
-const container = ref<HTMLElement | null>(null);
-const currentIndex = ref(0);
-const isScrolling = ref(false);
-const touchStartY = ref(0);
-const touchStartTime = ref(0);
+const container = ref<HTMLElement | null>(null)
+const currentIndex = ref(0)
+const isScrolling = ref(false)
+const touchStartY = ref(0)
+const touchStartTime = ref(0)
 
 const containerStyle = computed(() => ({
   height: '100vh',
   overflow: 'hidden',
-  position: 'relative'
-}));
+  position: 'relative',
+}))
 
 const getSectionStyle = (index: number) => {
-  const section = props.sections[index];
+  const section = props.sections[index]
   return {
     height: '100vh',
     width: '100%',
@@ -143,129 +143,133 @@ const getSectionStyle = (index: number) => {
     justifyContent: 'center',
     transform: `translateY(${index * 100}vh)`,
     transition: isScrolling.value ? `transform ${props.duration}ms ${props.easing}` : 'none',
-    ...section.style
-  };
-};
+    ...section.style,
+  }
+}
 
 const goToSection = async (index: number) => {
-  if (index < 0 || index >= props.sections.length || isScrolling.value) return;
-  
-  const previousIndex = currentIndex.value;
-  currentIndex.value = index;
-  isScrolling.value = true;
-  
+  if (index < 0 || index >= props.sections.length || isScrolling.value) return
+
+  const previousIndex = currentIndex.value
+  currentIndex.value = index
+  isScrolling.value = true
+
   // Emit events
-  emit('section-leave', previousIndex, props.sections[previousIndex]);
-  emit('section-change', index, props.sections[index]);
-  
+  emit('section-leave', previousIndex, props.sections[previousIndex])
+  emit('section-change', index, props.sections[index])
+
   // Update section positions
-  await nextTick();
-  updateSectionPositions();
-  
+  await nextTick()
+  updateSectionPositions()
+
   // Wait for animation to complete
   setTimeout(() => {
-    isScrolling.value = false;
-    emit('section-enter', index, props.sections[index]);
-  }, props.duration);
-};
+    isScrolling.value = false
+    emit('section-enter', index, props.sections[index])
+  }, props.duration)
+}
 
 const updateSectionPositions = () => {
-  if (!container.value) return;
-  
-  const sections = container.value.querySelectorAll('.scroll-snap-section');
+  if (!container.value) return
+
+  const sections = container.value.querySelectorAll('.scroll-snap-section')
   sections.forEach((section, index) => {
-    const element = section as HTMLElement;
-    element.style.transform = `translateY(${(index - currentIndex.value) * 100}vh)`;
-  });
-};
+    const element = section as HTMLElement
+    element.style.transform = `translateY(${(index - currentIndex.value) * 100}vh)`
+  })
+}
 
 const handleWheel = (e: WheelEvent) => {
   if (isScrolling.value) {
-    e.preventDefault();
-    return;
+    e.preventDefault()
+    return
   }
-  
-  const delta = e.deltaY * props.wheelSensitivity;
-  
+
+  const delta = e.deltaY * props.wheelSensitivity
+
   if (delta > 0 && currentIndex.value < props.sections.length - 1) {
-    e.preventDefault();
-    goToSection(currentIndex.value + 1);
+    e.preventDefault()
+    goToSection(currentIndex.value + 1)
   } else if (delta < 0 && currentIndex.value > 0) {
-    e.preventDefault();
-    goToSection(currentIndex.value - 1);
+    e.preventDefault()
+    goToSection(currentIndex.value - 1)
   }
-};
+}
 
 const handleTouchStart = (e: TouchEvent) => {
-  touchStartY.value = e.touches[0].clientY;
-  touchStartTime.value = Date.now();
-};
+  touchStartY.value = e.touches[0].clientY
+  touchStartTime.value = Date.now()
+}
 
 const handleTouchMove = (e: TouchEvent) => {
   if (isScrolling.value) {
-    e.preventDefault();
-    return;
+    e.preventDefault()
+    return
   }
-  
-  const deltaY = e.touches[0].clientY - touchStartY.value;
-  const deltaTime = Date.now() - touchStartTime.value;
-  
+
+  const deltaY = e.touches[0].clientY - touchStartY.value
+  const deltaTime = Date.now() - touchStartTime.value
+
   if (Math.abs(deltaY) > props.touchSensitivity && deltaTime > 100) {
     if (deltaY > 0 && currentIndex.value > 0) {
-      goToSection(currentIndex.value - 1);
+      goToSection(currentIndex.value - 1)
     } else if (deltaY < 0 && currentIndex.value < props.sections.length - 1) {
-      goToSection(currentIndex.value + 1);
+      goToSection(currentIndex.value + 1)
     }
   }
-};
+}
 
 const handleTouchEnd = () => {
   // Touch handling is done in touchmove
-};
+}
 
 const handleKeydown = (e: KeyboardEvent) => {
-  if (!props.keyboardNavigation || isScrolling.value) return;
-  
+  if (!props.keyboardNavigation || isScrolling.value) return
+
   switch (e.key) {
     case 'ArrowUp':
     case 'PageUp':
-      e.preventDefault();
+      e.preventDefault()
       if (currentIndex.value > 0) {
-        goToSection(currentIndex.value - 1);
+        goToSection(currentIndex.value - 1)
       }
-      break;
+      break
     case 'ArrowDown':
     case 'PageDown':
     case ' ':
-      e.preventDefault();
+      e.preventDefault()
       if (currentIndex.value < props.sections.length - 1) {
-        goToSection(currentIndex.value + 1);
+        goToSection(currentIndex.value + 1)
       }
-      break;
+      break
     case 'Home':
-      e.preventDefault();
-      goToSection(0);
-      break;
+      e.preventDefault()
+      goToSection(0)
+      break
     case 'End':
-      e.preventDefault();
-      goToSection(props.sections.length - 1);
-      break;
+      e.preventDefault()
+      goToSection(props.sections.length - 1)
+      break
   }
-};
+}
 
 onMounted(() => {
   if (container.value) {
-    container.value.focus();
+    container.value.focus()
   }
-  updateSectionPositions();
-});
+  updateSectionPositions()
+})
 
-watch(() => props.sections, () => {
-  currentIndex.value = 0;
-  nextTick(() => {
-    updateSectionPositions();
-  });
-}, { deep: true });
+watch(
+  () => props.sections,
+  () => {
+    currentIndex.value = 0
+    nextTick(() => {
+      updateSectionPositions()
+    })
+  },
+  { deep: true }
+)
 </script>
 
 <style scoped>

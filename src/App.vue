@@ -6,9 +6,7 @@
     <section>
       <h2>v-ripple Directive</h2>
       <button v-ripple class="ripple-btn">Click Me</button>
-      <button v-ripple="{ color: 'rgba(255, 0, 0, 0.5)' }" class="ripple-btn">
-        Red Ripple
-      </button>
+      <button v-ripple="{ color: 'rgba(255, 0, 0, 0.5)' }" class="ripple-btn">Red Ripple</button>
     </section>
 
     <section class="scroll-section">
@@ -25,14 +23,15 @@
 </template>
 
 <script setup lang="ts">
-import VScrollReveal from './components/VScrollReveal.vue';
-import VParticleField from './components/VParticleField.vue';
+import VScrollReveal from './components/VScrollReveal.vue'
+import VParticleField from './components/VParticleField.vue'
 </script>
 
 <style>
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
+    sans-serif;
   background-color: #1a1a1a; /* Dark background for particles */
   color: #e2e8f0;
   line-height: 1.6;

@@ -1,62 +1,55 @@
 <template>
   <Teleport to="body">
     <Transition name="lightbox" appear>
-      <div 
+      <div
         v-if="isOpen"
         ref="lightbox"
         class="lightbox-overlay"
         :style="overlayStyle"
+        tabindex="0"
         @click="handleOverlayClick"
         @keydown="handleKeydown"
-        tabindex="0"
       >
-        <div 
-          class="lightbox-content"
-          :style="contentStyle"
-          @click.stop
-        >
+        <div class="lightbox-content" :style="contentStyle" @click.stop>
           <!-- Close button -->
-          <button 
-            v-if="showCloseButton"
-            class="lightbox-close"
-            @click="close"
-            aria-label="Close lightbox"
-          >
+          <button v-if="showCloseButton" class="lightbox-close" aria-label="Close lightbox" @click="close">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+              <path
+                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+              />
             </svg>
           </button>
-          
+
           <!-- Navigation arrows -->
-          <button 
+          <button
             v-if="showNavigation && canGoPrev"
             class="lightbox-nav lightbox-nav-prev"
-            @click="goToPrev"
             aria-label="Previous item"
+            @click="goToPrev"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
             </svg>
           </button>
-          
-          <button 
+
+          <button
             v-if="showNavigation && canGoNext"
             class="lightbox-nav lightbox-nav-next"
-            @click="goToNext"
             aria-label="Next item"
+            @click="goToNext"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
             </svg>
           </button>
-          
+
           <!-- Content slot -->
           <div class="lightbox-body">
             <slot :item="currentItem" :index="currentIndex" :close="close">
               <div v-if="currentItem" class="lightbox-default-content">
-                <img 
-                  v-if="currentItem.image" 
-                  :src="currentItem.image" 
+                <img
+                  v-if="currentItem.image"
+                  :src="currentItem.image"
                   :alt="currentItem.alt || 'Lightbox image'"
                   class="lightbox-image"
                 />
@@ -67,7 +60,7 @@
               </div>
             </slot>
           </div>
-          
+
           <!-- Counter -->
           <div v-if="showCounter && items.length > 1" class="lightbox-counter">
             {{ currentIndex + 1 }} / {{ items.length }}
@@ -79,211 +72,217 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue';
+import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
 
 interface LightboxItem {
-  id?: string | number;
-  image?: string;
-  title?: string;
-  description?: string;
-  alt?: string;
-  [key: string]: any;
+  id?: string | number
+  image?: string
+  title?: string
+  description?: string
+  alt?: string
+  [key: string]: unknown
 }
 
 const props = defineProps({
   isOpen: {
     type: Boolean,
-    default: false
+    default: false,
   },
   items: {
     type: Array as () => LightboxItem[],
-    default: () => []
+    default: () => [],
   },
   currentIndex: {
     type: Number,
-    default: 0
+    default: 0,
   },
   showCloseButton: {
     type: Boolean,
-    default: true
+    default: true,
   },
   showNavigation: {
     type: Boolean,
-    default: true
+    default: true,
   },
   showCounter: {
     type: Boolean,
-    default: true
+    default: true,
   },
   closeOnOverlay: {
     type: Boolean,
-    default: true
+    default: true,
   },
   closeOnEscape: {
     type: Boolean,
-    default: true
+    default: true,
   },
   keyboardNavigation: {
     type: Boolean,
-    default: true
+    default: true,
   },
   animationType: {
     type: String as () => 'fade' | 'scale' | 'slide',
-    default: 'fade'
+    default: 'fade',
   },
   animationDuration: {
     type: Number,
-    default: 300
+    default: 300,
   },
   backgroundColor: {
     type: String,
-    default: 'rgba(0, 0, 0, 0.9)'
+    default: 'rgba(0, 0, 0, 0.9)',
   },
   maxWidth: {
     type: String,
-    default: '90vw'
+    default: '90vw',
   },
   maxHeight: {
     type: String,
-    default: '90vh'
-  }
-});
+    default: '90vh',
+  },
+})
 
 const emit = defineEmits<{
-  'update:isOpen': [isOpen: boolean];
-  'update:currentIndex': [index: number];
-  'close': [];
-  'open': [];
-  'item-change': [index: number, item: LightboxItem];
-}>();
+  'update:isOpen': [isOpen: boolean]
+  'update:currentIndex': [index: number]
+  close: []
+  open: []
+  'item-change': [index: number, item: LightboxItem]
+}>()
 
-const lightbox = ref<HTMLElement | null>(null);
-const currentIndex = ref(props.currentIndex);
+const lightbox = ref<HTMLElement | null>(null)
+const currentIndex = ref(props.currentIndex)
 
 const currentItem = computed(() => {
-  return props.items[currentIndex.value] || null;
-});
+  return props.items[currentIndex.value] || null
+})
 
 const canGoPrev = computed(() => {
-  return currentIndex.value > 0;
-});
+  return currentIndex.value > 0
+})
 
 const canGoNext = computed(() => {
-  return currentIndex.value < props.items.length - 1;
-});
+  return currentIndex.value < props.items.length - 1
+})
 
 const overlayStyle = computed(() => ({
   backgroundColor: props.backgroundColor,
-  animationDuration: `${props.animationDuration}ms`
-}));
+  animationDuration: `${props.animationDuration}ms`,
+}))
 
 const contentStyle = computed(() => ({
   maxWidth: props.maxWidth,
   maxHeight: props.maxHeight,
-  animationDuration: `${props.animationDuration}ms`
-}));
+  animationDuration: `${props.animationDuration}ms`,
+}))
 
 const open = () => {
-  emit('update:isOpen', true);
-  emit('open');
-  
+  emit('update:isOpen', true)
+  emit('open')
+
   nextTick(() => {
     if (lightbox.value) {
-      lightbox.value.focus();
+      lightbox.value.focus()
     }
-  });
-};
+  })
+}
 
 const close = () => {
-  emit('update:isOpen', false);
-  emit('close');
-};
+  emit('update:isOpen', false)
+  emit('close')
+}
 
 const goToIndex = (index: number) => {
-  if (index < 0 || index >= props.items.length) return;
-  
-  currentIndex.value = index;
-  emit('update:currentIndex', index);
-  emit('item-change', index, props.items[index]);
-};
+  if (index < 0 || index >= props.items.length) return
+
+  currentIndex.value = index
+  emit('update:currentIndex', index)
+  emit('item-change', index, props.items[index])
+}
 
 const goToPrev = () => {
   if (canGoPrev.value) {
-    goToIndex(currentIndex.value - 1);
+    goToIndex(currentIndex.value - 1)
   }
-};
+}
 
 const goToNext = () => {
   if (canGoNext.value) {
-    goToIndex(currentIndex.value + 1);
+    goToIndex(currentIndex.value + 1)
   }
-};
+}
 
 const handleOverlayClick = () => {
   if (props.closeOnOverlay) {
-    close();
+    close()
   }
-};
+}
 
 const handleKeydown = (e: KeyboardEvent) => {
-  if (!props.keyboardNavigation) return;
-  
+  if (!props.keyboardNavigation) return
+
   switch (e.key) {
     case 'Escape':
       if (props.closeOnEscape) {
-        e.preventDefault();
-        close();
+        e.preventDefault()
+        close()
       }
-      break;
+      break
     case 'ArrowLeft':
-      e.preventDefault();
-      goToPrev();
-      break;
+      e.preventDefault()
+      goToPrev()
+      break
     case 'ArrowRight':
-      e.preventDefault();
-      goToNext();
-      break;
+      e.preventDefault()
+      goToNext()
+      break
     case 'Home':
-      e.preventDefault();
-      goToIndex(0);
-      break;
+      e.preventDefault()
+      goToIndex(0)
+      break
     case 'End':
-      e.preventDefault();
-      goToIndex(props.items.length - 1);
-      break;
+      e.preventDefault()
+      goToIndex(props.items.length - 1)
+      break
   }
-};
+}
 
 const preventBodyScroll = () => {
-  document.body.style.overflow = 'hidden';
-};
+  document.body.style.overflow = 'hidden'
+}
 
 const restoreBodyScroll = () => {
-  document.body.style.overflow = '';
-};
+  document.body.style.overflow = ''
+}
 
-watch(() => props.isOpen, (newVal) => {
-  if (newVal) {
-    preventBodyScroll();
-    open();
-  } else {
-    restoreBodyScroll();
+watch(
+  () => props.isOpen,
+  newVal => {
+    if (newVal) {
+      preventBodyScroll()
+      open()
+    } else {
+      restoreBodyScroll()
+    }
   }
-});
+)
 
-watch(() => props.currentIndex, (newVal) => {
-  currentIndex.value = newVal;
-});
+watch(
+  () => props.currentIndex,
+  newVal => {
+    currentIndex.value = newVal
+  }
+)
 
 onMounted(() => {
   if (props.isOpen) {
-    preventBodyScroll();
+    preventBodyScroll()
   }
-});
+})
 
 onUnmounted(() => {
-  restoreBodyScroll();
-});
+  restoreBodyScroll()
+})
 
 // 暴露方法给父组件
 defineExpose({
@@ -291,8 +290,8 @@ defineExpose({
   close,
   goToIndex,
   goToPrev,
-  goToNext
-});
+  goToNext,
+})
 </script>
 
 <style scoped>
