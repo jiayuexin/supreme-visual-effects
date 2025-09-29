@@ -6,7 +6,7 @@ dist-ssr
 .eslintcache
 report.html
 vite.config.*.timestamp*
-
+docs/.vitepress/cache/**
 yarn.lock
 npm-debug.log*
 .pnpm-error.log*
@@ -20,3 +20,4 @@ tests/**/coverage/
 *.njsproj
 *.sln
 tsconfig.tsbuildinfo
+*storybook.log

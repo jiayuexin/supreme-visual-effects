@@ -46,7 +46,17 @@ const props = defineProps({
     type: Number,
     default: 1000,
   },
+  autoRotation: {
+    type: Boolean,
+    default: false,
+  },
+  rotationSpeed: {
+    type: Number,
+    default: 0.1,
+  },
 })
+
+const is_browser = typeof window !== 'undefined' && typeof document !== 'undefined'
 
 const canvas = useTemplateRef<HTMLCanvasElement>('canvas')
 let animationId: number | null = null
@@ -55,8 +65,10 @@ let mouseX = 0
 let mouseY = 0
 let centerX = 0
 let centerY = 0
+let rotation = 0
 
 const initStars = () => {
+  if (!is_browser) return
   stars = []
   for (let i = 0; i < props.starCount; i++) {
     stars.push({
@@ -74,6 +86,7 @@ const initStars = () => {
 }
 
 const updateStars = () => {
+  if (!is_browser) return
   stars.forEach(star => {
     star.x += star.vx
     star.y += star.vy
@@ -90,6 +103,17 @@ const updateStars = () => {
       star.vy += dy * influence * 0.0001
     }
 
+    // Auto rotation
+    if (props.autoRotation) {
+      const angle = rotation * props.rotationSpeed
+      const cos = Math.cos(angle)
+      const sin = Math.sin(angle)
+      const newX = star.x * cos - star.y * sin
+      const newY = star.x * sin + star.y * cos
+      star.x = newX
+      star.y = newY
+    }
+
     // Reset star if it goes too far
     if (star.z <= 0) {
       star.x = (Math.random() - 0.5) * 2000
@@ -101,10 +125,14 @@ const updateStars = () => {
     star.twinkle += props.twinkleSpeed * 0.01
     star.brightness = 0.5 + 0.5 * Math.sin(star.twinkle)
   })
+  
+  if (props.autoRotation) {
+    rotation += 0.01
+  }
 }
 
 const drawStars = () => {
-  if (!canvas.value) return
+  if (!is_browser || !canvas.value) return
 
   const ctx = canvas.value.getContext('2d')
   if (!ctx) return
@@ -146,6 +174,7 @@ const drawStars = () => {
         ctx.fill()
         ctx.shadowBlur = 0
       }
+      ctx.restore()
     }
   })
 
@@ -153,13 +182,14 @@ const drawStars = () => {
 }
 
 const animate = () => {
+  if (!is_browser) return
   updateStars()
   drawStars()
   animationId = requestAnimationFrame(animate)
 }
 
 const resize = () => {
-  if (!canvas.value) return
+  if (!is_browser || !canvas.value) return
 
   const parent = canvas.value.parentElement
   if (!parent) return
@@ -171,15 +201,56 @@ const resize = () => {
 }
 
 const handleMouseMove = (e: MouseEvent) => {
-  if (!canvas.value) return
+  if (!is_browser || !canvas.value) return
 
   const rect = canvas.value.getBoundingClientRect()
   mouseX = e.clientX - rect.left
   mouseY = e.clientY - rect.top
 }
 
+// 暴露方法给父组件
+defineExpose({
+  pauseAnimation: () => {
+    if (animationId) {
+      cancelAnimationFrame(animationId)
+      animationId = null
+    }
+  },
+  resumeAnimation: () => {
+    if (!animationId) {
+      animate()
+    }
+  },
+  reset: () => {
+    if (is_browser) {
+      initStars()
+    }
+  },
+  updateStarCount: (count: number) => {
+    if (count > stars.length) {
+      // Add stars
+      for (let i = stars.length; i < count; i++) {
+        stars.push({
+          x: (Math.random() - 0.5) * 2000,
+          y: (Math.random() - 0.5) * 2000,
+          z: Math.random() * props.depth,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+          vz: -Math.random() * props.speed,
+          size: Math.random() * 2 + 0.5,
+          brightness: Math.random(),
+          twinkle: Math.random() * Math.PI * 2,
+        })
+      }
+    } else if (count < stars.length) {
+      // Remove stars
+      stars.splice(count)
+    }
+  }
+})
+
 onMounted(() => {
-  if (!canvas.value) return
+  if (!is_browser || !canvas.value) return
 
   initStars()
   resize()
@@ -193,6 +264,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  if (!is_browser) return
   if (animationId) {
     cancelAnimationFrame(animationId)
   }
@@ -207,7 +279,9 @@ onUnmounted(() => {
 watch(
   () => [props.starCount, props.speed, props.twinkleSpeed],
   () => {
-    initStars()
+    if (is_browser) {
+      initStars()
+    }
   }
 )
 </script>

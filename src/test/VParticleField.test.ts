@@ -47,6 +47,10 @@ describe('VParticleField', () => {
       y: 0,
       toJSON: vi.fn(),
     })
+    
+    // Mock requestAnimationFrame
+    global.requestAnimationFrame = vi.fn(cb => setTimeout(cb, 16))
+    global.cancelAnimationFrame = vi.fn(id => clearTimeout(id))
   })
 
   it('renders canvas element', () => {
@@ -82,8 +86,8 @@ describe('VParticleField', () => {
     expect(wrapper.props('particleColor')).toBe('#ff0000')
   })
 
-  it('handles window resize', () => {
-    // const _wrapper = mount(VParticleField)
+  it('handles window resize', async () => {
+    mount(VParticleField)
 
     // Trigger resize event
     window.dispatchEvent(new Event('resize'))
@@ -94,10 +98,10 @@ describe('VParticleField', () => {
   })
 
   it('cleans up on unmount', () => {
-    const _wrapper = mount(VParticleField)
+    const wrapper = mount(VParticleField)
     const cancelAnimationFrameSpy = vi.spyOn(window, 'cancelAnimationFrame')
 
-    _wrapper.unmount()
+    wrapper.unmount()
 
     expect(cancelAnimationFrameSpy).toHaveBeenCalled()
   })

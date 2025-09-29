@@ -5,6 +5,14 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, watch, useTemplateRef } from 'vue'
 
+interface Particle {
+  x: number
+  y: number
+  vx: number
+  vy: number
+  radius: number
+}
+
 const props = defineProps({
   particleCount: {
     type: Number,
@@ -26,23 +34,31 @@ const props = defineProps({
     type: Number,
     default: 120,
   },
+  mouseInteraction: {
+    type: Boolean,
+    default: true,
+  },
+  mouseRadius: {
+    type: Number,
+    default: 100,
+  },
+  connectParticles: {
+    type: Boolean,
+    default: true,
+  },
 })
+
+const is_browser = typeof window !== 'undefined' && typeof document !== 'undefined'
 
 const canvas = useTemplateRef<HTMLCanvasElement>('canvas')
 let animationFrameId: number
-
-interface Particle {
-  x: number
-  y: number
-  vx: number
-  vy: number
-  radius: number
-}
+let mouseX = 0
+let mouseY = 0
 
 let particles: Particle[] = []
 
 const init = () => {
-  if (!canvas.value) return
+  if (!is_browser || !canvas.value) return
   const ctx = canvas.value.getContext('2d')
   if (!ctx) return
 
@@ -66,19 +82,51 @@ const init = () => {
   animate()
 }
 
+const handleMouseMove = (e: MouseEvent) => {
+  if (!is_browser || !canvas.value) return
+  
+  const rect = canvas.value.getBoundingClientRect()
+  mouseX = e.clientX - rect.left
+  mouseY = e.clientY - rect.top
+}
+
 const animate = () => {
-  if (!canvas.value) return
+  if (!is_browser || !canvas.value) return
   const ctx = canvas.value.getContext('2d')
   if (!ctx) return
 
   ctx.clearRect(0, 0, canvas.value.width, canvas.value.height)
 
   particles.forEach(p => {
+    // Mouse interaction
+    if (props.mouseInteraction) {
+      const dx = mouseX - p.x
+      const dy = mouseY - p.y
+      const distance = Math.sqrt(dx * dx + dy * dy)
+      
+      if (distance < props.mouseRadius) {
+        const force = (props.mouseRadius - distance) / props.mouseRadius
+        p.vx += dx * force * 0.01
+        p.vy += dy * force * 0.01
+      }
+    }
+
     p.x += p.vx
     p.y += p.vy
 
-    if (p.x < 0 || p.x > (canvas.value as HTMLCanvasElement).width) p.vx *= -1
-    if (p.y < 0 || p.y > (canvas.value as HTMLCanvasElement).height) p.vy *= -1
+    // Boundary checking with bounce
+    if (p.x < 0 || p.x > (canvas.value as HTMLCanvasElement).width) {
+      p.vx *= -1
+      p.x = Math.max(0, Math.min((canvas.value as HTMLCanvasElement).width, p.x))
+    }
+    if (p.y < 0 || p.y > (canvas.value as HTMLCanvasElement).height) {
+      p.vy *= -1
+      p.y = Math.max(0, Math.min((canvas.value as HTMLCanvasElement).height, p.y))
+    }
+
+    // Apply slight friction to prevent infinite acceleration
+    p.vx *= 0.99
+    p.vy *= 0.99
 
     ctx.beginPath()
     ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2)
@@ -86,16 +134,19 @@ const animate = () => {
     ctx.fill()
   })
 
-  for (let i = 0; i < particles.length; i++) {
-    for (let j = i + 1; j < particles.length; j++) {
-      const dist = Math.hypot(particles[i].x - particles[j].x, particles[i].y - particles[j].y)
-      if (dist < props.maxDistance) {
-        ctx.beginPath()
-        ctx.moveTo(particles[i].x, particles[i].y)
-        ctx.lineTo(particles[j].x, particles[j].y)
-        ctx.strokeStyle = props.lineColor
-        ctx.lineWidth = 1 - dist / props.maxDistance
-        ctx.stroke()
+  // Connect particles with lines
+  if (props.connectParticles) {
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dist = Math.hypot(particles[i].x - particles[j].x, particles[i].y - particles[j].y)
+        if (dist < props.maxDistance) {
+          ctx.beginPath()
+          ctx.moveTo(particles[i].x, particles[i].y)
+          ctx.lineTo(particles[j].x, particles[j].y)
+          ctx.strokeStyle = props.lineColor
+          ctx.lineWidth = 1 - dist / props.maxDistance
+          ctx.stroke()
+        }
       }
     }
   }
@@ -103,17 +154,60 @@ const animate = () => {
   animationFrameId = requestAnimationFrame(animate)
 }
 
+// 暴露方法给父组件
+defineExpose({
+  updateParticleCount: (count: number) => {
+    if (count > particles.length) {
+      // Add particles
+      for (let i = particles.length; i < count; i++) {
+        particles.push({
+          x: Math.random() * (canvas.value?.width || 0),
+          y: Math.random() * (canvas.value?.height || 0),
+          vx: (Math.random() - 0.5) * props.speed,
+          vy: (Math.random() - 0.5) * props.speed,
+          radius: Math.random() * 1.5 + 1,
+        })
+      }
+    } else if (count < particles.length) {
+      // Remove particles
+      particles.splice(count)
+    }
+  },
+  pauseAnimation: () => {
+    if (animationFrameId) {
+      cancelAnimationFrame(animationFrameId)
+    }
+  },
+  resumeAnimation: () => {
+    animate()
+  }
+})
+
 onMounted(() => {
+  if (!is_browser) return
   init()
   window.addEventListener('resize', init)
+  
+  if (props.mouseInteraction && canvas.value) {
+    canvas.value.addEventListener('mousemove', handleMouseMove)
+  }
 })
 
 onUnmounted(() => {
+  if (!is_browser) return
   cancelAnimationFrame(animationFrameId)
   window.removeEventListener('resize', init)
+  
+  if (canvas.value && props.mouseInteraction) {
+    canvas.value.removeEventListener('mousemove', handleMouseMove)
+  }
 })
 
-watch(() => [props.particleCount, props.speed], init)
+watch(() => [props.particleCount, props.speed], () => {
+  if (is_browser) {
+    init()
+  }
+})
 </script>
 
 <style scoped>

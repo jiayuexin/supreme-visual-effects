@@ -42,6 +42,8 @@ const props = defineProps({
   },
 })
 
+const is_browser = typeof window !== 'undefined' && typeof document !== 'undefined'
+
 const container = ref<HTMLElement | null>(null)
 const scrollY = ref(0)
 const containerTop = ref(0)
@@ -50,15 +52,15 @@ const windowHeight = ref(0)
 let throttleTimer: number | null = null
 
 const containerStyle = computed(() => ({
-  position: 'relative',
-  overflow: 'hidden',
-  height: '100vh',
+  position: 'relative' as const,
+  overflow: 'hidden' as const,
+  height: '100vh' as const,
 }))
 
 const getLayerStyle = (layer: ParallaxLayer, _index: number) => {
   if (!props.enabled) {
     return {
-      position: 'absolute',
+      position: 'absolute' as const,
       top: 0,
       left: 0,
       width: '100%',
@@ -71,7 +73,7 @@ const getLayerStyle = (layer: ParallaxLayer, _index: number) => {
   const parallaxOffset = calculateParallaxOffset(layer, scrollProgress)
 
   return {
-    position: 'absolute',
+    position: 'absolute' as const,
     top: 0,
     left: 0,
     width: '100%',
@@ -115,7 +117,7 @@ const calculateParallaxOffset = (layer: ParallaxLayer, progress: number) => {
 }
 
 const handleScroll = () => {
-  if (throttleTimer) return
+  if (!is_browser || throttleTimer) return
 
   throttleTimer = window.setTimeout(() => {
     scrollY.value = window.pageYOffset || document.documentElement.scrollTop
@@ -125,7 +127,7 @@ const handleScroll = () => {
 }
 
 const updateContainerInfo = () => {
-  if (!container.value) return
+  if (!is_browser || !container.value) return
 
   const rect = container.value.getBoundingClientRect()
   containerTop.value = rect.top + scrollY.value
@@ -134,11 +136,13 @@ const updateContainerInfo = () => {
 }
 
 const handleResize = () => {
-  updateContainerInfo()
+  if (is_browser) {
+    updateContainerInfo()
+  }
 }
 
 onMounted(() => {
-  if (!props.enabled) return
+  if (!is_browser || !props.enabled) return
 
   updateContainerInfo()
   window.addEventListener('scroll', handleScroll, { passive: true })
@@ -146,6 +150,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  if (!is_browser) return
   if (throttleTimer) {
     clearTimeout(throttleTimer)
   }
@@ -157,6 +162,7 @@ onUnmounted(() => {
 watch(
   () => props.enabled,
   newVal => {
+    if (!is_browser) return
     if (newVal) {
       updateContainerInfo()
       window.addEventListener('scroll', handleScroll, { passive: true })

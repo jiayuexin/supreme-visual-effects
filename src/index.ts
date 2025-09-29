@@ -46,11 +46,16 @@ const directives = {
 }
 
 interface SupremeEffectsOptions {
-  theme?: 'light' | 'dark' | 'auto'
+  theme?: 'light' | 'dark' | 'auto' | 'high-contrast' | 'purple'
+  ssr?: boolean
 }
 
-const set_theme = (theme: 'light' | 'dark') => {
-  document.documentElement.setAttribute('data-sve-theme', theme)
+const is_browser = typeof window !== 'undefined' && typeof document !== 'undefined'
+
+const set_theme = (theme: 'light' | 'dark' | 'high-contrast' | 'purple') => {
+  if (is_browser) {
+    document.documentElement.setAttribute('data-sve-theme', theme)
+  }
 }
 
 const handle_auto_theme = (e: MediaQueryListEvent) => {
@@ -70,18 +75,25 @@ export const createSupremeEffects = (options: SupremeEffectsOptions = {}): Plugi
         app.directive(name, directive)
       })
 
-      const theme = options.theme || 'auto'
-
-      if (media_query) {
-        media_query.removeEventListener('change', handle_auto_theme)
+      // Skip theme initialization in SSR mode
+      if (options.ssr) {
+        return
       }
 
-      if (theme === 'auto') {
-        media_query = window.matchMedia('(prefers-color-scheme: dark)')
-        set_theme(media_query.matches ? 'dark' : 'light')
-        media_query.addEventListener('change', handle_auto_theme)
-      } else {
-        set_theme(theme)
+      const theme = options.theme || 'auto'
+
+      if (is_browser) {
+        if (media_query) {
+          media_query.removeEventListener('change', handle_auto_theme)
+        }
+
+        if (theme === 'auto') {
+          media_query = window.matchMedia('(prefers-color-scheme: dark)')
+          set_theme(media_query.matches ? 'dark' : 'light')
+          media_query.addEventListener('change', handle_auto_theme)
+        } else {
+          set_theme(theme)
+        }
       }
     },
   }

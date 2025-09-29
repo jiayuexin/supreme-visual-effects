@@ -111,7 +111,14 @@ const generateAnimatedGradient = () => {
             }
             case 'breathe': {
               const alpha = 0.5 + 0.5 * Math.sin(t * 2)
-              color = stop.color.replace(/rgba?\(([^)]+)\)/, `rgba($1, ${alpha})`)
+              // Handle both hex and rgba colors
+              if (stop.color.startsWith('#')) {
+                color = `${stop.color}${Math.round(alpha * 255).toString(16).padStart(2, '0')}`
+              } else if (stop.color.startsWith('rgba')) {
+                color = stop.color.replace(/rgba?\(([^)]+)\)/, `rgba($1, ${alpha})`)
+              } else {
+                color = stop.color
+              }
               break
             }
             case 'twinkle': {
@@ -172,6 +179,24 @@ const animate = () => {
   time.value += 0.016 // 约60fps
   animationId.value = requestAnimationFrame(animate)
 }
+
+// 暴露方法给父组件
+defineExpose({
+  pauseAnimation: () => {
+    if (animationId.value) {
+      cancelAnimationFrame(animationId.value)
+      animationId.value = null
+    }
+  },
+  resumeAnimation: () => {
+    if (props.animation && !animationId.value) {
+      animate()
+    }
+  },
+  resetAnimation: () => {
+    time.value = 0
+  }
+})
 
 onMounted(() => {
   if (props.animation) {

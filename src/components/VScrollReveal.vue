@@ -18,13 +18,15 @@ const props = defineProps({
   },
 })
 
+const is_browser = typeof window !== 'undefined' && typeof document !== 'undefined'
+
 const target = ref<HTMLElement | null>(null)
 const isVisible = ref(false)
 
 let observer: IntersectionObserver | null = null
 
 onMounted(() => {
-  if (!target.value) return
+  if (!is_browser || !target.value) return
 
   observer = new IntersectionObserver(
     ([entry]) => {
@@ -48,6 +50,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  if (!is_browser) return
   if (observer) {
     observer.disconnect()
   }

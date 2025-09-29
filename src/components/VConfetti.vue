@@ -91,6 +91,8 @@ const emit = defineEmits<{
   'particle-destroy': [particle: ConfettiParticle]
 }>()
 
+const is_browser = typeof window !== 'undefined' && typeof document !== 'undefined'
+
 const container = ref<HTMLElement | null>(null)
 const canvas = ref<HTMLCanvasElement | null>(null)
 const particles = ref<ConfettiParticle[]>([])
@@ -99,20 +101,20 @@ const continuousTimer = ref<number | null>(null)
 const startTime = ref(0)
 
 const containerStyle = computed(() => ({
-  position: 'fixed',
+  position: 'fixed' as const,
   top: 0,
   left: 0,
   width: '100vw',
   height: '100vh',
-  pointerEvents: 'none',
+  pointerEvents: 'none' as const,
   zIndex: 9999,
-  overflow: 'hidden',
+  overflow: 'hidden' as const,
 }))
 
 const canvasStyle = computed(() => ({
   width: '100%',
   height: '100%',
-  display: 'block',
+  display: 'block' as const,
 }))
 
 const createParticle = (x: number, y: number): ConfettiParticle => {
@@ -164,7 +166,7 @@ const createParticle = (x: number, y: number): ConfettiParticle => {
 }
 
 const getBurstPosition = () => {
-  if (!canvas.value) return { x: 0, y: 0 }
+  if (!is_browser || !canvas.value) return { x: 0, y: 0 }
 
   const width = canvas.value.width
   const height = canvas.value.height
@@ -184,7 +186,7 @@ const getBurstPosition = () => {
 }
 
 const burst = () => {
-  if (!props.enabled) return
+  if (!is_browser || !props.enabled) return
 
   emit('confetti-start')
   startTime.value = Date.now()
@@ -202,7 +204,7 @@ const burst = () => {
 }
 
 const animate = () => {
-  if (!canvas.value) return
+  if (!is_browser || !canvas.value) return
 
   const ctx = canvas.value.getContext('2d')
   if (!ctx) return
@@ -266,7 +268,7 @@ const animate = () => {
 }
 
 const startContinuous = () => {
-  if (!props.continuous || !props.enabled) return
+  if (!is_browser || !props.continuous || !props.enabled) return
 
   continuousTimer.value = window.setInterval(() => {
     burst()
@@ -274,13 +276,13 @@ const startContinuous = () => {
 }
 
 const stopContinuous = () => {
-  if (continuousTimer.value) {
-    clearInterval(continuousTimer.value)
-    continuousTimer.value = null
-  }
+  if (!is_browser || !continuousTimer.value) return
+  clearInterval(continuousTimer.value)
+  continuousTimer.value = null
 }
 
 const stop = () => {
+  if (!is_browser) return
   particles.value = []
   if (animationId.value) {
     cancelAnimationFrame(animationId.value)
@@ -290,7 +292,7 @@ const stop = () => {
 }
 
 const resize = () => {
-  if (!canvas.value || !container.value) return
+  if (!is_browser || !canvas.value || !container.value) return
 
   const rect = container.value.getBoundingClientRect()
   canvas.value.width = rect.width
@@ -298,6 +300,7 @@ const resize = () => {
 }
 
 onMounted(() => {
+  if (!is_browser) return
   resize()
   window.addEventListener('resize', resize)
 
@@ -307,6 +310,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  if (!is_browser) return
   stop()
   window.removeEventListener('resize', resize)
 })
@@ -314,6 +318,7 @@ onUnmounted(() => {
 watch(
   () => props.enabled,
   newVal => {
+    if (!is_browser) return
     if (newVal && props.continuous) {
       startContinuous()
     } else {
@@ -325,6 +330,7 @@ watch(
 watch(
   () => props.continuous,
   newVal => {
+    if (!is_browser) return
     if (newVal && props.enabled) {
       startContinuous()
     } else {

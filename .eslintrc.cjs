@@ -6,12 +6,7 @@ module.exports = {
     es2022: true,
   },
   parser: 'vue-eslint-parser',
-  extends: [
-    'eslint:recommended',
-    'plugin:vue/vue3-recommended',
-    'plugin:@typescript-eslint/recommended',
-    'prettier',
-  ],
+  extends: ['eslint:recommended', 'plugin:vue/vue3-recommended', 'plugin:@typescript-eslint/recommended', 'prettier', 'plugin:storybook/recommended'],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',

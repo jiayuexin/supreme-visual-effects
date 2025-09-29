@@ -1,13 +1,109 @@
 :root {
+  /* 基础颜色 */
   --sve-background: #ffffff;
   --sve-text-color: #213547;
   --sve-primary-color: #4f46e5;
+  --sve-secondary-color: #0ea5e9;
+  --sve-success-color: #10b981;
+  --sve-warning-color: #f59e0b;
+  --sve-error-color: #ef4444;
+  
+  /* 边框和阴影 */
   --sve-border-color: #e2e8f0;
+  --sve-border-radius: 8px;
+  --sve-box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --sve-box-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  
+  /* 动画 */
+  --sve-transition-duration: 0.2s;
+  --sve-transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* 组件特定变量 */
+  --sve-carousel-bg: #f8fafc;
+  --sve-divider-color: #e2e8f0;
+  --sve-particle-color: rgba(79, 70, 229, 0.8);
+  --sve-confetti-bg: transparent;
 }
 
 [data-sve-theme='dark'] {
+  /* 基础颜色 */
   --sve-background: #1a1a1a;
   --sve-text-color: rgba(255, 255, 255, 0.87);
   --sve-primary-color: #6366f1;
+  --sve-secondary-color: #0ea5e9;
+  --sve-success-color: #10b981;
+  --sve-warning-color: #f59e0b;
+  --sve-error-color: #ef4444;
+  
+  /* 边框和阴影 */
   --sve-border-color: #4a5568;
+  --sve-border-radius: 8px;
+  --sve-box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  --sve-box-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+  
+  /* 动画 */
+  --sve-transition-duration: 0.2s;
+  --sve-transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* 组件特定变量 */
+  --sve-carousel-bg: #1e293b;
+  --sve-divider-color: #4a5568;
+  --sve-particle-color: rgba(99, 102, 241, 0.8);
+  --sve-confetti-bg: transparent;
+}
+
+/* 高对比度主题 */
+[data-sve-theme='high-contrast'] {
+  /* 基础颜色 */
+  --sve-background: #ffffff;
+  --sve-text-color: #000000;
+  --sve-primary-color: #0000ff;
+  --sve-secondary-color: #008000;
+  --sve-success-color: #008000;
+  --sve-warning-color: #ffa500;
+  --sve-error-color: #ff0000;
+  
+  /* 边框和阴影 */
+  --sve-border-color: #000000;
+  --sve-border-radius: 0px;
+  --sve-box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 1), 0 1px 2px -1px rgba(0, 0, 0, 1);
+  --sve-box-shadow-lg: 0 4px 6px -1px rgba(0, 0, 0, 1), 0 2px 4px -1px rgba(0, 0, 0, 1);
+  
+  /* 动画 */
+  --sve-transition-duration: 0s;
+  --sve-transition-easing: linear;
+  
+  /* 组件特定变量 */
+  --sve-carousel-bg: #f0f0f0;
+  --sve-divider-color: #000000;
+  --sve-particle-color: #0000ff;
+  --sve-confetti-bg: #ffffff;
+}
+
+/* 紫色主题 */
+[data-sve-theme='purple'] {
+  /* 基础颜色 */
+  --sve-background: #f5f3ff;
+  --sve-text-color: #5b21b6;
+  --sve-primary-color: #7c3aed;
+  --sve-secondary-color: #a855f7;
+  --sve-success-color: #10b981;
+  --sve-warning-color: #f59e0b;
+  --sve-error-color: #ef4444;
+  
+  /* 边框和阴影 */
+  --sve-border-color: #ddd6fe;
+  --sve-border-radius: 12px;
+  --sve-box-shadow: 0 4px 6px -1px rgba(124, 58, 237, 0.1), 0 2px 4px -1px rgba(124, 58, 237, 0.06);
+  --sve-box-shadow-lg: 0 10px 15px -3px rgba(124, 58, 237, 0.1), 0 4px 6px -2px rgba(124, 58, 237, 0.06);
+  
+  /* 动画 */
+  --sve-transition-duration: 0.3s;
+  --sve-transition-easing: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  
+  /* 组件特定变量 */
+  --sve-carousel-bg: #e9d5ff;
+  --sve-divider-color: #c084fc;
+  --sve-particle-color: rgba(124, 58, 237, 0.8);
+  --sve-confetti-bg: #f5f3ff;
 }

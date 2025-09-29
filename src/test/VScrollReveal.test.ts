@@ -11,7 +11,9 @@ describe('VScrollReveal', () => {
       unobserve: vi.fn(),
       disconnect: vi.fn(),
     }
-    vi.mocked(IntersectionObserver).mockImplementation(() => mockIntersectionObserver)
+    
+    // Mock IntersectionObserver
+    global.IntersectionObserver = vi.fn().mockImplementation(() => mockIntersectionObserver)
   })
 
   it('renders correctly', () => {
@@ -22,7 +24,7 @@ describe('VScrollReveal', () => {
     })
 
     expect(wrapper.text()).toBe('Test content')
-    expect(wrapper.classes()).toContain('scroll-reveal')
+    expect(wrapper.find('div').classes()).toContain('scroll-reveal')
   })
 
   it('shows content when visible', async () => {
@@ -33,12 +35,12 @@ describe('VScrollReveal', () => {
     })
 
     // Simulate intersection
-    const callback = mockIntersectionObserver.observe.mock.calls[0][1]
+    const callback = (global.IntersectionObserver as any).mock.calls[0][0]
     callback([{ isIntersecting: true }])
 
     await wrapper.vm.$nextTick()
 
-    expect(wrapper.classes()).toContain('is-visible')
+    expect(wrapper.find('div').classes()).toContain('is-visible')
   })
 
   it('respects threshold prop', () => {
@@ -48,11 +50,11 @@ describe('VScrollReveal', () => {
       },
     })
 
-    expect(mockIntersectionObserver.observe).toHaveBeenCalledWith(
-      expect.any(Element),
+    expect(global.IntersectionObserver).toHaveBeenCalledWith(
+      expect.any(Function),
       expect.objectContaining({
         threshold: 0.5,
-      })
+      }),
     )
   })
 
@@ -64,7 +66,7 @@ describe('VScrollReveal', () => {
     })
 
     // Simulate intersection
-    const callback = mockIntersectionObserver.observe.mock.calls[0][1]
+    const callback = (global.IntersectionObserver as any).mock.calls[0][0]
     callback([{ isIntersecting: true }])
 
     await wrapper.vm.$nextTick()
