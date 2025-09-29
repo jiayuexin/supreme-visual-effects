@@ -8,7 +8,7 @@ export default defineConfig({
     nav: [
       { text: '首页', link: '/' },
       { text: '指南', link: '/guide/' },
-      { text: '组件', link: '/components/' },
+      { text: '组件', link: '/components/VParticleField' },
       { text: '更新日志', link: 'https://github.com/yourname/supreme-visual-effects/releases' },
     ],
     sidebar: {
