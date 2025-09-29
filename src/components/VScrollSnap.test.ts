@@ -25,7 +25,7 @@ describe('VScrollSnap', () => {
         sections: mockSections,
       },
     })
-    
+
     expect(wrapper.find('.scroll-snap-container').exists()).toBe(true)
   })
 
@@ -35,7 +35,7 @@ describe('VScrollSnap', () => {
         sections: mockSections,
       },
     })
-    
+
     expect(wrapper.vm.sections).toEqual(mockSections)
   })
 
@@ -46,7 +46,7 @@ describe('VScrollSnap', () => {
         showIndicators: true,
       },
     })
-    
+
     expect(wrapper.vm.showIndicators).toBe(true)
   })
 
@@ -57,7 +57,7 @@ describe('VScrollSnap', () => {
         showIndicators: false,
       },
     })
-    
+
     expect(wrapper.vm.showIndicators).toBe(false)
   })
 
@@ -68,7 +68,7 @@ describe('VScrollSnap', () => {
         showArrows: true,
       },
     })
-    
+
     expect(wrapper.vm.showArrows).toBe(true)
   })
 
@@ -79,7 +79,7 @@ describe('VScrollSnap', () => {
         showArrows: false,
       },
     })
-    
+
     expect(wrapper.vm.showArrows).toBe(false)
   })
 
@@ -90,7 +90,7 @@ describe('VScrollSnap', () => {
         infinite: true,
       },
     })
-    
+
     expect(wrapper.vm.infinite).toBe(true)
   })
 
@@ -101,7 +101,7 @@ describe('VScrollSnap', () => {
         infinite: false,
       },
     })
-    
+
     expect(wrapper.vm.infinite).toBe(false)
   })
 
@@ -112,7 +112,7 @@ describe('VScrollSnap', () => {
         duration: 800,
       },
     })
-    
+
     expect(wrapper.vm.duration).toBe(800)
   })
 
@@ -122,7 +122,7 @@ describe('VScrollSnap', () => {
         sections: mockSections,
       },
     })
-    
+
     // 测试初始状态
     expect(wrapper.vm.sections.length).toBe(3)
   })

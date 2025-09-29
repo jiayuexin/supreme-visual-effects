@@ -22,32 +22,33 @@ import { VNeonText } from 'supreme-visual-effects'
 
 ## Props
 
-| 属性名 | 类型 | 默认值 | 说明 |
-| --- | --- | --- | --- |
-| text | `string` | `''` | 显示的文字内容 |
-| color | `string` | `'#00ffff'` | 文字颜色 |
-| glowColor | `string` | `'#00ffff'` | 发光颜色 |
-| glowIntensity | `number` | `20` | 发光强度 |
-| glowSpread | `number` | `5` | 发光扩散程度 |
-| animation | `boolean` | `true` | 是否启用动画 |
-| animationType | `'flicker' \| 'pulse' \| 'wave' \| 'none'` | `'flicker'` | 动画类型 |
-| animationSpeed | `number` | `1` | 动画速度 |
-| fontSize | `string` | `'2rem'` | 字体大小 |
-| fontFamily | `string` | `'Arial, sans-serif'` | 字体族 |
-| fontWeight | `string` | `'bold'` | 字体粗细 |
-| hoverEffect | `boolean` | `true` | 是否启用悬停效果 |
-| hoverGlowIntensity | `number` | `40` | 悬停时发光强度 |
+| 属性名             | 类型                                       | 默认值                | 说明             |
+| ------------------ | ------------------------------------------ | --------------------- | ---------------- |
+| text               | `string`                                   | `''`                  | 显示的文字内容   |
+| color              | `string`                                   | `'#00ffff'`           | 文字颜色         |
+| glowColor          | `string`                                   | `'#00ffff'`           | 发光颜色         |
+| glowIntensity      | `number`                                   | `20`                  | 发光强度         |
+| glowSpread         | `number`                                   | `5`                   | 发光扩散程度     |
+| animation          | `boolean`                                  | `true`                | 是否启用动画     |
+| animationType      | `'flicker' \| 'pulse' \| 'wave' \| 'none'` | `'flicker'`           | 动画类型         |
+| animationSpeed     | `number`                                   | `1`                   | 动画速度         |
+| fontSize           | `string`                                   | `'2rem'`              | 字体大小         |
+| fontFamily         | `string`                                   | `'Arial, sans-serif'` | 字体族           |
+| fontWeight         | `string`                                   | `'bold'`              | 字体粗细         |
+| hoverEffect        | `boolean`                                  | `true`                | 是否启用悬停效果 |
+| hoverGlowIntensity | `number`                                   | `40`                  | 悬停时发光强度   |
 
 ## Events
 
-| 事件名 | 参数 | 说明 |
-| --- | --- | --- |
+| 事件名      | 参数 | 说明           |
+| ----------- | ---- | -------------- |
 | mouse-enter | `()` | 鼠标进入时触发 |
 | mouse-leave | `()` | 鼠标离开时触发 |
 
 ## 示例
 
 ### 自定义颜色
+
 <div class="demo">
   <div style="display: flex; justify-content: center; gap: 2rem; padding: 2rem; background: #000; flex-wrap: wrap;">
     <VNeonText text="青色霓虹" color="#00ffff" glow-color="#00ffff" />
@@ -69,6 +70,7 @@ import { VNeonText } from 'supreme-visual-effects'
 ```
 
 ### 调整发光强度
+
 <div class="demo">
   <div style="display: flex; justify-content: center; gap: 2rem; padding: 2rem; background: #000; flex-wrap: wrap;">
     <VNeonText text="弱发光" :glow-intensity="10" />
@@ -90,6 +92,7 @@ import { VNeonText } from 'supreme-visual-effects'
 ```
 
 ### 动画效果
+
 <div class="demo">
   <div style="display: flex; justify-content: center; gap: 2rem; padding: 2rem; background: #000; flex-wrap: wrap;">
     <VNeonText text="闪烁" animation-type="flicker" />
@@ -111,6 +114,7 @@ import { VNeonText } from 'supreme-visual-effects'
 ```
 
 ### 自定义字体
+
 <div class="demo">
   <div style="display: flex; justify-content: center; gap: 2rem; padding: 2rem; background: #000; flex-wrap: wrap;">
     <VNeonText text="粗体" font-weight="bold" font-size="2.5rem" />
@@ -130,6 +134,7 @@ import { VNeonText } from 'supreme-visual-effects'
 ```
 
 ### 悬停效果
+
 <div class="demo">
   <div style="display: flex; justify-content: center; padding: 2rem; background: #000;">
     <VNeonText 
@@ -142,11 +147,7 @@ import { VNeonText } from 'supreme-visual-effects'
 
 ```vue
 <template>
-  <VNeonText 
-    text="悬停增强" 
-    :hover-glow-intensity="50"
-    hover-effect
-  />
+  <VNeonText text="悬停增强" :hover-glow-intensity="50" hover-effect />
 </template>
 
 <script setup>
@@ -155,6 +156,7 @@ import { VNeonText } from 'supreme-visual-effects'
 ```
 
 ### 无动画文字
+
 <div class="demo">
   <div style="display: flex; justify-content: center; padding: 2rem; background: #000;">
     <VNeonText 
@@ -166,10 +168,7 @@ import { VNeonText } from 'supreme-visual-effects'
 
 ```vue
 <template>
-  <VNeonText 
-    text="静态霓虹" 
-    :animation="false"
-  />
+  <VNeonText text="静态霓虹" :animation="false" />
 </template>
 
 <script setup>
@@ -178,6 +177,7 @@ import { VNeonText } from 'supreme-visual-effects'
 ```
 
 ### 多行文字
+
 <div class="demo">
   <div style="display: flex; justify-content: center; padding: 2rem; background: #000;">
     <div style="text-align: center;">

@@ -22,7 +22,7 @@ describe('VParticleField', () => {
     }))
 
     global.HTMLCanvasElement.prototype.getContext = mockGetContext
-    
+
     // Mock requestAnimationFrame
     global.requestAnimationFrame = vi.fn(cb => setTimeout(cb, 16))
     global.cancelAnimationFrame = vi.fn(id => clearTimeout(id))

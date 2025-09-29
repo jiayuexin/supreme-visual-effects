@@ -34,20 +34,21 @@ import { VParticleField } from 'supreme-visual-effects'
 
 ## Props
 
-| 属性名 | 类型 | 默认值 | 说明 |
-| --- | --- | --- | --- |
-| particleCount | `number` | `100` | 粒子数量 |
-| particleColor | `string` | `'rgba(255, 255, 255, 0.8)'` | 粒子颜色 |
-| lineColor | `string` | `'rgba(255, 255, 255, 0.2)'` | 连接线颜色 |
-| speed | `number` | `0.5` | 粒子移动速度 |
-| maxDistance | `number` | `120` | 粒子间连线的最大距离 |
-| mouseInteraction | `boolean` | `true` | 是否启用鼠标交互 |
-| mouseRadius | `number` | `100` | 鼠标影响半径 |
-| connectParticles | `boolean` | `true` | 是否连接粒子 |
+| 属性名           | 类型      | 默认值                       | 说明                 |
+| ---------------- | --------- | ---------------------------- | -------------------- |
+| particleCount    | `number`  | `100`                        | 粒子数量             |
+| particleColor    | `string`  | `'rgba(255, 255, 255, 0.8)'` | 粒子颜色             |
+| lineColor        | `string`  | `'rgba(255, 255, 255, 0.2)'` | 连接线颜色           |
+| speed            | `number`  | `0.5`                        | 粒子移动速度         |
+| maxDistance      | `number`  | `120`                        | 粒子间连线的最大距离 |
+| mouseInteraction | `boolean` | `true`                       | 是否启用鼠标交互     |
+| mouseRadius      | `number`  | `100`                        | 鼠标影响半径         |
+| connectParticles | `boolean` | `true`                       | 是否连接粒子         |
 
 ## 示例
 
 ### 基础粒子场
+
 <div class="demo">
   <div style="position: relative; height: 400px; background: #1a1a1a; border-radius: 8px; overflow: hidden;">
     <VParticleField />
@@ -64,7 +65,9 @@ import { VParticleField } from 'supreme-visual-effects'
 <template>
   <div style="position: relative; height: 400px; background: #1a1a1a;">
     <VParticleField />
-    <div style="position: relative; z-index: 1; height: 100%; display: flex; align-items: center; justify-content: center; color: white; text-align: center; padding: 2rem;">
+    <div
+      style="position: relative; z-index: 1; height: 100%; display: flex; align-items: center; justify-content: center; color: white; text-align: center; padding: 2rem;"
+    >
       <div>
         <h2>粒子场背景</h2>
         <p>基础粒子场效果</p>
@@ -79,6 +82,7 @@ import { VParticleField } from 'supreme-visual-effects'
 ```
 
 ### 自定义粒子数量和颜色
+
 <div class="demo">
   <div style="position: relative; height: 400px; background: #1a1a1a; border-radius: 8px; overflow: hidden;">
     <VParticleField 
@@ -98,12 +102,10 @@ import { VParticleField } from 'supreme-visual-effects'
 ```vue
 <template>
   <div style="position: relative; height: 400px; background: #1a1a1a;">
-    <VParticleField 
-      :particleCount="200" 
-      particleColor="#4f46e5" 
-      lineColor="#c7d2fe" 
-    />
-    <div style="position: relative; z-index: 1; height: 100%; display: flex; align-items: center; justify-content: center; color: white; text-align: center; padding: 2rem;">
+    <VParticleField :particleCount="200" particleColor="#4f46e5" lineColor="#c7d2fe" />
+    <div
+      style="position: relative; z-index: 1; height: 100%; display: flex; align-items: center; justify-content: center; color: white; text-align: center; padding: 2rem;"
+    >
       <div>
         <h2>自定义粒子场</h2>
         <p>紫色粒子场效果</p>
@@ -118,6 +120,7 @@ import { VParticleField } from 'supreme-visual-effects'
 ```
 
 ### 调整动画速度
+
 <div class="demo">
   <div style="position: relative; height: 400px; background: #1a1a1a; border-radius: 8px; overflow: hidden;">
     <VParticleField 
@@ -136,11 +139,10 @@ import { VParticleField } from 'supreme-visual-effects'
 ```vue
 <template>
   <div style="position: relative; height: 400px; background: #1a1a1a;">
-    <VParticleField 
-      :speed="1.0" 
-      :maxDistance="150" 
-    />
-    <div style="position: relative; z-index: 1; height: 100%; display: flex; align-items: center; justify-content: center; color: white; text-align: center; padding: 2rem;">
+    <VParticleField :speed="1.0" :maxDistance="150" />
+    <div
+      style="position: relative; z-index: 1; height: 100%; display: flex; align-items: center; justify-content: center; color: white; text-align: center; padding: 2rem;"
+    >
       <div>
         <h2>快速粒子场</h2>
         <p>高速移动的粒子</p>
@@ -155,6 +157,7 @@ import { VParticleField } from 'supreme-visual-effects'
 ```
 
 ### 深色主题粒子场
+
 <div class="demo">
   <div style="position: relative; height: 400px; background: #1e293b; border-radius: 8px; overflow: hidden;">
     <VParticleField 
@@ -173,11 +176,10 @@ import { VParticleField } from 'supreme-visual-effects'
 ```vue
 <template>
   <div style="position: relative; height: 400px; background: #1e293b;">
-    <VParticleField 
-      particleColor="rgba(148, 163, 184, 0.8)" 
-      lineColor="rgba(148, 163, 184, 0.2)" 
-    />
-    <div style="position: relative; z-index: 1; height: 100%; display: flex; align-items: center; justify-content: center; color: white; text-align: center; padding: 2rem;">
+    <VParticleField particleColor="rgba(148, 163, 184, 0.8)" lineColor="rgba(148, 163, 184, 0.2)" />
+    <div
+      style="position: relative; z-index: 1; height: 100%; display: flex; align-items: center; justify-content: center; color: white; text-align: center; padding: 2rem;"
+    >
       <div>
         <h2>深色主题</h2>
         <p>适配深色背景的粒子场</p>
@@ -192,6 +194,7 @@ import { VParticleField } from 'supreme-visual-effects'
 ```
 
 ### 鼠标交互效果
+
 <div class="demo">
   <div style="position: relative; height: 400px; background: #1a1a1a; border-radius: 8px; overflow: hidden;">
     <VParticleField 
@@ -210,11 +213,10 @@ import { VParticleField } from 'supreme-visual-effects'
 ```vue
 <template>
   <div style="position: relative; height: 400px; background: #1a1a1a;">
-    <VParticleField 
-      :mouseInteraction="true"
-      :mouseRadius="150"
-    />
-    <div style="position: relative; z-index: 1; height: 100%; display: flex; align-items: center; justify-content: center; color: white; text-align: center; padding: 2rem;">
+    <VParticleField :mouseInteraction="true" :mouseRadius="150" />
+    <div
+      style="position: relative; z-index: 1; height: 100%; display: flex; align-items: center; justify-content: center; color: white; text-align: center; padding: 2rem;"
+    >
       <div>
         <h2>鼠标交互</h2>
         <p>移动鼠标与粒子互动</p>
@@ -232,11 +234,11 @@ import { VParticleField } from 'supreme-visual-effects'
 
 可以通过模板引用调用以下方法：
 
-| 方法名 | 参数 | 说明 |
-| --- | --- | --- |
+| 方法名              | 参数              | 说明         |
+| ------------------- | ----------------- | ------------ |
 | updateParticleCount | `(count: number)` | 更新粒子数量 |
-| pauseAnimation | `()` | 暂停动画 |
-| resumeAnimation | `()` | 恢复动画 |
+| pauseAnimation      | `()`              | 暂停动画     |
+| resumeAnimation     | `()`              | 恢复动画     |
 
 <div class="demo">
   <div style="position: relative; height: 400px; background: #1a1a1a; border-radius: 8px; overflow: hidden; margin-bottom: 1rem;">

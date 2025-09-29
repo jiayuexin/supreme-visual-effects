@@ -47,7 +47,7 @@ describe('VParticleField', () => {
       y: 0,
       toJSON: vi.fn(),
     })
-    
+
     // Mock requestAnimationFrame
     global.requestAnimationFrame = vi.fn(cb => setTimeout(cb, 16))
     global.cancelAnimationFrame = vi.fn(id => clearTimeout(id))

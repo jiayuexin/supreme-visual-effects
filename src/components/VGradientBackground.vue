@@ -113,7 +113,9 @@ const generateAnimatedGradient = () => {
               const alpha = 0.5 + 0.5 * Math.sin(t * 2)
               // Handle both hex and rgba colors
               if (stop.color.startsWith('#')) {
-                color = `${stop.color}${Math.round(alpha * 255).toString(16).padStart(2, '0')}`
+                color = `${stop.color}${Math.round(alpha * 255)
+                  .toString(16)
+                  .padStart(2, '0')}`
               } else if (stop.color.startsWith('rgba')) {
                 color = stop.color.replace(/rgba?\(([^)]+)\)/, `rgba($1, ${alpha})`)
               } else {
@@ -195,7 +197,7 @@ defineExpose({
   },
   resetAnimation: () => {
     time.value = 0
-  }
+  },
 })
 
 onMounted(() => {

@@ -32,28 +32,29 @@ import { VHover3D } from 'supreme-visual-effects'
 
 ## Props
 
-| 属性名 | 类型 | 默认值 | 说明 |
-| --- | --- | --- | --- |
-| intensity | `number` | `20` | 倾斜强度 |
-| perspective | `number` | `1000` | 透视距离 |
-| transition | `string` | `'all 0.3s ease'` | 过渡动画 |
-| resetOnLeave | `boolean` | `true` | 离开时是否重置 |
-| axis | `'x' \| 'y' \| 'both'` | `'both'` | 倾斜轴向 |
-| reverse | `boolean` | `false` | 是否反向倾斜 |
-| scale | `number` | `1` | 默认缩放比例 |
-| scaleOnHover | `number` | `1.05` | 悬停时缩放比例 |
+| 属性名       | 类型                   | 默认值            | 说明           |
+| ------------ | ---------------------- | ----------------- | -------------- |
+| intensity    | `number`               | `20`              | 倾斜强度       |
+| perspective  | `number`               | `1000`            | 透视距离       |
+| transition   | `string`               | `'all 0.3s ease'` | 过渡动画       |
+| resetOnLeave | `boolean`              | `true`            | 离开时是否重置 |
+| axis         | `'x' \| 'y' \| 'both'` | `'both'`          | 倾斜轴向       |
+| reverse      | `boolean`              | `false`           | 是否反向倾斜   |
+| scale        | `number`               | `1`               | 默认缩放比例   |
+| scaleOnHover | `number`               | `1.05`            | 悬停时缩放比例 |
 
 ## Events
 
-| 事件名 | 参数 | 说明 |
-| --- | --- | --- |
-| mouse-enter | `()` | 鼠标进入时触发 |
-| mouse-leave | `()` | 鼠标离开时触发 |
-| mouse-move | `(event: MouseEvent)` | 鼠标移动时触发 |
+| 事件名      | 参数                  | 说明           |
+| ----------- | --------------------- | -------------- |
+| mouse-enter | `()`                  | 鼠标进入时触发 |
+| mouse-leave | `()`                  | 鼠标离开时触发 |
+| mouse-move  | `(event: MouseEvent)` | 鼠标移动时触发 |
 
 ## 示例
 
 ### 自定义强度
+
 <div class="demo">
   <div style="display: flex; justify-content: center; padding: 2rem;">
     <VHover3D :intensity="40">
@@ -81,6 +82,7 @@ import { VHover3D } from 'supreme-visual-effects'
 ```
 
 ### 单轴倾斜
+
 <div class="demo">
   <div style="display: flex; justify-content: center; padding: 2rem; gap: 2rem;">
     <VHover3D axis="x">
@@ -106,7 +108,7 @@ import { VHover3D } from 'supreme-visual-effects'
       <p>内容</p>
     </div>
   </VHover3D>
-  
+
   <VHover3D axis="y">
     <div>
       <h3>Y轴倾斜</h3>
@@ -121,6 +123,7 @@ import { VHover3D } from 'supreme-visual-effects'
 ```
 
 ### 反向倾斜
+
 <div class="demo">
   <div style="display: flex; justify-content: center; padding: 2rem;">
     <VHover3D :reverse="true">
@@ -148,6 +151,7 @@ import { VHover3D } from 'supreme-visual-effects'
 ```
 
 ### 自定义缩放
+
 <div class="demo">
   <div style="display: flex; justify-content: center; padding: 2rem;">
     <VHover3D :scale="1" :scaleOnHover="1.2">
@@ -175,6 +179,7 @@ import { VHover3D } from 'supreme-visual-effects'
 ```
 
 ### 卡片网格
+
 <div class="demo">
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; padding: 2rem;">
     <VHover3D v-for="i in 4" :key="i">

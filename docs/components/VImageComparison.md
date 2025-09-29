@@ -17,7 +17,7 @@ VImageComparison 是一个图像对比组件，可以创建前后图像对比效
 
 ```vue
 <template>
-  <VImageComparison 
+  <VImageComparison
     before-image="https://picsum.photos/600/300?random=1"
     after-image="https://picsum.photos/600/300?random=2"
     before-label="修改前"
@@ -32,40 +32,41 @@ import { VImageComparison } from 'supreme-visual-effects'
 
 ## Props
 
-| 属性名 | 类型 | 默认值 | 说明 |
-| --- | --- | --- | --- |
-| beforeImage | `string` | `''` | 前图像URL（必填） |
-| afterImage | `string` | `''` | 后图像URL（必填） |
-| beforeAlt | `string` | `'Before image'` | 前图像alt属性 |
-| afterAlt | `string` | `'After image'` | 后图像alt属性 |
-| beforeLabel | `string` | `'Before'` | 前图像标签 |
-| afterLabel | `string` | `'After'` | 后图像标签 |
-| initialPosition | `number` | `50` | 初始滑块位置(0-100) |
-| sliderColor | `string` | `'#ffffff'` | 滑块颜色 |
-| sliderSize | `number` | `4` | 滑块宽度(px) |
-| handleSize | `number` | `40` | 滑块手柄大小(px) |
-| showLabels | `boolean` | `true` | 是否显示标签 |
-| keyboardControl | `boolean` | `true` | 是否启用键盘控制 |
-| animationDuration | `number` | `300` | 动画持续时间(ms) |
+| 属性名            | 类型      | 默认值           | 说明                |
+| ----------------- | --------- | ---------------- | ------------------- |
+| beforeImage       | `string`  | `''`             | 前图像URL（必填）   |
+| afterImage        | `string`  | `''`             | 后图像URL（必填）   |
+| beforeAlt         | `string`  | `'Before image'` | 前图像alt属性       |
+| afterAlt          | `string`  | `'After image'`  | 后图像alt属性       |
+| beforeLabel       | `string`  | `'Before'`       | 前图像标签          |
+| afterLabel        | `string`  | `'After'`        | 后图像标签          |
+| initialPosition   | `number`  | `50`             | 初始滑块位置(0-100) |
+| sliderColor       | `string`  | `'#ffffff'`      | 滑块颜色            |
+| sliderSize        | `number`  | `4`              | 滑块宽度(px)        |
+| handleSize        | `number`  | `40`             | 滑块手柄大小(px)    |
+| showLabels        | `boolean` | `true`           | 是否显示标签        |
+| keyboardControl   | `boolean` | `true`           | 是否启用键盘控制    |
+| animationDuration | `number`  | `300`            | 动画持续时间(ms)    |
 
 ## Events
 
-| 事件名 | 参数 | 说明 |
-| --- | --- | --- |
+| 事件名          | 参数                 | 说明           |
+| --------------- | -------------------- | -------------- |
 | position-change | `(position: number)` | 位置变化时触发 |
-| slider-start | `()` | 开始拖拽时触发 |
-| slider-end | `()` | 结束拖拽时触发 |
+| slider-start    | `()`                 | 开始拖拽时触发 |
+| slider-end      | `()`                 | 结束拖拽时触发 |
 
 ## Expose Methods
 
-| 方法名 | 参数 | 说明 |
-| --- | --- | --- |
-| reset | `()` | 重置滑块位置 |
+| 方法名      | 参数                 | 说明         |
+| ----------- | -------------------- | ------------ |
+| reset       | `()`                 | 重置滑块位置 |
 | setPosition | `(position: number)` | 设置滑块位置 |
 
 ## 示例
 
 ### 自定义初始位置
+
 <div class="demo">
   <div style="height: 300px; border-radius: 8px; overflow: hidden;">
     <VImageComparison 
@@ -78,7 +79,7 @@ import { VImageComparison } from 'supreme-visual-effects'
 
 ```vue
 <template>
-  <VImageComparison 
+  <VImageComparison
     before-image="https://picsum.photos/600/300?random=3"
     after-image="https://picsum.photos/600/300?random=4"
     :initial-position="25"
@@ -91,6 +92,7 @@ import { VImageComparison } from 'supreme-visual-effects'
 ```
 
 ### 自定义滑块样式
+
 <div class="demo">
   <div style="height: 300px; border-radius: 8px; overflow: hidden;">
     <VImageComparison 
@@ -105,7 +107,7 @@ import { VImageComparison } from 'supreme-visual-effects'
 
 ```vue
 <template>
-  <VImageComparison 
+  <VImageComparison
     before-image="https://picsum.photos/600/300?random=5"
     after-image="https://picsum.photos/600/300?random=6"
     slider-color="#ff6b6b"
@@ -120,6 +122,7 @@ import { VImageComparison } from 'supreme-visual-effects'
 ```
 
 ### 隐藏标签
+
 <div class="demo">
   <div style="height: 300px; border-radius: 8px; overflow: hidden;">
     <VImageComparison 
@@ -132,7 +135,7 @@ import { VImageComparison } from 'supreme-visual-effects'
 
 ```vue
 <template>
-  <VImageComparison 
+  <VImageComparison
     before-image="https://picsum.photos/600/300?random=7"
     after-image="https://picsum.photos/600/300?random=8"
     :show-labels="false"
@@ -145,6 +148,7 @@ import { VImageComparison } from 'supreme-visual-effects'
 ```
 
 ### 键盘控制
+
 <div class="demo">
   <div style="height: 300px; border-radius: 8px; overflow: hidden;">
     <VImageComparison 
@@ -157,7 +161,7 @@ import { VImageComparison } from 'supreme-visual-effects'
 
 ```vue
 <template>
-  <VImageComparison 
+  <VImageComparison
     before-image="https://picsum.photos/600/300?random=9"
     after-image="https://picsum.photos/600/300?random=10"
     :keyboard-control="true"
@@ -170,6 +174,7 @@ import { VImageComparison } from 'supreme-visual-effects'
 ```
 
 ### 控制滑块位置
+
 <div class="demo">
   <div style="height: 300px; border-radius: 8px; overflow: hidden; margin-bottom: 1rem;">
     <VImageComparison 
@@ -203,12 +208,12 @@ import { VImageComparison } from 'supreme-visual-effects'
 
 ```vue
 <template>
-  <VImageComparison 
+  <VImageComparison
     ref="imageComparisonRef"
     before-image="https://picsum.photos/600/300?random=11"
     after-image="https://picsum.photos/600/300?random=12"
   />
-  
+
   <div style="display: flex; gap: 1rem;">
     <button @click="setPosition(0)">0%</button>
     <button @click="setPosition(25)">25%</button>
@@ -225,7 +230,7 @@ import { VImageComparison } from 'supreme-visual-effects'
 
 const imageComparisonRef = ref()
 
-const setPosition = (position) => {
+const setPosition = position => {
   imageComparisonRef.value.setPosition(position)
 }
 
@@ -236,6 +241,7 @@ const resetPosition = () => {
 ```
 
 ### 自定义标签
+
 <div class="demo">
   <div style="height: 300px; border-radius: 8px; overflow: hidden;">
     <VImageComparison 
@@ -249,7 +255,7 @@ const resetPosition = () => {
 
 ```vue
 <template>
-  <VImageComparison 
+  <VImageComparison
     before-image="https://picsum.photos/600/300?random=13"
     after-image="https://picsum.photos/600/300?random=14"
     before-label="原始设计"
@@ -263,6 +269,7 @@ import { VImageComparison } from 'supreme-visual-effects'
 ```
 
 ### 不同尺寸
+
 <div class="demo">
   <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
     <div style="width: 300px; height: 200px; border-radius: 8px; overflow: hidden;">
@@ -284,14 +291,14 @@ import { VImageComparison } from 'supreme-visual-effects'
 <template>
   <div style="display: flex; gap: 1rem;">
     <div style="width: 300px; height: 200px;">
-      <VImageComparison 
+      <VImageComparison
         before-image="https://picsum.photos/300/200?random=15"
         after-image="https://picsum.photos/300/200?random=16"
       />
     </div>
-    
+
     <div style="width: 200px; height: 300px;">
-      <VImageComparison 
+      <VImageComparison
         before-image="https://picsum.photos/200/300?random=17"
         after-image="https://picsum.photos/200/300?random=18"
       />

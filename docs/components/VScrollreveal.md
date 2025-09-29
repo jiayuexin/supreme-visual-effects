@@ -31,14 +31,15 @@ import { VScrollReveal } from 'supreme-visual-effects'
 
 ## Props
 
-| 属性名 | 类型 | 默认值 | 说明 |
-| --- | --- | --- | --- |
-| threshold | `number` | `0.1` | 触发动画的阈值 (0-1) |
-| once | `boolean` | `true` | 是否只触发一次动画 |
+| 属性名    | 类型      | 默认值 | 说明                 |
+| --------- | --------- | ------ | -------------------- |
+| threshold | `number`  | `0.1`  | 触发动画的阈值 (0-1) |
+| once      | `boolean` | `true` | 是否只触发一次动画   |
 
 ## 示例
 
 ### 自定义阈值
+
 <div class="demo">
   <div style="height: 100px;"></div>
   <VScrollReveal :threshold="0.5">
@@ -65,6 +66,7 @@ import { VScrollReveal } from 'supreme-visual-effects'
 ```
 
 ### 重复触发动画
+
 <div class="demo">
   <div style="height: 100px;"></div>
   <VScrollReveal :once="false">
@@ -91,6 +93,7 @@ import { VScrollReveal } from 'supreme-visual-effects'
 ```
 
 ### 多个元素动画
+
 <div class="demo">
   <div style="height: 100px;"></div>
   <VScrollReveal>
@@ -116,7 +119,7 @@ import { VScrollReveal } from 'supreme-visual-effects'
       <p>内容</p>
     </div>
   </VScrollReveal>
-  
+
   <VScrollReveal>
     <div>
       <h3>第二个元素</h3>
@@ -131,6 +134,7 @@ import { VScrollReveal } from 'supreme-visual-effects'
 ```
 
 ### 卡片列表动画
+
 <div class="demo">
   <div style="height: 100px;"></div>
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">

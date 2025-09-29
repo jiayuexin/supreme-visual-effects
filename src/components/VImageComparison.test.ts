@@ -13,7 +13,7 @@ describe('VImageComparison', () => {
         afterImage,
       },
     })
-    
+
     expect(wrapper.find('.image-comparison-container').exists()).toBe(true)
   })
 
@@ -24,7 +24,7 @@ describe('VImageComparison', () => {
         afterImage,
       },
     })
-    
+
     expect(wrapper.vm.beforeImage).toBe(beforeImage)
     expect(wrapper.vm.afterImage).toBe(afterImage)
   })
@@ -38,7 +38,7 @@ describe('VImageComparison', () => {
         afterLabel: 'After',
       },
     })
-    
+
     expect(wrapper.vm.beforeLabel).toBe('Before')
     expect(wrapper.vm.afterLabel).toBe('After')
   })
@@ -51,7 +51,7 @@ describe('VImageComparison', () => {
         initialPosition: 75,
       },
     })
-    
+
     expect(wrapper.vm.initialPosition).toBe(75)
   })
 
@@ -64,7 +64,7 @@ describe('VImageComparison', () => {
         sliderSize: 8,
       },
     })
-    
+
     expect(wrapper.vm.sliderSize).toBe(8)
   })
 })

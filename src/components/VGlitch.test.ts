@@ -17,7 +17,7 @@ describe('VGlitch', () => {
         default: '<div>Glitch Content</div>',
       },
     })
-    
+
     expect(wrapper.find('.glitch-container').exists()).toBe(true)
     expect(wrapper.text()).toContain('Glitch Content')
   })
@@ -28,7 +28,7 @@ describe('VGlitch', () => {
         default: '<div class="slot-content">Slot Content</div>',
       },
     })
-    
+
     expect(wrapper.find('.slot-content').exists()).toBe(true)
     expect(wrapper.text()).toContain('Slot Content')
   })
@@ -42,7 +42,7 @@ describe('VGlitch', () => {
         default: 'Enabled Glitch',
       },
     })
-    
+
     expect(wrapper.vm.enabled).toBe(true)
   })
 
@@ -55,7 +55,7 @@ describe('VGlitch', () => {
         default: 'Disabled Glitch',
       },
     })
-    
+
     expect(wrapper.vm.enabled).toBe(false)
   })
 
@@ -69,9 +69,9 @@ describe('VGlitch', () => {
         default: 'Auto Glitch',
       },
     })
-    
+
     expect(wrapper.vm.autoTrigger).toBe(true)
-    
+
     // 快进时间以触发自动故障效果
     vi.advanceTimersByTime(1000)
   })
@@ -85,7 +85,7 @@ describe('VGlitch', () => {
         default: 'Intense Glitch',
       },
     })
-    
+
     expect(wrapper.vm.intensity).toBe(0.9)
   })
 })

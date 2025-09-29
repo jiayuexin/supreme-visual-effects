@@ -26,28 +26,28 @@ import { VGlitch } from 'supreme-visual-effects'
 
 ## Props
 
-| 属性名 | 类型 | 默认值 | 说明 |
-| --- | --- | --- | --- |
-| enabled | `boolean` | `true` | 是否启用故障效果 |
-| autoTrigger | `boolean` | `false` | 是否自动触发故障效果 |
-| triggerInterval | `number` | `3000` | 自动触发间隔（毫秒） |
-| intensity | `number` | `0.5` | 故障效果强度 |
-| duration | `number` | `200` | 故障效果持续时间（毫秒） |
-| effects | `GlitchEffect[]` | `[{ type: 'shake', intensity: 0.8, duration: 100 }, { type: 'rgb', intensity: 0.6, duration: 150 }, { type: 'noise', intensity: 0.4, duration: 200 }]` | 故障效果配置数组 |
-| shakeIntensity | `number` | `10` | 震动效果强度 |
-| rgbIntensity | `number` | `5` | RGB分离效果强度 |
-| noiseIntensity | `number` | `0.1` | 噪点效果强度 |
-| scanIntensity | `number` | `2` | 扫描线效果强度 |
-| distortIntensity | `number` | `0.05` | 扭曲效果强度 |
-| color | `string` | `'#ff0000'` | 故障颜色 |
-| backgroundColor | `string` | `'#000000'` | 背景颜色 |
+| 属性名           | 类型             | 默认值                                                                                                                                                 | 说明                     |
+| ---------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------ |
+| enabled          | `boolean`        | `true`                                                                                                                                                 | 是否启用故障效果         |
+| autoTrigger      | `boolean`        | `false`                                                                                                                                                | 是否自动触发故障效果     |
+| triggerInterval  | `number`         | `3000`                                                                                                                                                 | 自动触发间隔（毫秒）     |
+| intensity        | `number`         | `0.5`                                                                                                                                                  | 故障效果强度             |
+| duration         | `number`         | `200`                                                                                                                                                  | 故障效果持续时间（毫秒） |
+| effects          | `GlitchEffect[]` | `[{ type: 'shake', intensity: 0.8, duration: 100 }, { type: 'rgb', intensity: 0.6, duration: 150 }, { type: 'noise', intensity: 0.4, duration: 200 }]` | 故障效果配置数组         |
+| shakeIntensity   | `number`         | `10`                                                                                                                                                   | 震动效果强度             |
+| rgbIntensity     | `number`         | `5`                                                                                                                                                    | RGB分离效果强度          |
+| noiseIntensity   | `number`         | `0.1`                                                                                                                                                  | 噪点效果强度             |
+| scanIntensity    | `number`         | `2`                                                                                                                                                    | 扫描线效果强度           |
+| distortIntensity | `number`         | `0.05`                                                                                                                                                 | 扭曲效果强度             |
+| color            | `string`         | `'#ff0000'`                                                                                                                                            | 故障颜色                 |
+| backgroundColor  | `string`         | `'#000000'`                                                                                                                                            | 背景颜色                 |
 
 ## Events
 
-| 事件名 | 参数 | 说明 |
-| --- | --- | --- |
-| glitch-start | `()` | 故障效果开始时触发 |
-| glitch-end | `()` | 故障效果结束时触发 |
+| 事件名         | 参数 | 说明               |
+| -------------- | ---- | ------------------ |
+| glitch-start   | `()` | 故障效果开始时触发 |
+| glitch-end     | `()` | 故障效果结束时触发 |
 | glitch-trigger | `()` | 故障效果触发时触发 |
 
 ## 类型定义
@@ -63,23 +63,29 @@ interface GlitchEffect {
 ## 效果类型说明
 
 ### Shake 震动效果
+
 元素会产生随机的位移和颜色变化。
 
 ### RGB RGB分离效果
+
 创建红、绿、蓝三色分离的视觉效果。
 
 ### Noise 噪点效果
+
 添加随机噪点和对比度变化。
 
 ### Scan 扫描线效果
+
 模拟老式显示器的扫描线效果。
 
 ### Distort 扭曲效果
+
 元素会产生随机的扭曲变形。
 
 ## 示例
 
 ### 基础故障效果
+
 <div class="demo">
   <div style="padding: 2rem; background: #000; border-radius: 8px; text-align: center;">
     <VGlitch>
@@ -101,6 +107,7 @@ import { VGlitch } from 'supreme-visual-effects'
 ```
 
 ### 自动触发故障效果
+
 <div class="demo">
   <div style="padding: 2rem; background: #000; border-radius: 8px; text-align: center;">
     <VGlitch :autoTrigger="true" :triggerInterval="2000">
@@ -122,6 +129,7 @@ import { VGlitch } from 'supreme-visual-effects'
 ```
 
 ### 自定义故障效果
+
 <div class="demo">
   <div style="padding: 2rem; background: #000; border-radius: 8px; text-align: center;">
     <VGlitch 
@@ -136,11 +144,7 @@ import { VGlitch } from 'supreme-visual-effects'
 
 ```vue
 <template>
-  <VGlitch 
-    :effects="customEffects" 
-    :intensity="0.8" 
-    :duration="300"
-  >
+  <VGlitch :effects="customEffects" :intensity="0.8" :duration="300">
     <h3>自定义故障效果</h3>
   </VGlitch>
 </template>
@@ -151,12 +155,13 @@ import { VGlitch } from 'supreme-visual-effects'
 const customEffects = [
   { type: 'shake', intensity: 1.0, duration: 150 },
   { type: 'rgb', intensity: 0.9, duration: 200 },
-  { type: 'distort', intensity: 0.7, duration: 100 }
+  { type: 'distort', intensity: 0.7, duration: 100 },
 ]
 </script>
 ```
 
 ### 鼠标悬停触发
+
 <div class="demo">
   <div style="padding: 2rem; background: #000; border-radius: 8px; text-align: center;">
     <VGlitch :enabled="true">
@@ -180,6 +185,7 @@ import { VGlitch } from 'supreme-visual-effects'
 ```
 
 ### 自定义强度
+
 <div class="demo">
   <div style="padding: 2rem; background: #000; border-radius: 8px; text-align: center;">
     <VGlitch 
@@ -194,11 +200,7 @@ import { VGlitch } from 'supreme-visual-effects'
 
 ```vue
 <template>
-  <VGlitch 
-    :shakeIntensity="15" 
-    :rgbIntensity="8" 
-    :noiseIntensity="0.3"
-  >
+  <VGlitch :shakeIntensity="15" :rgbIntensity="8" :noiseIntensity="0.3">
     <p>高强度故障效果</p>
   </VGlitch>
 </template>
@@ -212,8 +214,8 @@ import { VGlitch } from 'supreme-visual-effects'
 
 可以通过模板引用调用以下方法：
 
-| 方法名 | 参数 | 说明 |
-| --- | --- | --- |
+| 方法名        | 参数 | 说明                 |
+| ------------- | ---- | -------------------- |
 | triggerGlitch | `()` | 手动触发一次故障效果 |
 
 <div class="demo">

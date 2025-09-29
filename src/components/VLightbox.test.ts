@@ -16,7 +16,7 @@ describe('VLightbox', () => {
         isOpen: true,
       },
     })
-    
+
     expect(wrapper.find('.lightbox-overlay').exists()).toBe(true)
   })
 
@@ -27,7 +27,7 @@ describe('VLightbox', () => {
         isOpen: true,
       },
     })
-    
+
     expect(wrapper.vm.items).toEqual(mockImages)
   })
 
@@ -39,7 +39,7 @@ describe('VLightbox', () => {
         showNavigation: true,
       },
     })
-    
+
     expect(wrapper.vm.showNavigation).toBe(true)
   })
 
@@ -51,7 +51,7 @@ describe('VLightbox', () => {
         showNavigation: false,
       },
     })
-    
+
     expect(wrapper.vm.showNavigation).toBe(false)
   })
 
@@ -63,7 +63,7 @@ describe('VLightbox', () => {
         animationType: 'fade',
       },
     })
-    
+
     expect(wrapper.vm.animationType).toBe('fade')
   })
 
@@ -74,7 +74,7 @@ describe('VLightbox', () => {
         isOpen: true,
       },
     })
-    
+
     // 触发打开事件
     wrapper.vm.open()
     expect(wrapper.emitted('open')).toBeTruthy()
@@ -87,7 +87,7 @@ describe('VLightbox', () => {
         isOpen: true,
       },
     })
-    
+
     // 先打开再关闭
     wrapper.vm.open()
     wrapper.vm.close()

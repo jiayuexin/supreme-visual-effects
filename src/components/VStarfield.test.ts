@@ -14,9 +14,9 @@ describe('VStarfield', () => {
       restore: vi.fn(),
       closePath: vi.fn(),
     }))
-    
+
     global.HTMLCanvasElement.prototype.getContext = mockGetContext
-    
+
     // Mock getBoundingClientRect
     global.Element.prototype.getBoundingClientRect = vi.fn().mockReturnValue({
       x: 0,
@@ -29,11 +29,11 @@ describe('VStarfield', () => {
       right: 800,
       toJSON: vi.fn(),
     })
-    
+
     // Mock requestAnimationFrame
     global.requestAnimationFrame = vi.fn(cb => setTimeout(cb, 16))
     global.cancelAnimationFrame = vi.fn(id => clearTimeout(id))
-    
+
     // Mock window.addEventListener
     vi.spyOn(window, 'addEventListener').mockImplementation(() => {})
     vi.spyOn(window, 'removeEventListener').mockImplementation(() => {})
@@ -45,7 +45,7 @@ describe('VStarfield', () => {
 
   it('should render correctly with default props', () => {
     const wrapper = mount(VStarfield)
-    
+
     expect(wrapper.find('canvas').exists()).toBe(true)
   })
 
@@ -55,7 +55,7 @@ describe('VStarfield', () => {
         starCount: 200,
       },
     })
-    
+
     expect(wrapper.vm.starCount).toBe(200)
   })
 
@@ -65,7 +65,7 @@ describe('VStarfield', () => {
         speed: 0.8,
       },
     })
-    
+
     expect(wrapper.vm.speed).toBe(0.8)
   })
 
@@ -75,7 +75,7 @@ describe('VStarfield', () => {
         mouseInteraction: true,
       },
     })
-    
+
     expect(wrapper.vm.mouseInteraction).toBe(true)
   })
 
@@ -85,7 +85,7 @@ describe('VStarfield', () => {
         mouseInteraction: false,
       },
     })
-    
+
     expect(wrapper.vm.mouseInteraction).toBe(false)
   })
 
@@ -95,7 +95,7 @@ describe('VStarfield', () => {
         depth: 2000,
       },
     })
-    
+
     expect(wrapper.vm.depth).toBe(2000)
   })
 
@@ -105,7 +105,7 @@ describe('VStarfield', () => {
         starColor: '#ffffff',
       },
     })
-    
+
     expect(wrapper.vm.starColor).toBe('#ffffff')
   })
 })

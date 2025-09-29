@@ -5,7 +5,7 @@ import VScrollProgress from './VScrollProgress.vue'
 describe('VScrollProgress', () => {
   it('should render correctly with default props', () => {
     const wrapper = mount(VScrollProgress)
-    
+
     expect(wrapper.find('.scroll-progress-container').exists()).toBe(true)
   })
 
@@ -15,7 +15,7 @@ describe('VScrollProgress', () => {
         position: 'top',
       },
     })
-    
+
     expect(wrapper.vm.position).toBe('top')
   })
 
@@ -25,7 +25,7 @@ describe('VScrollProgress', () => {
         position: 'bottom',
       },
     })
-    
+
     expect(wrapper.vm.position).toBe('bottom')
   })
 
@@ -35,7 +35,7 @@ describe('VScrollProgress', () => {
         color: '#ff0000',
       },
     })
-    
+
     expect(wrapper.vm.color).toBe('#ff0000')
   })
 
@@ -45,7 +45,7 @@ describe('VScrollProgress', () => {
         showPercentage: true,
       },
     })
-    
+
     expect(wrapper.vm.showPercentage).toBe(true)
   })
 
@@ -55,7 +55,7 @@ describe('VScrollProgress', () => {
         showPercentage: false,
       },
     })
-    
+
     expect(wrapper.vm.showPercentage).toBe(false)
   })
 
@@ -65,7 +65,7 @@ describe('VScrollProgress', () => {
         glow: true,
       },
     })
-    
+
     expect(wrapper.vm.glow).toBe(true)
   })
 
@@ -75,7 +75,7 @@ describe('VScrollProgress', () => {
         glow: false,
       },
     })
-    
+
     expect(wrapper.vm.glow).toBe(false)
   })
 
@@ -85,7 +85,7 @@ describe('VScrollProgress', () => {
         height: '8px',
       },
     })
-    
+
     expect(wrapper.vm.height).toBe('8px')
   })
 
@@ -96,7 +96,7 @@ describe('VScrollProgress', () => {
         target: targetElement,
       },
     })
-    
+
     expect(wrapper.vm.target).toBe(targetElement)
   })
 })

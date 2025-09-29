@@ -6,10 +6,10 @@ describe('VNeonText', () => {
   it('should render correctly with default props', () => {
     const wrapper = mount(VNeonText, {
       props: {
-        text: 'Neon Text'
-      }
+        text: 'Neon Text',
+      },
     })
-    
+
     expect(wrapper.find('.neon-text').exists()).toBe(true)
     expect(wrapper.text()).toContain('Neon Text')
   })
@@ -17,10 +17,10 @@ describe('VNeonText', () => {
   it('should render with custom text', () => {
     const wrapper = mount(VNeonText, {
       props: {
-        text: 'Custom Neon Text'
-      }
+        text: 'Custom Neon Text',
+      },
     })
-    
+
     expect(wrapper.text()).toContain('Custom Neon Text')
   })
 
@@ -28,10 +28,10 @@ describe('VNeonText', () => {
     const wrapper = mount(VNeonText, {
       props: {
         text: 'Animated Text',
-        animation: true
-      }
+        animation: true,
+      },
     })
-    
+
     expect(wrapper.vm.animation).toBe(true)
   })
 
@@ -40,10 +40,10 @@ describe('VNeonText', () => {
       props: {
         text: 'Colored Text',
         color: '#ff0000',
-        glowColor: '#0000ff'
-      }
+        glowColor: '#0000ff',
+      },
     })
-    
+
     expect(wrapper.vm.color).toBe('#ff0000')
     expect(wrapper.vm.glowColor).toBe('#0000ff')
   })
@@ -52,10 +52,10 @@ describe('VNeonText', () => {
     const wrapper = mount(VNeonText, {
       props: {
         text: 'Pulsing Text',
-        animationType: 'pulse'
-      }
+        animationType: 'pulse',
+      },
     })
-    
+
     expect(wrapper.vm.animationType).toBe('pulse')
   })
 
@@ -63,10 +63,10 @@ describe('VNeonText', () => {
     const wrapper = mount(VNeonText, {
       props: {
         text: 'Intense Text',
-        glowIntensity: 20
-      }
+        glowIntensity: 20,
+      },
     })
-    
+
     expect(wrapper.vm.glowIntensity).toBe(20)
   })
 })

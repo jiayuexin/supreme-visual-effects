@@ -5,51 +5,66 @@ Supreme Visual Effects 提供了强大的主题系统，支持多种预设主题
 ## 预设主题
 
 ### 1. Light 主题 (默认)
+
 ```ts
 import { createApp } from 'vue'
 import App from './App.vue'
 import { createSupremeEffects } from 'supreme-visual-effects'
 
 createApp(App)
-  .use(createSupremeEffects({
-    theme: 'light'
-  }))
+  .use(
+    createSupremeEffects({
+      theme: 'light',
+    })
+  )
   .mount('#app')
 ```
 
 ### 2. Dark 主题
+
 ```ts
 createApp(App)
-  .use(createSupremeEffects({
-    theme: 'dark'
-  }))
+  .use(
+    createSupremeEffects({
+      theme: 'dark',
+    })
+  )
   .mount('#app')
 ```
 
 ### 3. Auto 主题 (自动跟随系统)
+
 ```ts
 createApp(App)
-  .use(createSupremeEffects({
-    theme: 'auto' // 默认值
-  }))
+  .use(
+    createSupremeEffects({
+      theme: 'auto', // 默认值
+    })
+  )
   .mount('#app')
 ```
 
 ### 4. High Contrast 主题 (高对比度)
+
 ```ts
 createApp(App)
-  .use(createSupremeEffects({
-    theme: 'high-contrast'
-  }))
+  .use(
+    createSupremeEffects({
+      theme: 'high-contrast',
+    })
+  )
   .mount('#app')
 ```
 
 ### 5. Purple 主题 (紫色主题)
+
 ```ts
 createApp(App)
-  .use(createSupremeEffects({
-    theme: 'purple'
-  }))
+  .use(
+    createSupremeEffects({
+      theme: 'purple',
+    })
+  )
   .mount('#app')
 ```
 
@@ -67,17 +82,17 @@ createApp(App)
   --sve-success-color: #10b981;
   --sve-warning-color: #f59e0b;
   --sve-error-color: #ef4444;
-  
+
   /* 边框和阴影 */
   --sve-border-color: #e2e8f0;
   --sve-border-radius: 8px;
   --sve-box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --sve-box-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  
+
   /* 动画 */
   --sve-transition-duration: 0.2s;
   --sve-transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
-  
+
   /* 组件特定变量 */
   --sve-carousel-bg: #f8fafc;
   --sve-divider-color: #e2e8f0;
@@ -97,7 +112,7 @@ createApp(App)
     <button @click="switchTheme('dark')">Dark Theme</button>
     <button @click="switchTheme('high-contrast')">High Contrast</button>
     <button @click="switchTheme('purple')">Purple Theme</button>
-    
+
     <!-- 你的组件 -->
     <VCarousel3D :items="items" />
   </div>
@@ -106,7 +121,7 @@ createApp(App)
 <script setup>
 import { VCarousel3D } from 'supreme-visual-effects'
 
-const switchTheme = (theme) => {
+const switchTheme = theme => {
   document.documentElement.setAttribute('data-sve-theme', theme)
 }
 
@@ -131,17 +146,17 @@ const items = [
   --sve-success-color: #10b981;
   --sve-warning-color: #f59e0b;
   --sve-error-color: #ef4444;
-  
+
   /* 边框和阴影 */
   --sve-border-color: #bae6fd;
   --sve-border-radius: 10px;
   --sve-box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.1), 0 2px 4px -1px rgba(14, 165, 233, 0.06);
   --sve-box-shadow-lg: 0 10px 15px -3px rgba(14, 165, 233, 0.1), 0 4px 6px -2px rgba(14, 165, 233, 0.06);
-  
+
   /* 动画 */
   --sve-transition-duration: 0.25s;
   --sve-transition-easing: cubic-bezier(0.34, 1.56, 0.64, 1);
-  
+
   /* 组件特定变量 */
   --sve-carousel-bg: #e0f2fe;
   --sve-divider-color: #7dd3fc;
@@ -154,46 +169,52 @@ const items = [
 
 ```ts
 createApp(App)
-  .use(createSupremeEffects({
-    theme: 'custom'
-  }))
+  .use(
+    createSupremeEffects({
+      theme: 'custom',
+    })
+  )
   .mount('#app')
 ```
 
 ## 主题变量参考
 
 ### 基础颜色变量
-| 变量名 | 用途 |
-|--------|------|
-| `--sve-background` | 背景颜色 |
-| `--sve-text-color` | 文本颜色 |
-| `--sve-primary-color` | 主要颜色 |
-| `--sve-secondary-color` | 次要颜色 |
-| `--sve-success-color` | 成功状态颜色 |
-| `--sve-warning-color` | 警告状态颜色 |
-| `--sve-error-color` | 错误状态颜色 |
+
+| 变量名                  | 用途         |
+| ----------------------- | ------------ |
+| `--sve-background`      | 背景颜色     |
+| `--sve-text-color`      | 文本颜色     |
+| `--sve-primary-color`   | 主要颜色     |
+| `--sve-secondary-color` | 次要颜色     |
+| `--sve-success-color`   | 成功状态颜色 |
+| `--sve-warning-color`   | 警告状态颜色 |
+| `--sve-error-color`     | 错误状态颜色 |
 
 ### 布局变量
-| 变量名 | 用途 |
-|--------|------|
-| `--sve-border-color` | 边框颜色 |
+
+| 变量名                | 用途     |
+| --------------------- | -------- |
+| `--sve-border-color`  | 边框颜色 |
 | `--sve-border-radius` | 圆角大小 |
-| `--sve-box-shadow` | 基础阴影 |
-| `--sve-box-shadow-lg` | 大阴影 |
+| `--sve-box-shadow`    | 基础阴影 |
+| `--sve-box-shadow-lg` | 大阴影   |
 
 ### 动画变量
-| 变量名 | 用途 |
-|--------|------|
-| `--sve-transition-duration` | 过渡动画时长 |
-| `--sve-transition-easing` | 过渡动画缓动函数 |
+
+| 变量名                      | 用途             |
+| --------------------------- | ---------------- |
+| `--sve-transition-duration` | 过渡动画时长     |
+| `--sve-transition-easing`   | 过渡动画缓动函数 |
 
 ### 组件特定变量
-| 变量名 | 用途 |
-|--------|------|
-| `--sve-carousel-bg` | 轮播背景色 |
-| `--sve-divider-color` | 分割线颜色 |
-| `--sve-particle-color` | 粒子颜色 |
-| `--sve-confetti-bg` | 彩纸背景色 |
+
+| 变量名                 | 用途       |
+| ---------------------- | ---------- |
+| `--sve-carousel-bg`    | 轮播背景色 |
+| `--sve-divider-color`  | 分割线颜色 |
+| `--sve-particle-color` | 粒子颜色   |
+| `--sve-confetti-bg`    | 彩纸背景色 |
 
 ## 响应式主题
 

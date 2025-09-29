@@ -22,45 +22,46 @@ import { VTypingText } from 'supreme-visual-effects'
 
 ## Props
 
-| 属性名 | 类型 | 默认值 | 说明 |
-| --- | --- | --- | --- |
-| text | `string \| string[]` | `''` | 显示的文字内容（字符串或字符串数组） |
-| speed | `number` | `100` | 打字速度(ms) |
-| delay | `number` | `0` | 开始延迟时间(ms) |
-| pause | `number` | `2000` | 暂停时间(ms) |
-| loop | `boolean` | `false` | 是否循环播放 |
-| cursor | `boolean` | `true` | 是否显示光标 |
-| cursorChar | `string` | `'|'` | 光标字符 |
-| cursorSpeed | `number` | `500` | 光标闪烁速度(ms) |
-| eraseSpeed | `number` | `50` | 擦除速度(ms) |
-| eraseDelay | `number` | `1000` | 擦除延迟时间(ms) |
-| autoStart | `boolean` | `true` | 是否自动开始 |
-| color | `string` | `'inherit'` | 文字颜色 |
-| fontSize | `string` | `'inherit'` | 字体大小 |
-| fontFamily | `string` | `'inherit'` | 字体族 |
+| 属性名      | 类型                 | 默认值      | 说明                                 |
+| ----------- | -------------------- | ----------- | ------------------------------------ | -------- |
+| text        | `string \| string[]` | `''`        | 显示的文字内容（字符串或字符串数组） |
+| speed       | `number`             | `100`       | 打字速度(ms)                         |
+| delay       | `number`             | `0`         | 开始延迟时间(ms)                     |
+| pause       | `number`             | `2000`      | 暂停时间(ms)                         |
+| loop        | `boolean`            | `false`     | 是否循环播放                         |
+| cursor      | `boolean`            | `true`      | 是否显示光标                         |
+| cursorChar  | `string`             | `'          | '`                                   | 光标字符 |
+| cursorSpeed | `number`             | `500`       | 光标闪烁速度(ms)                     |
+| eraseSpeed  | `number`             | `50`        | 擦除速度(ms)                         |
+| eraseDelay  | `number`             | `1000`      | 擦除延迟时间(ms)                     |
+| autoStart   | `boolean`            | `true`      | 是否自动开始                         |
+| color       | `string`             | `'inherit'` | 文字颜色                             |
+| fontSize    | `string`             | `'inherit'` | 字体大小                             |
+| fontFamily  | `string`             | `'inherit'` | 字体族                               |
 
 ## Events
 
-| 事件名 | 参数 | 说明 |
-| --- | --- | --- |
-| typing-start | `()` | 开始打字时触发 |
+| 事件名          | 参数 | 说明           |
+| --------------- | ---- | -------------- |
+| typing-start    | `()` | 开始打字时触发 |
 | typing-complete | `()` | 完成打字时触发 |
-| typing-pause | `()` | 暂停打字时触发 |
-| typing-resume | `()` | 恢复打字时触发 |
+| typing-pause    | `()` | 暂停打字时触发 |
+| typing-resume   | `()` | 恢复打字时触发 |
 
 ## Expose Methods
 
-| 方法名 | 参数 | 说明 |
-| --- | --- | --- |
-| start | `()` | 开始打字 |
-| pause | `()` | 暂停打字 |
+| 方法名 | 参数 | 说明     |
+| ------ | ---- | -------- |
+| start  | `()` | 开始打字 |
+| pause  | `()` | 暂停打字 |
 | resume | `()` | 恢复打字 |
-| stop | `()` | 停止打字 |
-| reset | `()` | 重置打字 |
+| stop   | `()` | 停止打字 |
+| reset  | `()` | 重置打字 |
 
 ## 示例
 
 ### 多行文本
+
 <div class="demo">
   <div style="display: flex; justify-content: center; padding: 2rem;">
     <VTypingText 
@@ -72,10 +73,7 @@ import { VTypingText } from 'supreme-visual-effects'
 
 ```vue
 <template>
-  <VTypingText 
-    :text="['第一行文字', '第二行文字', '第三行文字']"
-    :loop="true"
-  />
+  <VTypingText :text="['第一行文字', '第二行文字', '第三行文字']" :loop="true" />
 </template>
 
 <script setup>
@@ -84,6 +82,7 @@ import { VTypingText } from 'supreme-visual-effects'
 ```
 
 ### 调整速度
+
 <div class="demo">
   <div style="display: flex; justify-content: center; gap: 1rem; padding: 2rem; flex-wrap: wrap;">
     <VTypingText 
@@ -99,15 +98,9 @@ import { VTypingText } from 'supreme-visual-effects'
 
 ```vue
 <template>
-  <VTypingText 
-    text="快速打字"
-    :speed="50"
-  />
-  
-  <VTypingText 
-    text="慢速打字"
-    :speed="200"
-  />
+  <VTypingText text="快速打字" :speed="50" />
+
+  <VTypingText text="慢速打字" :speed="200" />
 </template>
 
 <script setup>
@@ -116,6 +109,7 @@ import { VTypingText } from 'supreme-visual-effects'
 ```
 
 ### 自定义光标
+
 <div class="demo">
   <div style="display: flex; justify-content: center; gap: 1rem; padding: 2rem; flex-wrap: wrap;">
     <VTypingText 
@@ -131,15 +125,9 @@ import { VTypingText } from 'supreme-visual-effects'
 
 ```vue
 <template>
-  <VTypingText 
-    text="下划线光标"
-    cursor-char="_"
-  />
-  
-  <VTypingText 
-    text="方块光标"
-    cursor-char="█"
-  />
+  <VTypingText text="下划线光标" cursor-char="_" />
+
+  <VTypingText text="方块光标" cursor-char="█" />
 </template>
 
 <script setup>
@@ -148,6 +136,7 @@ import { VTypingText } from 'supreme-visual-effects'
 ```
 
 ### 循环播放
+
 <div class="demo">
   <div style="display: flex; justify-content: center; padding: 2rem;">
     <VTypingText 
@@ -160,11 +149,7 @@ import { VTypingText } from 'supreme-visual-effects'
 
 ```vue
 <template>
-  <VTypingText 
-    :text="['循环播放', '第二个文本', '第三个文本']"
-    :loop="true"
-    :pause="1000"
-  />
+  <VTypingText :text="['循环播放', '第二个文本', '第三个文本']" :loop="true" :pause="1000" />
 </template>
 
 <script setup>
@@ -173,6 +158,7 @@ import { VTypingText } from 'supreme-visual-effects'
 ```
 
 ### 控制播放
+
 <div class="demo">
   <div style="display: flex; justify-content: center; gap: 1rem; padding: 2rem; flex-wrap: wrap; flex-direction: column; align-items: center;">
     <VTypingText 
@@ -199,12 +185,8 @@ import { VTypingText } from 'supreme-visual-effects'
 
 ```vue
 <template>
-  <VTypingText 
-    ref="typingTextRef"
-    text="可控制打字"
-    :auto-start="false"
-  />
-  
+  <VTypingText ref="typingTextRef" text="可控制打字" :auto-start="false" />
+
   <div style="display: flex; gap: 1rem;">
     <button @click="startTyping">开始</button>
     <button @click="pauseTyping">暂停</button>
@@ -238,6 +220,7 @@ const stopTyping = () => {
 ```
 
 ### 自定义样式
+
 <div class="demo">
   <div style="display: flex; justify-content: center; padding: 2rem;">
     <VTypingText 
@@ -251,12 +234,7 @@ const stopTyping = () => {
 
 ```vue
 <template>
-  <VTypingText 
-    text="自定义样式"
-    color="#ff6b6b"
-    font-size="2rem"
-    font-family="'Courier New', monospace"
-  />
+  <VTypingText text="自定义样式" color="#ff6b6b" font-size="2rem" font-family="'Courier New', monospace" />
 </template>
 
 <script setup>
@@ -265,6 +243,7 @@ import { VTypingText } from 'supreme-visual-effects'
 ```
 
 ### 无光标效果
+
 <div class="demo">
   <div style="display: flex; justify-content: center; padding: 2rem;">
     <VTypingText 
@@ -276,10 +255,7 @@ import { VTypingText } from 'supreme-visual-effects'
 
 ```vue
 <template>
-  <VTypingText 
-    text="无光标"
-    :cursor="false"
-  />
+  <VTypingText text="无光标" :cursor="false" />
 </template>
 
 <script setup>
@@ -288,6 +264,7 @@ import { VTypingText } from 'supreme-visual-effects'
 ```
 
 ### 延迟开始
+
 <div class="demo">
   <div style="display: flex; justify-content: center; padding: 2rem;">
     <VTypingText 
@@ -299,10 +276,7 @@ import { VTypingText } from 'supreme-visual-effects'
 
 ```vue
 <template>
-  <VTypingText 
-    text="延迟开始"
-    :delay="2000"
-  />
+  <VTypingText text="延迟开始" :delay="2000" />
 </template>
 
 <script setup>

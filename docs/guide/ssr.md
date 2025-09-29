@@ -13,10 +13,12 @@ import { createSupremeEffects } from 'supreme-visual-effects'
 const app = createApp(App)
 
 // 启用SSR模式
-app.use(createSupremeEffects({
-  ssr: true,
-  theme: 'light' // SSR模式下主题将在客户端激活时设置
-}))
+app.use(
+  createSupremeEffects({
+    ssr: true,
+    theme: 'light', // SSR模式下主题将在客户端激活时设置
+  })
+)
 ```
 
 ## Nuxt.js 集成
@@ -29,9 +31,11 @@ import { defineNuxtPlugin } from '#app'
 import { createSupremeEffects } from 'supreme-visual-effects'
 
 export default defineNuxtPlugin(nuxtApp => {
-  nuxtApp.vueApp.use(createSupremeEffects({
-    ssr: true
-  }))
+  nuxtApp.vueApp.use(
+    createSupremeEffects({
+      ssr: true,
+    })
+  )
 })
 ```
 

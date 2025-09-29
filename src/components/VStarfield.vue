@@ -125,7 +125,7 @@ const updateStars = () => {
     star.twinkle += props.twinkleSpeed * 0.01
     star.brightness = 0.5 + 0.5 * Math.sin(star.twinkle)
   })
-  
+
   if (props.autoRotation) {
     rotation += 0.01
   }
@@ -246,7 +246,7 @@ defineExpose({
       // Remove stars
       stars.splice(count)
     }
-  }
+  },
 })
 
 onMounted(() => {

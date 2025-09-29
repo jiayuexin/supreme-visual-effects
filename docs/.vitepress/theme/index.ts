@@ -8,5 +8,5 @@ export default {
   enhanceApp({ app }) {
     DefaultTheme.enhanceApp({ app, router: arguments[0].router, siteData: arguments[0].siteData })
     app.use(SupremeVisualEffects)
-  }
+  },
 } satisfies Theme

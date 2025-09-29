@@ -15,7 +15,7 @@ describe('VCarousel3D', () => {
         items: mockItems,
       },
     })
-    
+
     expect(wrapper.find('.carousel-3d-container').exists()).toBe(true)
   })
 
@@ -25,7 +25,7 @@ describe('VCarousel3D', () => {
         items: mockItems,
       },
     })
-    
+
     expect(wrapper.vm.items).toEqual(mockItems)
   })
 
@@ -36,7 +36,7 @@ describe('VCarousel3D', () => {
         autoPlay: true,
       },
     })
-    
+
     expect(wrapper.vm.autoPlay).toBe(true)
   })
 
@@ -47,7 +47,7 @@ describe('VCarousel3D', () => {
         autoPlay: false,
       },
     })
-    
+
     expect(wrapper.vm.autoPlay).toBe(false)
   })
 
@@ -58,7 +58,7 @@ describe('VCarousel3D', () => {
         showArrows: true,
       },
     })
-    
+
     expect(wrapper.vm.showArrows).toBe(true)
   })
 
@@ -69,7 +69,7 @@ describe('VCarousel3D', () => {
         showIndicators: true,
       },
     })
-    
+
     expect(wrapper.vm.showIndicators).toBe(true)
   })
 
@@ -80,7 +80,7 @@ describe('VCarousel3D', () => {
         rotationY: 90,
       },
     })
-    
+
     expect(wrapper.vm.rotationY).toBe(90)
   })
 
@@ -90,7 +90,7 @@ describe('VCarousel3D', () => {
         items: mockItems,
       },
     })
-    
+
     // 直接调用组件方法
     wrapper.vm.goToNext()
     // 等待下一个tick

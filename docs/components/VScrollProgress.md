@@ -26,48 +26,49 @@ import { VScrollProgress } from 'supreme-visual-effects'
 
 ## Props
 
-| 属性名 | 类型 | 默认值 | 说明 |
-| --- | --- | --- | --- |
-| position | `'top' \| 'bottom' \| 'left' \| 'right'` | `'top'` | 进度条位置 |
-| color | `string` | `'#4f46e5'` | 进度条颜色 |
-| height | `string` | `'4px'` | 进度条高度 |
-| width | `string` | `'100%'` | 进度条宽度 |
-| showPercentage | `boolean` | `false` | 是否显示百分比 |
-| textColor | `string` | `'#333'` | 文字颜色 |
-| textSize | `string` | `'12px'` | 文字大小 |
-| animation | `boolean` | `true` | 是否启用动画 |
-| animationDuration | `number` | `200` | 动画持续时间(ms) |
-| gradient | `boolean` | `false` | 是否启用渐变 |
-| gradientColors | `string[]` | `['#667eea', '#764ba2']` | 渐变颜色 |
-| glow | `boolean` | `false` | 是否启用发光效果 |
-| glowIntensity | `number` | `10` | 发光强度 |
-| target | `string` | `''` | 目标元素选择器 |
-| offset | `number` | `0` | 滚动偏移量 |
+| 属性名            | 类型                                     | 默认值                   | 说明             |
+| ----------------- | ---------------------------------------- | ------------------------ | ---------------- |
+| position          | `'top' \| 'bottom' \| 'left' \| 'right'` | `'top'`                  | 进度条位置       |
+| color             | `string`                                 | `'#4f46e5'`              | 进度条颜色       |
+| height            | `string`                                 | `'4px'`                  | 进度条高度       |
+| width             | `string`                                 | `'100%'`                 | 进度条宽度       |
+| showPercentage    | `boolean`                                | `false`                  | 是否显示百分比   |
+| textColor         | `string`                                 | `'#333'`                 | 文字颜色         |
+| textSize          | `string`                                 | `'12px'`                 | 文字大小         |
+| animation         | `boolean`                                | `true`                   | 是否启用动画     |
+| animationDuration | `number`                                 | `200`                    | 动画持续时间(ms) |
+| gradient          | `boolean`                                | `false`                  | 是否启用渐变     |
+| gradientColors    | `string[]`                               | `['#667eea', '#764ba2']` | 渐变颜色         |
+| glow              | `boolean`                                | `false`                  | 是否启用发光效果 |
+| glowIntensity     | `number`                                 | `10`                     | 发光强度         |
+| target            | `string`                                 | `''`                     | 目标元素选择器   |
+| offset            | `number`                                 | `0`                      | 滚动偏移量       |
 
 ## Events
 
-| 事件名 | 参数 | 说明 |
-| --- | --- | --- |
+| 事件名          | 参数                 | 说明           |
+| --------------- | -------------------- | -------------- |
 | progress-change | `(progress: number)` | 进度变化时触发 |
-| scroll-start | `()` | 开始滚动时触发 |
-| scroll-end | `()` | 停止滚动时触发 |
+| scroll-start    | `()`                 | 开始滚动时触发 |
+| scroll-end      | `()`                 | 停止滚动时触发 |
 
 ## Slots
 
-| 插槽名 | 参数 | 说明 |
-| --- | --- | --- |
+| 插槽名  | 参数                                       | 说明           |
+| ------- | ------------------------------------------ | -------------- |
 | default | `{ progress: number, percentage: number }` | 自定义内容插槽 |
 
 ## Expose Methods
 
-| 方法名 | 参数 | 说明 |
-| --- | --- | --- |
-| updateProgress | `()` | 更新进度 |
-| getProgress | `()` | 获取当前进度 |
+| 方法名         | 参数 | 说明         |
+| -------------- | ---- | ------------ |
+| updateProgress | `()` | 更新进度     |
+| getProgress    | `()` | 获取当前进度 |
 
 ## 示例
 
 ### 不同位置
+
 <div class="demo">
   <div style="height: 200px; overflow: auto; border: 1px solid #ddd; border-radius: 8px; padding: 1rem; position: relative;">
     <p>查看不同位置的进度条</p>
@@ -93,6 +94,7 @@ import { VScrollProgress } from 'supreme-visual-effects'
 ```
 
 ### 自定义颜色
+
 <div class="demo">
   <div style="height: 200px; overflow: auto; border: 1px solid #ddd; border-radius: 8px; padding: 1rem;">
     <p>查看不同颜色的进度条</p>
@@ -116,6 +118,7 @@ import { VScrollProgress } from 'supreme-visual-effects'
 ```
 
 ### 显示百分比
+
 <div class="demo">
   <div style="height: 200px; overflow: auto; border: 1px solid #ddd; border-radius: 8px; padding: 1rem;">
     <p>查看带百分比的进度条</p>
@@ -140,6 +143,7 @@ import { VScrollProgress } from 'supreme-visual-effects'
 ```
 
 ### 渐变效果
+
 <div class="demo">
   <div style="height: 200px; overflow: auto; border: 1px solid #ddd; border-radius: 8px; padding: 1rem;">
     <p>查看渐变进度条</p>
@@ -157,10 +161,7 @@ import { VScrollProgress } from 'supreme-visual-effects'
 
 ```vue
 <template>
-  <VScrollProgress 
-    :gradient="true" 
-    :gradient-colors="['#ff6b6b', '#4ecdc4', '#45b7d1']"
-  />
+  <VScrollProgress :gradient="true" :gradient-colors="['#ff6b6b', '#4ecdc4', '#45b7d1']" />
 </template>
 
 <script setup>
@@ -169,6 +170,7 @@ import { VScrollProgress } from 'supreme-visual-effects'
 ```
 
 ### 发光效果
+
 <div class="demo">
   <div style="height: 200px; overflow: auto; border: 1px solid #ddd; border-radius: 8px; padding: 1rem;">
     <p>查看发光进度条</p>
@@ -187,11 +189,7 @@ import { VScrollProgress } from 'supreme-visual-effects'
 
 ```vue
 <template>
-  <VScrollProgress 
-    :glow="true" 
-    :glow-intensity="20"
-    color="#f093fb"
-  />
+  <VScrollProgress :glow="true" :glow-intensity="20" color="#f093fb" />
 </template>
 
 <script setup>
@@ -200,6 +198,7 @@ import { VScrollProgress } from 'supreme-visual-effects'
 ```
 
 ### 自定义内容
+
 <div class="demo">
   <div style="height: 200px; overflow: auto; border: 1px solid #ddd; border-radius: 8px; padding: 1rem;">
     <p>查看自定义内容进度条</p>
@@ -231,6 +230,7 @@ import { VScrollProgress } from 'supreme-visual-effects'
 ```
 
 ### 不同尺寸
+
 <div class="demo">
   <div style="height: 200px; overflow: auto; border: 1px solid #ddd; border-radius: 8px; padding: 1rem;">
     <p>查看不同尺寸的进度条</p>
@@ -254,6 +254,7 @@ import { VScrollProgress } from 'supreme-visual-effects'
 ```
 
 ### 垂直进度条
+
 <div class="demo" style="display: flex;">
   <div style="flex: 1; height: 300px; overflow: auto; border: 1px solid #ddd; border-radius: 8px; padding: 1rem; margin-right: 1rem;">
     <p>查看左侧垂直进度条</p>

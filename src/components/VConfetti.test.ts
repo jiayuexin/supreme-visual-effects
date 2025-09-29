@@ -19,13 +19,13 @@ describe('VConfetti', () => {
       clearRect: vi.fn(),
       arc: vi.fn(),
     }))
-    
+
     global.HTMLCanvasElement.prototype.getContext = mockGetContext
-    
+
     // Mock requestAnimationFrame
     global.requestAnimationFrame = vi.fn(cb => setTimeout(cb, 16))
     global.cancelAnimationFrame = vi.fn(id => clearTimeout(id))
-    
+
     // Mock window methods
     global.window.innerWidth = 1024
     global.window.innerHeight = 768
@@ -37,7 +37,7 @@ describe('VConfetti', () => {
 
   it('should render correctly with default props', () => {
     const wrapper = mount(VConfetti)
-    
+
     expect(wrapper.find('.confetti-container').exists()).toBe(true)
   })
 
@@ -47,7 +47,7 @@ describe('VConfetti', () => {
         enabled: true,
       },
     })
-    
+
     expect(wrapper.vm.enabled).toBe(true)
   })
 
@@ -57,7 +57,7 @@ describe('VConfetti', () => {
         enabled: false,
       },
     })
-    
+
     expect(wrapper.vm.enabled).toBe(false)
   })
 
@@ -67,7 +67,7 @@ describe('VConfetti', () => {
         particleCount: 100,
       },
     })
-    
+
     expect(wrapper.vm.particleCount).toBe(100)
   })
 
@@ -78,7 +78,7 @@ describe('VConfetti', () => {
         colors,
       },
     })
-    
+
     expect(wrapper.vm.colors).toEqual(colors)
   })
 
@@ -89,7 +89,7 @@ describe('VConfetti', () => {
         shapes,
       },
     })
-    
+
     expect(wrapper.vm.shapes).toEqual(shapes)
   })
 
@@ -99,7 +99,7 @@ describe('VConfetti', () => {
         gravity: 0.5,
       },
     })
-    
+
     expect(wrapper.vm.gravity).toBe(0.5)
   })
 
@@ -109,32 +109,32 @@ describe('VConfetti', () => {
         wind: 0.5,
       },
     })
-    
+
     expect(wrapper.vm.wind).toBe(0.5)
   })
 
   it('should call burst method', () => {
     const wrapper = mount(VConfetti)
-    
+
     // Test that the method exists and can be called
     expect(typeof wrapper.vm.burst).toBe('function')
-    
+
     // Mock the burst method to avoid canvas errors
     const burstSpy = vi.spyOn(wrapper.vm, 'burst').mockImplementation(() => {})
-    
+
     wrapper.vm.burst()
     expect(burstSpy).toHaveBeenCalled()
   })
 
   it('should call stop method', () => {
     const wrapper = mount(VConfetti)
-    
+
     // Test that the method exists and can be called
     expect(typeof wrapper.vm.stop).toBe('function')
-    
+
     // Mock the stop method
     const stopSpy = vi.spyOn(wrapper.vm, 'stop').mockImplementation(() => {})
-    
+
     wrapper.vm.stop()
     expect(stopSpy).toHaveBeenCalled()
   })

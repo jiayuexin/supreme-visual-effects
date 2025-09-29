@@ -16,7 +16,7 @@ global.ResizeObserver = vi.fn().mockImplementation(() => ({
 }))
 
 // Mock requestAnimationFrame
-global.requestAnimationFrame = vi.fn((cb) => {
+global.requestAnimationFrame = vi.fn(cb => {
   // 确保cb是函数
   if (typeof cb === 'function') {
     return setTimeout(() => cb(performance.now()), 16)
@@ -24,7 +24,7 @@ global.requestAnimationFrame = vi.fn((cb) => {
   return 0
 })
 
-global.cancelAnimationFrame = vi.fn((id) => {
+global.cancelAnimationFrame = vi.fn(id => {
   if (id) {
     clearTimeout(id)
   }

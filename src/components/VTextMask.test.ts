@@ -9,7 +9,7 @@ describe('VTextMask', () => {
         text: 'Hello World',
       },
     })
-    
+
     expect(wrapper.find('svg').exists()).toBe(true)
     expect(wrapper.text()).toContain('Hello World')
   })
@@ -20,7 +20,7 @@ describe('VTextMask', () => {
         text: 'Custom Text',
       },
     })
-    
+
     expect(wrapper.text()).toContain('Custom Text')
   })
 
@@ -32,7 +32,7 @@ describe('VTextMask', () => {
         path: customPath,
       },
     })
-    
+
     expect(wrapper.find('path').attributes('d')).toBe(customPath)
   })
 
@@ -43,7 +43,7 @@ describe('VTextMask', () => {
         fontSize: '24px',
       },
     })
-    
+
     expect(wrapper.vm.fontSize).toBe('24px')
   })
 
@@ -55,7 +55,7 @@ describe('VTextMask', () => {
         duration: 2000,
       },
     })
-    
+
     expect(wrapper.vm.animation).toBe(true)
     expect(wrapper.vm.duration).toBe(2000)
   })

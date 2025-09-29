@@ -15,7 +15,7 @@ describe('VDivider', () => {
 
   it('should render correctly with default props', () => {
     const wrapper = mount(VDivider)
-    
+
     // 修复选择器错误，应该是.container而不是.divider
     expect(wrapper.find('.divider-container').exists()).toBe(true)
   })
@@ -26,7 +26,7 @@ describe('VDivider', () => {
         type: 'wave',
       },
     })
-    
+
     expect(wrapper.vm.type).toBe('wave')
   })
 
@@ -36,7 +36,7 @@ describe('VDivider', () => {
         type: 'dots',
       },
     })
-    
+
     expect(wrapper.vm.type).toBe('dots')
   })
 
@@ -46,7 +46,7 @@ describe('VDivider', () => {
         type: 'gradient',
       },
     })
-    
+
     expect(wrapper.vm.type).toBe('gradient')
   })
 
@@ -56,7 +56,7 @@ describe('VDivider', () => {
         animation: true,
       },
     })
-    
+
     expect(wrapper.vm.animation).toBe(true)
   })
 
@@ -66,7 +66,7 @@ describe('VDivider', () => {
         animation: false,
       },
     })
-    
+
     expect(wrapper.vm.animation).toBe(false)
   })
 
@@ -76,7 +76,7 @@ describe('VDivider', () => {
         color: '#ff0000',
       },
     })
-    
+
     expect(wrapper.vm.color).toBe('#ff0000')
   })
 
@@ -86,7 +86,7 @@ describe('VDivider', () => {
         height: '10px',
       },
     })
-    
+
     expect(wrapper.vm.height).toBe('10px')
   })
 
@@ -97,7 +97,7 @@ describe('VDivider', () => {
         dotCount: 10,
       },
     })
-    
+
     expect(wrapper.vm.dotCount).toBe(10)
   })
 
@@ -109,7 +109,7 @@ describe('VDivider', () => {
         gradientColors,
       },
     })
-    
+
     expect(wrapper.vm.gradientColors).toEqual(gradientColors)
   })
 })

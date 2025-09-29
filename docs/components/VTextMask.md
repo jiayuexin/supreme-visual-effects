@@ -22,34 +22,35 @@ import { VTextMask } from 'supreme-visual-effects'
 
 ## Props
 
-| 属性名 | 类型 | 默认值 | 说明 |
-| --- | --- | --- | --- |
-| text | `string` | `''` | 显示的文字内容 |
-| path | `string \| Array` | `'M 0,50 Q 50,0 100,50 T 200,50'` | 遮罩路径 |
-| animation | `boolean` | `true` | 是否启用动画 |
-| duration | `number` | `2000` | 动画持续时间(ms) |
-| delay | `number` | `0` | 动画延迟时间(ms) |
-| strokeWidth | `number` | `4` | 路径描边宽度 |
-| strokeColor | `string` | `'#ffffff'` | 路径描边颜色 |
-| fillColor | `string` | `'transparent'` | 路径填充颜色 |
-| backgroundColor | `string` | `'#000000'` | 背景颜色 |
-| textColor | `string` | `'#ffffff'` | 文字颜色 |
-| fontSize | `string` | `'24px'` | 字体大小 |
-| fontFamily | `string` | `'Arial, sans-serif'` | 字体族 |
-| width | `number` | `400` | 容器宽度 |
-| height | `number` | `100` | 容器高度 |
+| 属性名          | 类型              | 默认值                            | 说明             |
+| --------------- | ----------------- | --------------------------------- | ---------------- |
+| text            | `string`          | `''`                              | 显示的文字内容   |
+| path            | `string \| Array` | `'M 0,50 Q 50,0 100,50 T 200,50'` | 遮罩路径         |
+| animation       | `boolean`         | `true`                            | 是否启用动画     |
+| duration        | `number`          | `2000`                            | 动画持续时间(ms) |
+| delay           | `number`          | `0`                               | 动画延迟时间(ms) |
+| strokeWidth     | `number`          | `4`                               | 路径描边宽度     |
+| strokeColor     | `string`          | `'#ffffff'`                       | 路径描边颜色     |
+| fillColor       | `string`          | `'transparent'`                   | 路径填充颜色     |
+| backgroundColor | `string`          | `'#000000'`                       | 背景颜色         |
+| textColor       | `string`          | `'#ffffff'`                       | 文字颜色         |
+| fontSize        | `string`          | `'24px'`                          | 字体大小         |
+| fontFamily      | `string`          | `'Arial, sans-serif'`             | 字体族           |
+| width           | `number`          | `400`                             | 容器宽度         |
+| height          | `number`          | `100`                             | 容器高度         |
 
 ## Expose Methods
 
-| 方法名 | 参数 | 说明 |
-| --- | --- | --- |
-| start | `()` | 开始动画 |
-| stop | `()` | 停止动画 |
-| reset | `()` | 重置动画 |
+| 方法名 | 参数 | 说明     |
+| ------ | ---- | -------- |
+| start  | `()` | 开始动画 |
+| stop   | `()` | 停止动画 |
+| reset  | `()` | 重置动画 |
 
 ## 示例
 
 ### 自定义路径
+
 <div class="demo">
   <div style="display: flex; justify-content: center; gap: 1rem; padding: 2rem; flex-wrap: wrap;">
     <VTextMask 
@@ -67,13 +68,10 @@ import { VTextMask } from 'supreme-visual-effects'
 
 ```vue
 <template>
-  <VTextMask 
-    text="波浪路径" 
-    path="M 0,50 Q 50,0 100,50 T 200,50 T 300,50 T 400,50"
-  />
-  
-  <VTextMask 
-    text="圆形路径" 
+  <VTextMask text="波浪路径" path="M 0,50 Q 50,0 100,50 T 200,50 T 300,50 T 400,50" />
+
+  <VTextMask
+    text="圆形路径"
     path="M 200,100 m -75,0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0"
     :width="300"
     :height="200"
@@ -86,6 +84,7 @@ import { VTextMask } from 'supreme-visual-effects'
 ```
 
 ### 调整动画速度
+
 <div class="demo">
   <div style="display: flex; justify-content: center; gap: 1rem; padding: 2rem; flex-wrap: wrap;">
     <VTextMask 
@@ -101,15 +100,9 @@ import { VTextMask } from 'supreme-visual-effects'
 
 ```vue
 <template>
-  <VTextMask 
-    text="快速动画" 
-    :duration="1000"
-  />
-  
-  <VTextMask 
-    text="慢速动画" 
-    :duration="4000"
-  />
+  <VTextMask text="快速动画" :duration="1000" />
+
+  <VTextMask text="慢速动画" :duration="4000" />
 </template>
 
 <script setup>
@@ -118,6 +111,7 @@ import { VTextMask } from 'supreme-visual-effects'
 ```
 
 ### 自定义样式
+
 <div class="demo">
   <div style="display: flex; justify-content: center; gap: 1rem; padding: 2rem; flex-wrap: wrap;">
     <VTextMask 
@@ -137,19 +131,9 @@ import { VTextMask } from 'supreme-visual-effects'
 
 ```vue
 <template>
-  <VTextMask 
-    text="红色遮罩" 
-    stroke-color="#ff6b6b"
-    text-color="#ff6b6b"
-    background-color="#000"
-  />
-  
-  <VTextMask 
-    text="绿色遮罩" 
-    stroke-color="#4ecdc4"
-    text-color="#4ecdc4"
-    background-color="#000"
-  />
+  <VTextMask text="红色遮罩" stroke-color="#ff6b6b" text-color="#ff6b6b" background-color="#000" />
+
+  <VTextMask text="绿色遮罩" stroke-color="#4ecdc4" text-color="#4ecdc4" background-color="#000" />
 </template>
 
 <script setup>
@@ -158,6 +142,7 @@ import { VTextMask } from 'supreme-visual-effects'
 ```
 
 ### 无动画效果
+
 <div class="demo">
   <div style="display: flex; justify-content: center; padding: 2rem;">
     <VTextMask 
@@ -169,10 +154,7 @@ import { VTextMask } from 'supreme-visual-effects'
 
 ```vue
 <template>
-  <VTextMask 
-    text="静态遮罩" 
-    :animation="false"
-  />
+  <VTextMask text="静态遮罩" :animation="false" />
 </template>
 
 <script setup>
@@ -181,6 +163,7 @@ import { VTextMask } from 'supreme-visual-effects'
 ```
 
 ### 延迟动画
+
 <div class="demo">
   <div style="display: flex; justify-content: center; gap: 1rem; padding: 2rem; flex-wrap: wrap;">
     <VTextMask 
@@ -192,10 +175,7 @@ import { VTextMask } from 'supreme-visual-effects'
 
 ```vue
 <template>
-  <VTextMask 
-    text="延迟动画" 
-    :delay="1000"
-  />
+  <VTextMask text="延迟动画" :delay="1000" />
 </template>
 
 <script setup>
@@ -204,6 +184,7 @@ import { VTextMask } from 'supreme-visual-effects'
 ```
 
 ### 控制动画
+
 <div class="demo">
   <div style="display: flex; justify-content: center; gap: 1rem; padding: 2rem; flex-wrap: wrap; flex-direction: column; align-items: center;">
     <VTextMask 
@@ -227,12 +208,8 @@ import { VTextMask } from 'supreme-visual-effects'
 
 ```vue
 <template>
-  <VTextMask 
-    ref="textMaskRef"
-    text="可控制动画" 
-    :duration="3000"
-  />
-  
+  <VTextMask ref="textMaskRef" text="可控制动画" :duration="3000" />
+
   <div style="display: flex; gap: 1rem;">
     <button @click="startAnimation">开始</button>
     <button @click="stopAnimation">停止</button>
@@ -261,6 +238,7 @@ const resetAnimation = () => {
 ```
 
 ### 多行文字
+
 <div class="demo">
   <div style="display: flex; justify-content: center; gap: 1rem; padding: 2rem; flex-wrap: wrap;">
     <VTextMask 
@@ -280,19 +258,9 @@ const resetAnimation = () => {
 
 ```vue
 <template>
-  <VTextMask 
-    text="第一行文字" 
-    path="M 0,30 Q 100,0 200,30 T 400,30"
-    :width="400"
-    :height="60"
-  />
-  
-  <VTextMask 
-    text="第二行文字" 
-    path="M 0,30 Q 100,60 200,30 T 400,30"
-    :width="400"
-    :height="60"
-  />
+  <VTextMask text="第一行文字" path="M 0,30 Q 100,0 200,30 T 400,30" :width="400" :height="60" />
+
+  <VTextMask text="第二行文字" path="M 0,30 Q 100,60 200,30 T 400,30" :width="400" :height="60" />
 </template>
 
 <script setup>

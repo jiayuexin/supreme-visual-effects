@@ -84,7 +84,7 @@ const init = () => {
 
 const handleMouseMove = (e: MouseEvent) => {
   if (!is_browser || !canvas.value) return
-  
+
   const rect = canvas.value.getBoundingClientRect()
   mouseX = e.clientX - rect.left
   mouseY = e.clientY - rect.top
@@ -103,7 +103,7 @@ const animate = () => {
       const dx = mouseX - p.x
       const dy = mouseY - p.y
       const distance = Math.sqrt(dx * dx + dy * dy)
-      
+
       if (distance < props.mouseRadius) {
         const force = (props.mouseRadius - distance) / props.mouseRadius
         p.vx += dx * force * 0.01
@@ -180,14 +180,14 @@ defineExpose({
   },
   resumeAnimation: () => {
     animate()
-  }
+  },
 })
 
 onMounted(() => {
   if (!is_browser) return
   init()
   window.addEventListener('resize', init)
-  
+
   if (props.mouseInteraction && canvas.value) {
     canvas.value.addEventListener('mousemove', handleMouseMove)
   }
@@ -197,17 +197,20 @@ onUnmounted(() => {
   if (!is_browser) return
   cancelAnimationFrame(animationFrameId)
   window.removeEventListener('resize', init)
-  
+
   if (canvas.value && props.mouseInteraction) {
     canvas.value.removeEventListener('mousemove', handleMouseMove)
   }
 })
 
-watch(() => [props.particleCount, props.speed], () => {
-  if (is_browser) {
-    init()
+watch(
+  () => [props.particleCount, props.speed],
+  () => {
+    if (is_browser) {
+      init()
+    }
   }
-})
+)
 </script>
 
 <style scoped>

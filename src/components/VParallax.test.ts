@@ -5,7 +5,7 @@ import VParallax from './VParallax.vue'
 describe('VParallax', () => {
   it('should render correctly with default props', () => {
     const wrapper = mount(VParallax)
-    
+
     expect(wrapper.find('.parallax-container').exists()).toBe(true)
   })
 
@@ -14,13 +14,13 @@ describe('VParallax', () => {
       { speed: 0.5, content: 'Background' },
       { speed: 1, content: 'Foreground' },
     ]
-    
+
     const wrapper = mount(VParallax, {
       props: {
         layers,
       },
     })
-    
+
     expect(wrapper.vm.layers).toEqual(layers)
   })
 
@@ -30,7 +30,7 @@ describe('VParallax', () => {
         enabled: true,
       },
     })
-    
+
     expect(wrapper.vm.enabled).toBe(true)
   })
 
@@ -40,7 +40,7 @@ describe('VParallax', () => {
         enabled: false,
       },
     })
-    
+
     expect(wrapper.vm.enabled).toBe(false)
   })
 
@@ -50,7 +50,7 @@ describe('VParallax', () => {
         default: '<div class="slot-content">Slot Content</div>',
       },
     })
-    
+
     // 注意：由于VParallax的结构，slot内容可能不会直接渲染在根元素中
     // 我们检查组件是否正确挂载
     expect(wrapper.find('.parallax-container').exists()).toBe(true)

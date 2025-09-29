@@ -23,52 +23,52 @@ const carouselItems = ref([
   {
     title: '项目 1',
     description: '这是第一个项目的描述',
-    image: '/images/item1.jpg'
+    image: '/images/item1.jpg',
   },
   {
     title: '项目 2',
     description: '这是第二个项目的描述',
-    image: '/images/item2.jpg'
+    image: '/images/item2.jpg',
   },
   {
     title: '项目 3',
     description: '这是第三个项目的描述',
-    image: '/images/item3.jpg'
-  }
+    image: '/images/item3.jpg',
+  },
 ])
 </script>
 ```
 
 ## Props
 
-| 属性名 | 类型 | 默认值 | 说明 |
-| --- | --- | --- | --- |
-| items | `CarouselItem[]` | `required` | 轮播项目数组 |
-| currentIndex | `number` | `0` | 当前显示的项目索引 |
-| autoPlay | `boolean` | `false` | 是否自动播放 |
-| autoPlayInterval | `number` | `3000` | 自动播放间隔（毫秒） |
-| showArrows | `boolean` | `true` | 是否显示导航箭头 |
-| showIndicators | `boolean` | `true` | 是否显示指示器 |
-| perspective | `number` | `1000` | 3D透视效果强度 |
-| itemSpacing | `number` | `200` | 项目间距 |
-| rotationY | `number` | `45` | Y轴旋转角度 |
-| scale | `number` | `0.8` | 非激活项目的缩放比例 |
-| transitionDuration | `number` | `500` | 动画过渡时间（毫秒） |
-| loop | `boolean` | `true` | 是否循环播放 |
-| touchSensitivity | `number` | `50` | 触摸灵敏度 |
+| 属性名             | 类型             | 默认值     | 说明                 |
+| ------------------ | ---------------- | ---------- | -------------------- |
+| items              | `CarouselItem[]` | `required` | 轮播项目数组         |
+| currentIndex       | `number`         | `0`        | 当前显示的项目索引   |
+| autoPlay           | `boolean`        | `false`    | 是否自动播放         |
+| autoPlayInterval   | `number`         | `3000`     | 自动播放间隔（毫秒） |
+| showArrows         | `boolean`        | `true`     | 是否显示导航箭头     |
+| showIndicators     | `boolean`        | `true`     | 是否显示指示器       |
+| perspective        | `number`         | `1000`     | 3D透视效果强度       |
+| itemSpacing        | `number`         | `200`      | 项目间距             |
+| rotationY          | `number`         | `45`       | Y轴旋转角度          |
+| scale              | `number`         | `0.8`      | 非激活项目的缩放比例 |
+| transitionDuration | `number`         | `500`      | 动画过渡时间（毫秒） |
+| loop               | `boolean`        | `true`     | 是否循环播放         |
+| touchSensitivity   | `number`         | `50`       | 触摸灵敏度           |
 
 ## Events
 
-| 事件名 | 参数 | 说明 |
-| --- | --- | --- |
-| update:currentIndex | `(index: number)` | 当前索引改变时触发 |
-| item-change | `(index: number, item: CarouselItem)` | 项目切换时触发 |
-| item-click | `(index: number, item: CarouselItem)` | 点击项目时触发 |
+| 事件名              | 参数                                  | 说明               |
+| ------------------- | ------------------------------------- | ------------------ |
+| update:currentIndex | `(index: number)`                     | 当前索引改变时触发 |
+| item-change         | `(index: number, item: CarouselItem)` | 项目切换时触发     |
+| item-click          | `(index: number, item: CarouselItem)` | 点击项目时触发     |
 
 ## Slots
 
-| 插槽名 | 参数 | 说明 |
-| --- | --- | --- |
+| 插槽名         | 参数                                    | 说明                     |
+| -------------- | --------------------------------------- | ------------------------ |
 | `item-{index}` | `{ item: CarouselItem, index: number }` | 自定义每个项目的显示内容 |
 
 ## 类型定义
@@ -86,6 +86,7 @@ interface CarouselItem {
 ## 示例
 
 ### 基础轮播
+
 <div class="demo">
   <div style="position: relative; height: 400px; background: #f0f0f0; border-radius: 8px; overflow: hidden;">
     <VCarousel3D 
@@ -98,11 +99,7 @@ interface CarouselItem {
 
 ```vue
 <template>
-  <VCarousel3D 
-    :items="items" 
-    :autoPlay="true" 
-    :autoPlayInterval="2000" 
-  />
+  <VCarousel3D :items="items" :autoPlay="true" :autoPlayInterval="2000" />
 </template>
 
 <script setup>
@@ -112,12 +109,13 @@ import { ref } from 'vue'
 const items = ref([
   { title: '项目 1', image: '/images/1.jpg' },
   { title: '项目 2', image: '/images/2.jpg' },
-  { title: '项目 3', image: '/images/3.jpg' }
+  { title: '项目 3', image: '/images/3.jpg' },
 ])
 </script>
 ```
 
 ### 自定义项目内容
+
 <div class="demo">
   <div style="position: relative; height: 400px; background: #f0f0f0; border-radius: 8px; overflow: hidden;">
     <VCarousel3D :items="items">
@@ -152,20 +150,21 @@ import { VCarousel3D } from 'supreme-visual-effects'
 import { ref } from 'vue'
 
 const items = ref([
-  { 
-    title: '特色项目', 
+  {
+    title: '特色项目',
     description: '这是一个特色项目的描述',
-    image: '/images/special.jpg'
-  }
+    image: '/images/special.jpg',
+  },
 ])
 
-const handleClick = (index) => {
+const handleClick = index => {
   console.log('点击了项目:', index)
 }
 </script>
 ```
 
 ### 禁用自动播放
+
 <div class="demo">
   <div style="position: relative; height: 400px; background: #f0f0f0; border-radius: 8px; overflow: hidden;">
     <VCarousel3D 
@@ -179,12 +178,7 @@ const handleClick = (index) => {
 
 ```vue
 <template>
-  <VCarousel3D 
-    :items="items" 
-    :autoPlay="false" 
-    :showArrows="true" 
-    :showIndicators="true" 
-  />
+  <VCarousel3D :items="items" :autoPlay="false" :showArrows="true" :showIndicators="true" />
 </template>
 
 <script setup>
@@ -194,12 +188,13 @@ import { ref } from 'vue'
 const items = ref([
   { title: '项目 1', description: '第一个项目' },
   { title: '项目 2', description: '第二个项目' },
-  { title: '项目 3', description: '第三个项目' }
+  { title: '项目 3', description: '第三个项目' },
 ])
 </script>
 ```
 
 ### 自定义样式
+
 <div class="demo">
   <div style="position: relative; height: 400px; background: #f0f0f0; border-radius: 8px; overflow: hidden;">
     <VCarousel3D 
@@ -213,23 +208,14 @@ const items = ref([
 
 ```vue
 <template>
-  <VCarousel3D 
-    :items="items" 
-    :perspective="800" 
-    :rotationY="60" 
-    :scale="0.7" 
-  />
+  <VCarousel3D :items="items" :perspective="800" :rotationY="60" :scale="0.7" />
 </template>
 
 <script setup>
 import { VCarousel3D } from 'supreme-visual-effects'
 import { ref } from 'vue'
 
-const items = ref([
-  { title: '项目 1' },
-  { title: '项目 2' },
-  { title: '项目 3' }
-])
+const items = ref([{ title: '项目 1' }, { title: '项目 2' }, { title: '项目 3' }])
 </script>
 ```
 
@@ -237,13 +223,13 @@ const items = ref([
 
 可以通过模板引用调用以下方法：
 
-| 方法名 | 参数 | 说明 |
-| --- | --- | --- |
-| goToNext | `()` | 切换到下一个项目 |
-| goToPrev | `()` | 切换到上一个项目 |
-| goToIndex | `(index: number)` | 切换到指定索引的项目 |
-| startAutoPlay | `()` | 开始自动播放 |
-| stopAutoPlay | `()` | 停止自动播放 |
+| 方法名        | 参数              | 说明                 |
+| ------------- | ----------------- | -------------------- |
+| goToNext      | `()`              | 切换到下一个项目     |
+| goToPrev      | `()`              | 切换到上一个项目     |
+| goToIndex     | `(index: number)` | 切换到指定索引的项目 |
+| startAutoPlay | `()`              | 开始自动播放         |
+| stopAutoPlay  | `()`              | 停止自动播放         |
 
 <div class="demo">
   <div style="position: relative; height: 400px; background: #f0f0f0; border-radius: 8px; overflow: hidden; margin-bottom: 1rem;">
@@ -267,11 +253,7 @@ import { VCarousel3D } from 'supreme-visual-effects'
 import { ref } from 'vue'
 
 const carouselRef = ref()
-const items = ref([
-  { title: '项目 1' },
-  { title: '项目 2' },
-  { title: '项目 3' }
-])
+const items = ref([{ title: '项目 1' }, { title: '项目 2' }, { title: '项目 3' }])
 
 const next = () => {
   carouselRef.value.goToNext()

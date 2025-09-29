@@ -6,10 +6,10 @@ describe('VGradientBackground', () => {
   it('should render correctly with default props', () => {
     const wrapper = mount(VGradientBackground, {
       slots: {
-        default: '<div>Content</div>'
-      }
+        default: '<div>Content</div>',
+      },
     })
-    
+
     expect(wrapper.find('.gradient-background').exists()).toBe(true)
     expect(wrapper.text()).toContain('Content')
   })
@@ -21,46 +21,46 @@ describe('VGradientBackground', () => {
         direction: '45deg',
         stops: [
           { color: '#ff0000', position: 0 },
-          { color: '#0000ff', position: 100 }
-        ]
-      }
+          { color: '#0000ff', position: 100 },
+        ],
+      },
     ]
-    
+
     const wrapper = mount(VGradientBackground, {
       props: {
-        layers
+        layers,
       },
       slots: {
-        default: '<div>Content</div>'
-      }
+        default: '<div>Content</div>',
+      },
     })
-    
+
     expect(wrapper.vm.layers).toEqual(layers)
   })
 
   it('should enable animation when animation prop is true', async () => {
     const wrapper = mount(VGradientBackground, {
       props: {
-        animation: true
+        animation: true,
       },
       slots: {
-        default: '<div>Content</div>'
-      }
+        default: '<div>Content</div>',
+      },
     })
-    
+
     expect(wrapper.vm.animation).toBe(true)
   })
 
   it('should disable animation when animation prop is false', async () => {
     const wrapper = mount(VGradientBackground, {
       props: {
-        animation: false
+        animation: false,
       },
       slots: {
-        default: '<div>Content</div>'
-      }
+        default: '<div>Content</div>',
+      },
     })
-    
+
     expect(wrapper.vm.animation).toBe(false)
   })
 })

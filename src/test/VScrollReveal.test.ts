@@ -11,7 +11,7 @@ describe('VScrollReveal', () => {
       unobserve: vi.fn(),
       disconnect: vi.fn(),
     }
-    
+
     // Mock IntersectionObserver
     global.IntersectionObserver = vi.fn().mockImplementation(() => mockIntersectionObserver)
   })
@@ -54,7 +54,7 @@ describe('VScrollReveal', () => {
       expect.any(Function),
       expect.objectContaining({
         threshold: 0.5,
-      }),
+      })
     )
   })
 
