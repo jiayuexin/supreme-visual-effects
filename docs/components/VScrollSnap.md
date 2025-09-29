@@ -27,10 +27,6 @@ VScrollSnap 是一个整屏滚动分页组件，可以创建全屏滚动的分�
     ]"
   />
 </template>
-
-<script setup>
-import { VScrollSnap } from 'supreme-visual-effects'
-</script>
 ```
 
 ## Props
@@ -90,14 +86,12 @@ interface ScrollSection {
           <p>欢迎来到首页</p>
         </div>
       </template>
-      
       <template #section-1>
         <div style="text-align: center;">
           <h2>产品</h2>
           <p>查看我们的产品</p>
         </div>
       </template>
-      
       <template #section-2>
         <div style="text-align: center;">
           <h2>联系</h2>
@@ -135,10 +129,6 @@ interface ScrollSection {
     </template>
   </VScrollSnap>
 </template>
-
-<script setup>
-import { VScrollSnap } from 'supreme-visual-effects'
-</script>
 ```
 
 ### 隐藏指示器和箭头
@@ -164,10 +154,6 @@ import { VScrollSnap } from 'supreme-visual-effects'
     :show-arrows="false"
   />
 </template>
-
-<script setup>
-import { VScrollSnap } from 'supreme-visual-effects'
-</script>
 ```
 
 ### 自定义动画
@@ -189,10 +175,6 @@ import { VScrollSnap } from 'supreme-visual-effects'
 <template>
   <VScrollSnap :sections="[{ content: '快速滚动' }, { content: '慢速滚动' }]" :duration="300" easing="ease-in-out" />
 </template>
-
-<script setup>
-import { VScrollSnap } from 'supreme-visual-effects'
-</script>
 ```
 
 ### 键盘导航
@@ -217,10 +199,6 @@ import { VScrollSnap } from 'supreme-visual-effects'
     :keyboard-navigation="true"
   />
 </template>
-
-<script setup>
-import { VScrollSnap } from 'supreme-visual-effects'
-</script>
 ```
 
 ### 调整灵敏度
@@ -246,10 +224,6 @@ import { VScrollSnap } from 'supreme-visual-effects'
     :touch-sensitivity="100"
   />
 </template>
-
-<script setup>
-import { VScrollSnap } from 'supreme-visual-effects'
-</script>
 ```
 
 ### 大量分页
@@ -280,10 +254,6 @@ import { VScrollSnap } from 'supreme-visual-effects'
     ]"
   />
 </template>
-
-<script setup>
-import { VScrollSnap } from 'supreme-visual-effects'
-</script>
 ```
 
 ### 自定义样式
@@ -320,10 +290,6 @@ import { VScrollSnap } from 'supreme-visual-effects'
     ]"
   />
 </template>
-
-<script setup>
-import { VScrollSnap } from 'supreme-visual-effects'
-</script>
 ```
 
 ## 使用场景
