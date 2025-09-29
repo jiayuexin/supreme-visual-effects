@@ -7,6 +7,7 @@ dist-ssr
 report.html
 vite.config.*.timestamp*
 docs/.vitepress/cache/**
+docs/.vitepress/dist
 yarn.lock
 npm-debug.log*
 .pnpm-error.log*
