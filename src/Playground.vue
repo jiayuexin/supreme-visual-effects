@@ -245,7 +245,7 @@ const carouselItems = [
   { title: 'Item 4', image: 'https://picsum.photos/300/200?random=4' },
 ]
 
-const confettiRef = ref()
+const confettiRef = ref<typeof VConfetti | null>(null)
 
 const handleMagneticClick = () => {
   console.log('Magnetic button clicked!')

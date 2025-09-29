@@ -37,7 +37,7 @@ module.exports = {
     'template-curly-spacing': 'error',
     'arrow-spacing': 'error',
     'comma-dangle': ['error', 'always-multiline'],
-    'semi': ['error', 'never'],
+    // 'semi': ['error', 'never'],
     'quotes': ['error', 'single', { avoidEscape: true }],
     'indent': ['error', 2, { SwitchCase: 1 }],
     'max-len': ['error', { code: 140, ignoreUrls: true, ignoreStrings: true, ignoreTemplateLiterals: true }],

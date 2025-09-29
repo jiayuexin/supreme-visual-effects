@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, watch, useTemplateRef } from 'vue'
+import { onMounted, onUnmounted, watch, ref } from 'vue'
 
 interface Particle {
   x: number
@@ -13,44 +13,31 @@ interface Particle {
   radius: number
 }
 
-const props = defineProps({
-  particleCount: {
-    type: Number,
-    default: 100,
-  },
-  particleColor: {
-    type: String,
-    default: 'rgba(255, 255, 255, 0.8)',
-  },
-  lineColor: {
-    type: String,
-    default: 'rgba(255, 255, 255, 0.2)',
-  },
-  speed: {
-    type: Number,
-    default: 0.5,
-  },
-  maxDistance: {
-    type: Number,
-    default: 120,
-  },
-  mouseInteraction: {
-    type: Boolean,
-    default: true,
-  },
-  mouseRadius: {
-    type: Number,
-    default: 100,
-  },
-  connectParticles: {
-    type: Boolean,
-    default: true,
-  },
+interface Props {
+  particleCount?: number
+  particleColor?: string
+  lineColor?: string
+  speed?: number
+  maxDistance?: number
+  mouseInteraction?: boolean
+  mouseRadius?: number
+  connectParticles?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  particleCount: 100,
+  particleColor: 'rgba(255, 255, 255, 0.8)',
+  lineColor: 'rgba(255, 255, 255, 0.2)',
+  speed: 0.5,
+  maxDistance: 120,
+  mouseInteraction: true,
+  mouseRadius: 100,
+  connectParticles: true,
 })
 
 const is_browser = typeof window !== 'undefined' && typeof document !== 'undefined'
 
-const canvas = useTemplateRef<HTMLCanvasElement>('canvas')
+const canvas = ref<HTMLCanvasElement | null>(null)
 let animationFrameId: number
 let mouseX = 0
 let mouseY = 0
@@ -69,12 +56,12 @@ const init = () => {
   canvas.value.height = parent.clientHeight
 
   particles = []
-  for (let i = 0; i < props.particleCount; i++) {
+  for (let i = 0; i < props.particleCount!; i++) {
     particles.push({
       x: Math.random() * canvas.value.width,
       y: Math.random() * canvas.value.height,
-      vx: (Math.random() - 0.5) * props.speed,
-      vy: (Math.random() - 0.5) * props.speed,
+      vx: (Math.random() - 0.5) * props.speed!,
+      vy: (Math.random() - 0.5) * props.speed!,
       radius: Math.random() * 1.5 + 1,
     })
   }
@@ -90,7 +77,7 @@ const handleMouseMove = (e: MouseEvent) => {
   mouseY = e.clientY - rect.top
 }
 
-const animate = () => {
+const animate = (_timestamp?: number) => {
   if (!is_browser || !canvas.value) return
   const ctx = canvas.value.getContext('2d')
   if (!ctx) return
@@ -104,8 +91,8 @@ const animate = () => {
       const dy = mouseY - p.y
       const distance = Math.sqrt(dx * dx + dy * dy)
 
-      if (distance < props.mouseRadius) {
-        const force = (props.mouseRadius - distance) / props.mouseRadius
+      if (distance < props.mouseRadius!) {
+        const force = (props.mouseRadius! - distance) / props.mouseRadius!
         p.vx += dx * force * 0.01
         p.vy += dy * force * 0.01
       }
@@ -130,7 +117,7 @@ const animate = () => {
 
     ctx.beginPath()
     ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2)
-    ctx.fillStyle = props.particleColor
+    ctx.fillStyle = props.particleColor!
     ctx.fill()
   })
 
@@ -139,12 +126,12 @@ const animate = () => {
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
         const dist = Math.hypot(particles[i].x - particles[j].x, particles[i].y - particles[j].y)
-        if (dist < props.maxDistance) {
+        if (dist < props.maxDistance!) {
           ctx.beginPath()
           ctx.moveTo(particles[i].x, particles[i].y)
           ctx.lineTo(particles[j].x, particles[j].y)
-          ctx.strokeStyle = props.lineColor
-          ctx.lineWidth = 1 - dist / props.maxDistance
+          ctx.strokeStyle = props.lineColor!
+          ctx.lineWidth = 1 - dist / props.maxDistance!
           ctx.stroke()
         }
       }
@@ -163,8 +150,8 @@ defineExpose({
         particles.push({
           x: Math.random() * (canvas.value?.width || 0),
           y: Math.random() * (canvas.value?.height || 0),
-          vx: (Math.random() - 0.5) * props.speed,
-          vy: (Math.random() - 0.5) * props.speed,
+          vx: (Math.random() - 0.5) * props.speed!,
+          vy: (Math.random() - 0.5) * props.speed!,
           radius: Math.random() * 1.5 + 1,
         })
       }

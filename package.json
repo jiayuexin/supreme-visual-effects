@@ -40,6 +40,7 @@
     "@typescript-eslint/parser": "^7.1.2",
     "@vitejs/plugin-vue": "^5.0.5",
     "@vitest/coverage-v8": "^1.4.0",
+    "@vue/runtime-dom": "^3.5.22",
     "@vue/test-utils": "^2.4.2",
     "c8": "^8.0.1",
     "eslint": "^8.57.0",
@@ -56,7 +57,7 @@
     "vite": "^5.2.13",
     "vitepress": "^1.2.0",
     "vitest": "^1.4.0",
-    "vue": "^3.4.27",
+    "vue": "^3.5.22",
     "vue-eslint-parser": "^10.2.0"
   },
   "keywords": [

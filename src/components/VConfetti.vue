@@ -21,74 +21,47 @@ interface ConfettiParticle {
   maxLife: number
 }
 
-const props = defineProps({
-  enabled: {
-    type: Boolean,
-    default: true,
-  },
-  particleCount: {
-    type: Number,
-    default: 100,
-  },
-  colors: {
-    type: Array as () => string[],
-    default: () => ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3'],
-  },
-  shapes: {
-    type: Array as () => ('circle' | 'square' | 'triangle')[],
-    default: () => ['circle', 'square', 'triangle'],
-  },
-  gravity: {
-    type: Number,
-    default: 0.3,
-  },
-  wind: {
-    type: Number,
-    default: 0.1,
-  },
-  speed: {
-    type: Number,
-    default: 5,
-  },
-  spread: {
-    type: Number,
-    default: 45,
-  },
-  size: {
-    type: Number,
-    default: 8,
-  },
-  duration: {
-    type: Number,
-    default: 3000,
-  },
-  burst: {
-    type: Boolean,
-    default: true,
-  },
-  continuous: {
-    type: Boolean,
-    default: false,
-  },
-  continuousInterval: {
-    type: Number,
-    default: 1000,
-  },
-  position: {
-    type: String as () => 'top' | 'center' | 'bottom' | 'random',
-    default: 'top',
-  },
-  direction: {
-    type: String as () => 'up' | 'down' | 'left' | 'right' | 'random',
-    default: 'up',
-  },
+interface ConfettiProps {
+  enabled: boolean
+  particleCount: number
+  colors: string[]
+  shapes: ('circle' | 'square' | 'triangle')[]
+  gravity: number
+  wind: number
+  speed: number
+  spread: number
+  size: number
+  duration: number
+  burst: boolean
+  continuous: boolean
+  continuousInterval: number
+  position: 'top' | 'center' | 'bottom' | 'random'
+  direction: 'up' | 'down' | 'left' | 'right' | 'random'
+}
+
+const props = withDefaults(defineProps<ConfettiProps>(), {
+  enabled: true,
+  particleCount: 100,
+  colors: () => ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3'],
+  shapes: () => ['circle', 'square', 'triangle'],
+  gravity: 0.3,
+  wind: 0.1,
+  speed: 5,
+  spread: 45,
+  size: 8,
+  duration: 3000,
+  burst: true,
+  continuous: false,
+  continuousInterval: 1000,
+  position: 'top',
+  direction: 'up',
 })
 
 const emit = defineEmits<{
-  'confetti-start': []
-  'confetti-end': []
-  'particle-create': [particle: ConfettiParticle]
-  'particle-destroy': [particle: ConfettiParticle]
+  (e: 'confetti-start'): void
+  (e: 'confetti-end'): void
+  (e: 'particle-create', particle: ConfettiParticle): void
+  (e: 'particle-destroy', particle: ConfettiParticle): void
 }>()
 
 const is_browser = typeof window !== 'undefined' && typeof document !== 'undefined'
@@ -315,9 +288,9 @@ onUnmounted(() => {
   window.removeEventListener('resize', resize)
 })
 
-watch(
+;(watch(
   () => props.enabled,
-  newVal => {
+  (newVal: boolean) => {
     if (!is_browser) return
     if (newVal && props.continuous) {
       startContinuous()
@@ -325,27 +298,25 @@ watch(
       stopContinuous()
     }
   }
-)
-
-watch(
-  () => props.continuous,
-  newVal => {
-    if (!is_browser) return
-    if (newVal && props.enabled) {
-      startContinuous()
-    } else {
-      stopContinuous()
+),
+  watch(
+    () => props.continuous,
+    (newVal: boolean) => {
+      if (!is_browser) return
+      if (newVal && props.enabled) {
+        startContinuous()
+      } else {
+        stopContinuous()
+      }
     }
-  }
-)
-
-// 暴露方法给父组件
-defineExpose({
-  burst,
-  stop,
-  startContinuous,
-  stopContinuous,
-})
+  ),
+  // 暴露方法给父组件
+  defineExpose({
+    burst,
+    stop,
+    startContinuous,
+    stopContinuous,
+  }))
 </script>
 
 <style scoped>

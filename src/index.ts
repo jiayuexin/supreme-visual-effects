@@ -1,4 +1,4 @@
-import type { App, Plugin } from 'vue'
+import type { App } from 'vue'
 import { VRipple } from './directives/vRipple'
 import VScrollReveal from './components/VScrollReveal.vue'
 import VParticleField from './components/VParticleField.vue'
@@ -64,7 +64,7 @@ const handle_auto_theme = (e: MediaQueryListEvent) => {
 
 let media_query: MediaQueryList | undefined
 
-export const createSupremeEffects = (options: SupremeEffectsOptions = {}): Plugin => {
+export const createSupremeEffects = (options: SupremeEffectsOptions = {}) => {
   return {
     install(app: App) {
       Object.entries(components).forEach(([name, component]) => {
@@ -72,7 +72,7 @@ export const createSupremeEffects = (options: SupremeEffectsOptions = {}): Plugi
       })
 
       Object.entries(directives).forEach(([name, directive]) => {
-        app.directive(name, directive)
+        app.directive(name, directive as any)
       })
 
       // Skip theme initialization in SSR mode

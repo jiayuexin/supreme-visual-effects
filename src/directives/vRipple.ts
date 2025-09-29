@@ -8,8 +8,8 @@ interface RippleElement extends HTMLElement {
   }
 }
 
-const rippleDirective: Directive<RippleElement> = {
-  mounted(el, binding) {
+const rippleDirective: Directive = {
+  mounted(el: RippleElement, binding: any) {
     el._ripple = {
       enabled: binding.value?.disabled !== true,
       color: binding.value?.color || 'rgba(255, 255, 255, 0.7)',
@@ -58,7 +58,7 @@ const rippleDirective: Directive<RippleElement> = {
     el.addEventListener('mousedown', onMouseDown)
   },
 
-  updated(el, binding) {
+  updated(el: RippleElement, binding: any) {
     if (el._ripple) {
       el._ripple.enabled = binding.value?.disabled !== true
       el._ripple.color = binding.value?.color || 'rgba(255, 255, 255, 0.7)'
