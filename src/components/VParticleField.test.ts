@@ -24,8 +24,15 @@ describe('VParticleField', () => {
     global.HTMLCanvasElement.prototype.getContext = mockGetContext
 
     // Mock requestAnimationFrame
-    global.requestAnimationFrame = vi.fn(cb => setTimeout(cb, 16))
-    global.cancelAnimationFrame = vi.fn(id => clearTimeout(id))
+    global.requestAnimationFrame = vi.fn((cb: FrameRequestCallback) => {
+      return window.setTimeout(cb, 16)
+    }) as unknown as (callback: FrameRequestCallback) => number
+
+    global.cancelAnimationFrame = vi.fn((id: number) => {
+      if (id) {
+        clearTimeout(id)
+      }
+    }) as unknown as (handle: number) => void
   })
 
   afterEach(() => {
