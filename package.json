@@ -24,7 +24,7 @@
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
-    "prepare": "husky install",
+    "prepare": "husky",
     "precommit": "lint-staged",
     "build:lib": "rollup -c"
   },
