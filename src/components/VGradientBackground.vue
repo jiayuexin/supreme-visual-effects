@@ -23,33 +23,30 @@ interface GradientLayer {
   }
 }
 
-const props = defineProps({
-  layers: {
-    type: Array as () => GradientLayer[],
-    default: () => [
-      {
-        type: 'linear',
-        direction: '45deg',
-        stops: [
-          { color: '#667eea', position: 0 },
-          { color: '#764ba2', position: 100 },
-        ],
-        animation: {
-          type: 'flow',
-          duration: 8,
-          intensity: 0.3,
-        },
+interface GradientBackgroundProps {
+  layers?: GradientLayer[]
+  animation?: boolean
+  speed?: number
+}
+
+const props = withDefaults(defineProps<GradientBackgroundProps>(), {
+  layers: () => [
+    {
+      type: 'linear',
+      direction: '45deg',
+      stops: [
+        { color: '#667eea', position: 0 },
+        { color: '#764ba2', position: 100 },
+      ],
+      animation: {
+        type: 'flow',
+        duration: 8,
+        intensity: 0.3,
       },
-    ],
-  },
-  animation: {
-    type: Boolean,
-    default: true,
-  },
-  speed: {
-    type: Number,
-    default: 1,
-  },
+    },
+  ],
+  animation: true,
+  speed: 1,
 })
 
 const container = ref<HTMLElement | null>(null)
@@ -65,7 +62,7 @@ const gradientStyle = computed(() => {
 })
 
 const generateStaticGradient = () => {
-  const gradients = props.layers.map(layer => {
+  const gradients = props.layers!.map(layer => {
     const stops = layer.stops.map(stop => `${stop.color} ${stop.position}%`).join(', ')
 
     let gradient = ''
@@ -93,13 +90,13 @@ const generateStaticGradient = () => {
 }
 
 const generateAnimatedGradient = () => {
-  const gradients = props.layers.map(layer => {
+  const gradients = props.layers!.map(layer => {
     const stops = layer.stops
       .map(stop => {
         let color = stop.color
 
         if (layer.animation) {
-          const t = time.value * props.speed
+          const t = time.value * props.speed!
           // keep local intensity if needed in future adjustments
           // const _intensity = layer.animation.intensity || 0.3
 
@@ -214,7 +211,7 @@ onUnmounted(() => {
 
 watch(
   () => props.animation,
-  newVal => {
+  (newVal: boolean) => {
     if (newVal && !animationId.value) {
       animate()
     } else if (!newVal && animationId.value) {

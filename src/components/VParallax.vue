@@ -12,34 +12,24 @@
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 
 interface ParallaxLayer {
-  speed: number // 0-1, 0 = 静止, 1 = 正常滚动
-  direction?: 'up' | 'down' | 'left' | 'right'
-  content?: string
-  style?: Record<string, unknown>
+  speed: number
+  direction: 'up' | 'down' | 'left' | 'right'
   offset?: number
+  style?: Record<string, string | number>
 }
 
-const props = defineProps({
-  layers: {
-    type: Array as () => ParallaxLayer[],
-    default: () => [
-      { speed: 0.5, content: 'Background Layer' },
-      { speed: 0.8, content: 'Middle Layer' },
-      { speed: 1, content: 'Foreground Layer' },
-    ],
-  },
-  enabled: {
-    type: Boolean,
-    default: true,
-  },
-  throttle: {
-    type: Number,
-    default: 16, // 约60fps
-  },
-  offset: {
-    type: Number,
-    default: 0,
-  },
+interface ParallaxProps {
+  layers: ParallaxLayer[]
+  enabled: boolean
+  throttle: number
+  offset: number
+}
+
+const props = withDefaults(defineProps<ParallaxProps>(), {
+  layers: () => [],
+  enabled: true,
+  throttle: 16,
+  offset: 0,
 })
 
 const is_browser = typeof window !== 'undefined' && typeof document !== 'undefined'
@@ -161,7 +151,7 @@ onUnmounted(() => {
 
 watch(
   () => props.enabled,
-  newVal => {
+  (newVal: boolean) => {
     if (!is_browser) return
     if (newVal) {
       updateContainerInfo()

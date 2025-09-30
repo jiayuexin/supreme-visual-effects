@@ -272,6 +272,14 @@ const resize = () => {
   canvas.value.height = rect.height
 }
 
+// 暴露方法给父组件
+defineExpose({
+  burst,
+  stop,
+  startContinuous,
+  stopContinuous,
+})
+
 onMounted(() => {
   if (!is_browser) return
   resize()
@@ -288,7 +296,7 @@ onUnmounted(() => {
   window.removeEventListener('resize', resize)
 })
 
-;(watch(
+watch(
   () => props.enabled,
   (newVal: boolean) => {
     if (!is_browser) return
@@ -298,25 +306,19 @@ onUnmounted(() => {
       stopContinuous()
     }
   }
-),
-  watch(
-    () => props.continuous,
-    (newVal: boolean) => {
-      if (!is_browser) return
-      if (newVal && props.enabled) {
-        startContinuous()
-      } else {
-        stopContinuous()
-      }
+)
+
+watch(
+  () => props.continuous,
+  (newVal: boolean) => {
+    if (!is_browser) return
+    if (newVal && props.enabled) {
+      startContinuous()
+    } else {
+      stopContinuous()
     }
-  ),
-  // 暴露方法给父组件
-  defineExpose({
-    burst,
-    stop,
-    startContinuous,
-    stopContinuous,
-  }))
+  }
+)
 </script>
 
 <style scoped>

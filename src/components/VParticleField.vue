@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, watch, ref } from 'vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue'
 
 interface Particle {
   x: number
@@ -13,20 +13,20 @@ interface Particle {
   radius: number
 }
 
-interface Props {
-  particleCount?: number
-  particleColor?: string
-  lineColor?: string
-  speed?: number
-  maxDistance?: number
-  mouseInteraction?: boolean
-  mouseRadius?: number
-  connectParticles?: boolean
+interface ParticleFieldProps {
+  particleCount: number
+  particleColor: string
+  lineColor: string
+  speed: number
+  maxDistance: number
+  mouseInteraction: boolean
+  mouseRadius: number
+  connectParticles: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<ParticleFieldProps>(), {
   particleCount: 100,
-  particleColor: 'rgba(255, 255, 255, 0.8)',
+  particleColor: '#ffffff',
   lineColor: 'rgba(255, 255, 255, 0.2)',
   speed: 0.5,
   maxDistance: 120,

@@ -71,49 +71,38 @@ interface ScrollSection {
   color?: string
 }
 
-const props = defineProps({
-  sections: {
-    type: Array as () => ScrollSection[],
-    default: () => [
-      { content: 'First section', backgroundColor: '#667eea' },
-      { content: 'Second section', backgroundColor: '#764ba2' },
-      { content: 'Third section', backgroundColor: '#f093fb' },
-    ],
-  },
-  duration: {
-    type: Number,
-    default: 800,
-  },
-  easing: {
-    type: String,
-    default: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-  },
-  showIndicators: {
-    type: Boolean,
-    default: true,
-  },
-  showArrows: {
-    type: Boolean,
-    default: true,
-  },
-  keyboardNavigation: {
-    type: Boolean,
-    default: true,
-  },
-  wheelSensitivity: {
-    type: Number,
-    default: 1,
-  },
-  touchSensitivity: {
-    type: Number,
-    default: 50,
-  },
+interface Props {
+  sections?: ScrollSection[]
+  duration?: number
+  easing?: string
+  showIndicators?: boolean
+  showArrows?: boolean
+  keyboardNavigation?: boolean
+  wheelSensitivity?: number
+  touchSensitivity?: number
+  infinite?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  sections: () => [
+    { content: 'First section', backgroundColor: '#667eea' },
+    { content: 'Second section', backgroundColor: '#764ba2' },
+    { content: 'Third section', backgroundColor: '#f093fb' },
+  ],
+  duration: 800,
+  easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+  showIndicators: true,
+  showArrows: true,
+  keyboardNavigation: true,
+  wheelSensitivity: 1,
+  touchSensitivity: 50,
+  infinite: false,
 })
 
 const emit = defineEmits<{
-  'section-change': [index: number, section: ScrollSection]
-  'section-enter': [index: number, section: ScrollSection]
-  'section-leave': [index: number, section: ScrollSection]
+  (e: 'section-change', index: number, section: ScrollSection): void
+  (e: 'section-enter', index: number, section: ScrollSection): void
+  (e: 'section-leave', index: number, section: ScrollSection): void
 }>()
 
 const container = ref<HTMLElement | null>(null)
@@ -129,7 +118,7 @@ const containerStyle = computed(() => ({
 }))
 
 const getSectionStyle = (index: number) => {
-  const section = props.sections[index]
+  const section = props.sections![index]
   return {
     height: '100vh',
     width: '100%',
@@ -142,21 +131,21 @@ const getSectionStyle = (index: number) => {
     alignItems: 'center',
     justifyContent: 'center',
     transform: `translateY(${index * 100}vh)`,
-    transition: isScrolling.value ? `transform ${props.duration}ms ${props.easing}` : 'none',
+    transition: isScrolling.value ? `transform ${props.duration!}ms ${props.easing}` : 'none',
     ...section.style,
   }
 }
 
 const goToSection = async (index: number) => {
-  if (index < 0 || index >= props.sections.length || isScrolling.value) return
+  if (index < 0 || index >= props.sections!.length || isScrolling.value) return
 
   const previousIndex = currentIndex.value
   currentIndex.value = index
   isScrolling.value = true
 
   // Emit events
-  emit('section-leave', previousIndex, props.sections[previousIndex])
-  emit('section-change', index, props.sections[index])
+  emit('section-leave', previousIndex, props.sections![previousIndex])
+  emit('section-change', index, props.sections![index])
 
   // Update section positions
   await nextTick()
@@ -165,8 +154,8 @@ const goToSection = async (index: number) => {
   // Wait for animation to complete
   setTimeout(() => {
     isScrolling.value = false
-    emit('section-enter', index, props.sections[index])
-  }, props.duration)
+    emit('section-enter', index, props.sections![index])
+  }, props.duration!)
 }
 
 const updateSectionPositions = () => {
@@ -185,9 +174,9 @@ const handleWheel = (e: WheelEvent) => {
     return
   }
 
-  const delta = e.deltaY * props.wheelSensitivity
+  const delta = e.deltaY * props.wheelSensitivity!
 
-  if (delta > 0 && currentIndex.value < props.sections.length - 1) {
+  if (delta > 0 && currentIndex.value < props.sections!.length - 1) {
     e.preventDefault()
     goToSection(currentIndex.value + 1)
   } else if (delta < 0 && currentIndex.value > 0) {
@@ -210,10 +199,10 @@ const handleTouchMove = (e: TouchEvent) => {
   const deltaY = e.touches[0].clientY - touchStartY.value
   const deltaTime = Date.now() - touchStartTime.value
 
-  if (Math.abs(deltaY) > props.touchSensitivity && deltaTime > 100) {
+  if (Math.abs(deltaY) > props.touchSensitivity! && deltaTime > 100) {
     if (deltaY > 0 && currentIndex.value > 0) {
       goToSection(currentIndex.value - 1)
-    } else if (deltaY < 0 && currentIndex.value < props.sections.length - 1) {
+    } else if (deltaY < 0 && currentIndex.value < props.sections!.length - 1) {
       goToSection(currentIndex.value + 1)
     }
   }
@@ -238,7 +227,7 @@ const handleKeydown = (e: KeyboardEvent) => {
     case 'PageDown':
     case ' ':
       e.preventDefault()
-      if (currentIndex.value < props.sections.length - 1) {
+      if (currentIndex.value < props.sections!.length - 1) {
         goToSection(currentIndex.value + 1)
       }
       break
@@ -248,7 +237,7 @@ const handleKeydown = (e: KeyboardEvent) => {
       break
     case 'End':
       e.preventDefault()
-      goToSection(props.sections.length - 1)
+      goToSection(props.sections!.length - 1)
       break
   }
 }

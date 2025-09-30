@@ -14,66 +14,40 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 
-// Removed unused NeonColor interface to satisfy linter
+interface NeonTextProps {
+  text: string
+  color: string
+  glowColor: string
+  glowIntensity: number
+  glowSpread: number
+  animation: boolean
+  animationType: 'flicker' | 'pulse' | 'wave' | 'none'
+  animationSpeed: number
+  fontSize: string
+  fontFamily: string
+  fontWeight: string
+  hoverEffect: boolean
+  hoverGlowIntensity: number
+}
 
-const props = defineProps({
-  text: {
-    type: String,
-    required: true,
-  },
-  color: {
-    type: String,
-    default: '#00ffff',
-  },
-  glowColor: {
-    type: String,
-    default: '#00ffff',
-  },
-  glowIntensity: {
-    type: Number,
-    default: 20,
-  },
-  glowSpread: {
-    type: Number,
-    default: 5,
-  },
-  animation: {
-    type: Boolean,
-    default: true,
-  },
-  animationType: {
-    type: String as () => 'flicker' | 'pulse' | 'wave' | 'none',
-    default: 'flicker',
-  },
-  animationSpeed: {
-    type: Number,
-    default: 1,
-  },
-  fontSize: {
-    type: String,
-    default: '2rem',
-  },
-  fontFamily: {
-    type: String,
-    default: 'Arial, sans-serif',
-  },
-  fontWeight: {
-    type: String,
-    default: 'bold',
-  },
-  hoverEffect: {
-    type: Boolean,
-    default: true,
-  },
-  hoverGlowIntensity: {
-    type: Number,
-    default: 40,
-  },
+const props = withDefaults(defineProps<NeonTextProps>(), {
+  color: '#00ffff',
+  glowColor: '#00ffff',
+  glowIntensity: 20,
+  glowSpread: 5,
+  animation: true,
+  animationType: 'flicker',
+  animationSpeed: 1,
+  fontSize: '2rem',
+  fontFamily: 'Arial, sans-serif',
+  fontWeight: 'bold',
+  hoverEffect: true,
+  hoverGlowIntensity: 40,
 })
 
 const emit = defineEmits<{
-  'mouse-enter': []
-  'mouse-leave': []
+  (e: 'mouse-enter'): void
+  (e: 'mouse-leave'): void
 }>()
 
 const isHovered = ref(false)

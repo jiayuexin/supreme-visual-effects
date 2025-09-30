@@ -42,8 +42,28 @@ describe('VConfetti', () => {
     vi.restoreAllMocks()
   })
 
+  const defaultProps = {
+    enabled: true,
+    particleCount: 100,
+    colors: ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3'],
+    shapes: ['circle', 'square', 'triangle'],
+    gravity: 0.3,
+    wind: 0.1,
+    speed: 5,
+    spread: 45,
+    size: 8,
+    duration: 3000,
+    burst: true,
+    continuous: false,
+    continuousInterval: 1000,
+    position: 'top',
+    direction: 'up',
+  }
+
   it('should render correctly with default props', () => {
-    const wrapper = mount(VConfetti)
+    const wrapper = mount(VConfetti, {
+      props: defaultProps,
+    })
 
     expect(wrapper.find('.confetti-container').exists()).toBe(true)
   })
@@ -51,6 +71,7 @@ describe('VConfetti', () => {
   it('should enable confetti when enabled prop is true', () => {
     const wrapper = mount(VConfetti, {
       props: {
+        ...defaultProps,
         enabled: true,
       },
     })
@@ -61,6 +82,7 @@ describe('VConfetti', () => {
   it('should disable confetti when enabled prop is false', () => {
     const wrapper = mount(VConfetti, {
       props: {
+        ...defaultProps,
         enabled: false,
       },
     })
@@ -71,6 +93,7 @@ describe('VConfetti', () => {
   it('should set correct particle count', () => {
     const wrapper = mount(VConfetti, {
       props: {
+        ...defaultProps,
         particleCount: 100,
       },
     })
@@ -82,6 +105,7 @@ describe('VConfetti', () => {
     const colors = ['#ff0000', '#00ff00', '#0000ff']
     const wrapper = mount(VConfetti, {
       props: {
+        ...defaultProps,
         colors,
       },
     })
@@ -93,6 +117,7 @@ describe('VConfetti', () => {
     const shapes: ('circle' | 'square' | 'triangle')[] = ['circle', 'square', 'triangle']
     const wrapper = mount(VConfetti, {
       props: {
+        ...defaultProps,
         shapes,
       },
     })
@@ -103,6 +128,7 @@ describe('VConfetti', () => {
   it('should set correct gravity', () => {
     const wrapper = mount(VConfetti, {
       props: {
+        ...defaultProps,
         gravity: 0.5,
       },
     })
@@ -113,6 +139,7 @@ describe('VConfetti', () => {
   it('should set correct wind', () => {
     const wrapper = mount(VConfetti, {
       props: {
+        ...defaultProps,
         wind: 0.5,
       },
     })
@@ -120,29 +147,21 @@ describe('VConfetti', () => {
     expect(wrapper.vm.wind).toBe(0.5)
   })
 
-  it('should call burst method', () => {
-    const wrapper = mount(VConfetti)
+  it('should have burst method exposed', () => {
+    const wrapper = mount(VConfetti, {
+      props: defaultProps,
+    })
 
-    // Test that the method exists and can be called
+    // Test that the method exists
     expect(typeof wrapper.vm.burst).toBe('function')
-
-    // Mock the burst method to avoid canvas errors
-    const burstSpy = vi.spyOn(wrapper.vm, 'burst').mockImplementation(() => {})
-
-    wrapper.vm.burst()
-    expect(burstSpy).toHaveBeenCalled()
   })
 
-  it('should call stop method', () => {
-    const wrapper = mount(VConfetti)
+  it('should have stop method exposed', () => {
+    const wrapper = mount(VConfetti, {
+      props: defaultProps,
+    })
 
-    // Test that the method exists and can be called
+    // Test that the method exists
     expect(typeof wrapper.vm.stop).toBe('function')
-
-    // Mock the stop method
-    const stopSpy = vi.spyOn(wrapper.vm, 'stop').mockImplementation(() => {})
-
-    wrapper.vm.stop()
-    expect(stopSpy).toHaveBeenCalled()
   })
 })

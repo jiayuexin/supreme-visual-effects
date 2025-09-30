@@ -33,69 +33,46 @@ interface GlitchEffect {
   duration: number
 }
 
-const props = defineProps({
-  enabled: {
-    type: Boolean,
-    default: true,
-  },
-  autoTrigger: {
-    type: Boolean,
-    default: false,
-  },
-  triggerInterval: {
-    type: Number,
-    default: 3000,
-  },
-  intensity: {
-    type: Number,
-    default: 0.5,
-  },
-  duration: {
-    type: Number,
-    default: 200,
-  },
-  effects: {
-    type: Array as () => GlitchEffect[],
-    default: () => [
-      { type: 'shake', intensity: 0.8, duration: 100 },
-      { type: 'rgb', intensity: 0.6, duration: 150 },
-      { type: 'noise', intensity: 0.4, duration: 200 },
-    ],
-  },
-  shakeIntensity: {
-    type: Number,
-    default: 10,
-  },
-  rgbIntensity: {
-    type: Number,
-    default: 5,
-  },
-  noiseIntensity: {
-    type: Number,
-    default: 0.1,
-  },
-  scanIntensity: {
-    type: Number,
-    default: 2,
-  },
-  distortIntensity: {
-    type: Number,
-    default: 0.05,
-  },
-  color: {
-    type: String,
-    default: '#ff0000',
-  },
-  backgroundColor: {
-    type: String,
-    default: '#000000',
-  },
+interface GlitchProps {
+  enabled: boolean
+  autoTrigger: boolean
+  triggerInterval: number
+  intensity: number
+  duration: number
+  effects: GlitchEffect[]
+  shakeIntensity: number
+  rgbIntensity: number
+  noiseIntensity: number
+  scanIntensity: number
+  distortIntensity: number
+  color: string
+  backgroundColor: string
+}
+
+const props = withDefaults(defineProps<GlitchProps>(), {
+  enabled: true,
+  autoTrigger: false,
+  triggerInterval: 3000,
+  intensity: 0.5,
+  duration: 200,
+  effects: () => [
+    { type: 'shake', intensity: 0.8, duration: 100 },
+    { type: 'rgb', intensity: 0.6, duration: 150 },
+    { type: 'noise', intensity: 0.4, duration: 200 },
+  ],
+  shakeIntensity: 10,
+  rgbIntensity: 5,
+  noiseIntensity: 0.1,
+  scanIntensity: 2,
+  distortIntensity: 0.05,
+  color: '#ff0000',
+  backgroundColor: '#000000',
 })
 
 const emit = defineEmits<{
-  'glitch-start': []
-  'glitch-end': []
-  'glitch-trigger': []
+  (e: 'glitch-start'): void
+  (e: 'glitch-end'): void
+  (e: 'glitch-trigger'): void
 }>()
 
 const container = ref<HTMLElement | null>(null)

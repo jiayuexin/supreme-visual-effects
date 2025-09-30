@@ -51,65 +51,40 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 
-const props = defineProps({
-  beforeImage: {
-    type: String,
-    required: true,
-  },
-  afterImage: {
-    type: String,
-    required: true,
-  },
-  beforeAlt: {
-    type: String,
-    default: 'Before image',
-  },
-  afterAlt: {
-    type: String,
-    default: 'After image',
-  },
-  beforeLabel: {
-    type: String,
-    default: 'Before',
-  },
-  afterLabel: {
-    type: String,
-    default: 'After',
-  },
-  initialPosition: {
-    type: Number,
-    default: 50,
-  },
-  sliderColor: {
-    type: String,
-    default: '#ffffff',
-  },
-  sliderSize: {
-    type: Number,
-    default: 4,
-  },
-  handleSize: {
-    type: Number,
-    default: 40,
-  },
-  showLabels: {
-    type: Boolean,
-    default: true,
-  },
-  keyboardControl: {
-    type: Boolean,
-    default: true,
-  },
-  animationDuration: {
-    type: Number,
-    default: 300,
-  },
+interface ImageComparisonProps {
+  beforeImage: string
+  afterImage: string
+  beforeAlt: string
+  afterAlt: string
+  beforeLabel: string
+  afterLabel: string
+  initialPosition: number
+  sliderColor: string
+  sliderSize: number
+  handleSize: number
+  showLabels: boolean
+  keyboardControl: boolean
+  animationDuration: number
+}
+
+const props = withDefaults(defineProps<ImageComparisonProps>(), {
+  beforeAlt: 'Before image',
+  afterAlt: 'After image',
+  beforeLabel: 'Before',
+  afterLabel: 'After',
+  initialPosition: 50,
+  sliderColor: '#ffffff',
+  sliderSize: 4,
+  handleSize: 40,
+  showLabels: true,
+  keyboardControl: true,
+  animationDuration: 300,
 })
 
 const emit = defineEmits<{
-  'position-change': [position: number]
-  'slider-start': []
-  'slider-end': []
+  (e: 'position-change', position: number): void
+  (e: 'slider-start'): void
+  (e: 'slider-end'): void
 }>()
 
 const container = ref<HTMLElement | null>(null)
