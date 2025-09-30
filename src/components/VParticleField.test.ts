@@ -19,6 +19,7 @@ describe('VParticleField', () => {
       rotate: vi.fn(),
       clearRect: vi.fn(),
       arc: vi.fn(),
+      stroke: vi.fn(),
     }))
 
     global.HTMLCanvasElement.prototype.getContext = mockGetContext

@@ -37,65 +37,37 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 
-// remove unused PathPoint interface
+interface TextMaskProps {
+  text: string
+  path?: string | Array<{ x: number; y: number }>
+  animation?: boolean
+  duration?: number
+  delay?: number
+  strokeWidth?: number
+  strokeColor?: string
+  fillColor?: string
+  backgroundColor?: string
+  textColor?: string
+  fontSize?: string
+  fontFamily?: string
+  width?: number
+  height?: number
+}
 
-const props = defineProps({
-  text: {
-    type: String,
-    required: true,
-  },
-  path: {
-    type: [String, Array],
-    default: () => 'M 0,50 Q 50,0 100,50 T 200,50',
-  },
-  animation: {
-    type: Boolean,
-    default: true,
-  },
-  duration: {
-    type: Number,
-    default: 2000,
-  },
-  delay: {
-    type: Number,
-    default: 0,
-  },
-  strokeWidth: {
-    type: Number,
-    default: 4,
-  },
-  strokeColor: {
-    type: String,
-    default: '#ffffff',
-  },
-  fillColor: {
-    type: String,
-    default: 'transparent',
-  },
-  backgroundColor: {
-    type: String,
-    default: '#000000',
-  },
-  textColor: {
-    type: String,
-    default: '#ffffff',
-  },
-  fontSize: {
-    type: String,
-    default: '24px',
-  },
-  fontFamily: {
-    type: String,
-    default: 'Arial, sans-serif',
-  },
-  width: {
-    type: Number,
-    default: 400,
-  },
-  height: {
-    type: Number,
-    default: 100,
-  },
+const props = withDefaults(defineProps<TextMaskProps>(), {
+  path: () => 'M 0,50 Q 50,0 100,50 T 200,50',
+  animation: true,
+  duration: 2000,
+  delay: 0,
+  strokeWidth: 4,
+  strokeColor: '#ffffff',
+  fillColor: 'transparent',
+  backgroundColor: '#000000',
+  textColor: '#ffffff',
+  fontSize: '24px',
+  fontFamily: 'Arial, sans-serif',
+  width: 400,
+  height: 100,
 })
 
 const maskId = ref(`text-mask-${Math.random().toString(36).substr(2, 9)}`)
@@ -128,26 +100,26 @@ const strokeDasharray = computed(() => {
   if (!props.animation) return 'none'
 
   // 计算路径总长度（简化计算）
-  const pathLength = props.width * 0.8 // 估算路径长度
+  const pathLength = props.width! * 0.8 // 估算路径长度
   return `${pathLength} ${pathLength}`
 })
 
 const strokeDashoffset = computed(() => {
   if (!props.animation) return 0
 
-  const pathLength = props.width * 0.8
+  const pathLength = props.width! * 0.8
   return pathLength * (1 - progress.value)
 })
 
-const maskColor = computed(() => props.strokeColor)
+const maskColor = computed(() => props.strokeColor!)
 
-const textX = computed(() => props.width / 2)
-const textY = computed(() => props.height / 2 + 8) // 调整垂直居中
+const textX = computed(() => props.width! / 2)
+const textY = computed(() => props.height! / 2 + 8) // 调整垂直居中
 
 const containerStyle = computed(() => ({
   display: 'inline-block',
-  width: `${props.width}px`,
-  height: `${props.height}px`,
+  width: `${props.width!}px`,
+  height: `${props.height!}px`,
 }))
 
 const svgStyle = computed(() => ({
@@ -164,7 +136,7 @@ const animate = () => {
   if (!props.animation) return
 
   const startTime = Date.now()
-  const duration = props.duration
+  const duration = props.duration!
 
   const updateProgress = () => {
     const elapsed = Date.now() - startTime
@@ -178,10 +150,10 @@ const animate = () => {
     }
   }
 
-  if (props.delay > 0) {
+  if (props.delay! > 0) {
     setTimeout(() => {
       updateProgress()
-    }, props.delay)
+    }, props.delay!)
   } else {
     updateProgress()
   }

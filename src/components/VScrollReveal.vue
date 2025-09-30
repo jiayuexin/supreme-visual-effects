@@ -1,5 +1,5 @@
 <template>
-  <div ref="target" :class="{ 'is-visible': isVisible }">
+  <div ref="target" class="scroll-reveal" :class="{ 'is-visible': isVisible }">
     <slot></slot>
   </div>
 </template>
@@ -7,15 +7,14 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 
-const props = defineProps({
-  threshold: {
-    type: Number,
-    default: 0.1,
-  },
-  once: {
-    type: Boolean,
-    default: true,
-  },
+interface ScrollRevealProps {
+  threshold: number
+  once: boolean
+}
+
+const props = withDefaults(defineProps<ScrollRevealProps>(), {
+  threshold: 0.1,
+  once: true,
 })
 
 const is_browser = typeof window !== 'undefined' && typeof document !== 'undefined'
@@ -58,7 +57,7 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-div {
+.scroll-reveal {
   opacity: 0;
   transform: translateY(30px);
   transition:
@@ -66,7 +65,7 @@ div {
     transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-div.is-visible {
+.scroll-reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
 }

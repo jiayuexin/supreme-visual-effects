@@ -16,45 +16,32 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 
-const props = defineProps({
-  intensity: {
-    type: Number,
-    default: 20,
-  },
-  perspective: {
-    type: Number,
-    default: 1000,
-  },
-  transition: {
-    type: String,
-    default: 'all 0.3s ease',
-  },
-  resetOnLeave: {
-    type: Boolean,
-    default: true,
-  },
-  axis: {
-    type: String as () => 'x' | 'y' | 'both',
-    default: 'both',
-  },
-  reverse: {
-    type: Boolean,
-    default: false,
-  },
-  scale: {
-    type: Number,
-    default: 1,
-  },
-  scaleOnHover: {
-    type: Number,
-    default: 1.05,
-  },
+interface Hover3DProps {
+  perspective: number
+  intensity: number
+  transition: string
+  resetOnLeave: boolean
+  axis: 'x' | 'y' | 'both'
+  reverse: boolean
+  scale: number
+  scaleOnHover: number
+}
+
+const props = withDefaults(defineProps<Hover3DProps>(), {
+  perspective: 1000,
+  intensity: 10,
+  transition: 'all 0.3s ease',
+  resetOnLeave: true,
+  axis: 'both',
+  reverse: false,
+  scale: 1,
+  scaleOnHover: 1.05,
 })
 
 const emit = defineEmits<{
-  'mouse-enter': []
-  'mouse-leave': []
-  'mouse-move': [event: MouseEvent]
+  (e: 'mouse-enter'): void
+  (e: 'mouse-leave'): void
+  (e: 'mouse-move', event: MouseEvent): void
 }>()
 
 const container = ref<HTMLElement | null>(null)

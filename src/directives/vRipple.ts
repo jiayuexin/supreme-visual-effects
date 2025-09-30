@@ -6,10 +6,11 @@ interface RippleElement extends HTMLElement {
     color: string
     duration: number
   }
+  _rippleCleanup?: () => void
 }
 
-const rippleDirective: Directive<RippleElement> = {
-  mounted(el, binding) {
+const rippleDirective: Directive = {
+  mounted(el: RippleElement, binding: any) {
     el._ripple = {
       enabled: binding.value?.disabled !== true,
       color: binding.value?.color || 'rgba(255, 255, 255, 0.7)',
@@ -35,6 +36,7 @@ const rippleDirective: Directive<RippleElement> = {
         `opacity ${el._ripple.duration / 1000}s cubic-bezier(0.4, 0, 0.2, 1)`
       ripple.style.opacity = '1'
       ripple.style.pointerEvents = 'none'
+      ripple.style.zIndex = '9999'
 
       // Ensure the host element is positioned
       if (getComputedStyle(el).position === 'static') {
@@ -51,19 +53,35 @@ const rippleDirective: Directive<RippleElement> = {
       })
 
       setTimeout(() => {
-        ripple.remove()
+        if (ripple.parentNode === el) {
+          el.removeChild(ripple)
+        }
       }, el._ripple.duration)
     }
 
     el.addEventListener('mousedown', onMouseDown)
+
+    // Store cleanup function for unmounted
+    el._rippleCleanup = () => {
+      el.removeEventListener('mousedown', onMouseDown)
+    }
   },
 
-  updated(el, binding) {
+  updated(el: RippleElement, binding: any) {
     if (el._ripple) {
       el._ripple.enabled = binding.value?.disabled !== true
       el._ripple.color = binding.value?.color || 'rgba(255, 255, 255, 0.7)'
       el._ripple.duration = binding.value?.duration || 600
     }
+  },
+
+  unmounted(el: RippleElement) {
+    // Clean up event listeners
+    if (el._rippleCleanup) {
+      el._rippleCleanup()
+      delete el._rippleCleanup
+    }
+    delete el._ripple
   },
 }
 

@@ -12,72 +12,44 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 
-// remove unused TypingOptions interface
+interface TypingTextProps {
+  text: string | string[]
+  speed: number
+  delay: number
+  pause: number
+  loop: boolean
+  cursor: boolean
+  cursorChar: string
+  cursorSpeed: number
+  eraseSpeed: number
+  eraseDelay: number
+  autoStart: boolean
+  color: string
+  fontSize: string
+  fontFamily: string
+}
 
-const props = defineProps({
-  text: {
-    type: [String, Array],
-    required: true,
-  },
-  speed: {
-    type: Number,
-    default: 100,
-  },
-  delay: {
-    type: Number,
-    default: 0,
-  },
-  pause: {
-    type: Number,
-    default: 2000,
-  },
-  loop: {
-    type: Boolean,
-    default: false,
-  },
-  cursor: {
-    type: Boolean,
-    default: true,
-  },
-  cursorChar: {
-    type: String,
-    default: '|',
-  },
-  cursorSpeed: {
-    type: Number,
-    default: 500,
-  },
-  eraseSpeed: {
-    type: Number,
-    default: 50,
-  },
-  eraseDelay: {
-    type: Number,
-    default: 1000,
-  },
-  autoStart: {
-    type: Boolean,
-    default: true,
-  },
-  color: {
-    type: String,
-    default: 'inherit',
-  },
-  fontSize: {
-    type: String,
-    default: 'inherit',
-  },
-  fontFamily: {
-    type: String,
-    default: 'inherit',
-  },
+const props = withDefaults(defineProps<TypingTextProps>(), {
+  speed: 100,
+  delay: 0,
+  pause: 2000,
+  loop: false,
+  cursor: true,
+  cursorChar: '|',
+  cursorSpeed: 500,
+  eraseSpeed: 50,
+  eraseDelay: 1000,
+  autoStart: true,
+  color: 'inherit',
+  fontSize: 'inherit',
+  fontFamily: 'inherit',
 })
 
 const emit = defineEmits<{
-  'typing-start': []
-  'typing-complete': []
-  'typing-pause': []
-  'typing-resume': []
+  (e: 'typing-start'): void
+  (e: 'typing-complete'): void
+  (e: 'typing-pause'): void
+  (e: 'typing-resume'): void
 }>()
 
 const displayText = ref('')
@@ -309,7 +281,7 @@ watch(
 
 watch(
   () => props.autoStart,
-  newVal => {
+  (newVal: boolean) => {
     if (newVal && !isTyping.value && !isErasing.value) {
       startTyping()
     } else if (!newVal) {

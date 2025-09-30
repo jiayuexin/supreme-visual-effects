@@ -6,7 +6,7 @@ module.exports = {
     es2022: true,
   },
   parser: 'vue-eslint-parser',
-  extends: ['eslint:recommended', 'plugin:vue/vue3-recommended', 'plugin:@typescript-eslint/recommended', 'prettier', 'plugin:storybook/recommended'],
+  extends: ['eslint:recommended', 'plugin:vue/vue3-recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
@@ -37,7 +37,7 @@ module.exports = {
     'template-curly-spacing': 'error',
     'arrow-spacing': 'error',
     'comma-dangle': ['error', 'always-multiline'],
-    'semi': ['error', 'never'],
+    // 'semi': ['error', 'never'],
     'quotes': ['error', 'single', { avoidEscape: true }],
     'indent': ['error', 2, { SwitchCase: 1 }],
     'max-len': ['error', { code: 140, ignoreUrls: true, ignoreStrings: true, ignoreTemplateLiterals: true }],
@@ -47,12 +47,6 @@ module.exports = {
       files: ['*.vue'],
       rules: {
         indent: 'off',
-      },
-    },
-    {
-      files: ['**/*.stories.ts', '**/*.stories.tsx'],
-      rules: {
-        'max-len': 'off',
       },
     },
     {

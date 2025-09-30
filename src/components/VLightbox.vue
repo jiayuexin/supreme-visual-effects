@@ -72,82 +72,56 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 
 interface LightboxItem {
-  id?: string | number
-  image?: string
+  src: string
   title?: string
   description?: string
   alt?: string
   [key: string]: unknown
 }
 
-const props = defineProps({
-  isOpen: {
-    type: Boolean,
-    default: false,
-  },
-  items: {
-    type: Array as () => LightboxItem[],
-    default: () => [],
-  },
-  currentIndex: {
-    type: Number,
-    default: 0,
-  },
-  showCloseButton: {
-    type: Boolean,
-    default: true,
-  },
-  showNavigation: {
-    type: Boolean,
-    default: true,
-  },
-  showCounter: {
-    type: Boolean,
-    default: true,
-  },
-  closeOnOverlay: {
-    type: Boolean,
-    default: true,
-  },
-  closeOnEscape: {
-    type: Boolean,
-    default: true,
-  },
-  keyboardNavigation: {
-    type: Boolean,
-    default: true,
-  },
-  animationType: {
-    type: String as () => 'fade' | 'scale' | 'slide',
-    default: 'fade',
-  },
-  animationDuration: {
-    type: Number,
-    default: 300,
-  },
-  backgroundColor: {
-    type: String,
-    default: 'rgba(0, 0, 0, 0.9)',
-  },
-  maxWidth: {
-    type: String,
-    default: '90vw',
-  },
-  maxHeight: {
-    type: String,
-    default: '90vh',
-  },
+interface LightboxProps {
+  isOpen: boolean
+  items: LightboxItem[]
+  currentIndex: number
+  showCloseButton: boolean
+  showNavigation: boolean
+  showCounter: boolean
+  closeOnOverlay: boolean
+  closeOnEscape: boolean
+  keyboardNavigation: boolean
+  animationType: 'fade' | 'scale' | 'slide'
+  animationDuration: number
+  backgroundColor: string
+  maxWidth: string
+  maxHeight: string
+}
+
+const props = withDefaults(defineProps<LightboxProps>(), {
+  isOpen: false,
+  items: () => [],
+  currentIndex: 0,
+  showCloseButton: true,
+  showNavigation: true,
+  showCounter: true,
+  closeOnOverlay: true,
+  closeOnEscape: true,
+  keyboardNavigation: true,
+  animationType: 'fade',
+  animationDuration: 300,
+  backgroundColor: 'rgba(0, 0, 0, 0.9)',
+  maxWidth: '90vw',
+  maxHeight: '90vh',
 })
 
 const emit = defineEmits<{
-  'update:isOpen': [isOpen: boolean]
-  'update:currentIndex': [index: number]
-  close: []
-  open: []
-  'item-change': [index: number, item: LightboxItem]
+  (e: 'update:isOpen', isOpen: boolean): void
+  (e: 'update:currentIndex', index: number): void
+  (e: 'close'): void
+  (e: 'open'): void
+  (e: 'item-change', index: number, item: LightboxItem): void
 }>()
 
 const lightbox = ref<HTMLElement | null>(null)
@@ -257,7 +231,7 @@ const restoreBodyScroll = () => {
 
 watch(
   () => props.isOpen,
-  newVal => {
+  (newVal: boolean) => {
     if (newVal) {
       preventBodyScroll()
       open()
@@ -269,7 +243,7 @@ watch(
 
 watch(
   () => props.currentIndex,
-  newVal => {
+  (newVal: number) => {
     currentIndex.value = newVal
   }
 )

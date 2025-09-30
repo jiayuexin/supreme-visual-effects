@@ -16,74 +16,49 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 
-const props = defineProps({
-  position: {
-    type: String as () => 'top' | 'bottom' | 'left' | 'right',
-    default: 'top',
-  },
-  color: {
-    type: String,
-    default: '#4f46e5',
-  },
-  height: {
-    type: String,
-    default: '4px',
-  },
-  width: {
-    type: String,
-    default: '100%',
-  },
-  showPercentage: {
-    type: Boolean,
-    default: false,
-  },
-  textColor: {
-    type: String,
-    default: '#333',
-  },
-  textSize: {
-    type: String,
-    default: '12px',
-  },
-  animation: {
-    type: Boolean,
-    default: true,
-  },
-  animationDuration: {
-    type: Number,
-    default: 200,
-  },
-  gradient: {
-    type: Boolean,
-    default: false,
-  },
-  gradientColors: {
-    type: Array as () => string[],
-    default: () => ['#667eea', '#764ba2'],
-  },
-  glow: {
-    type: Boolean,
-    default: false,
-  },
-  glowIntensity: {
-    type: Number,
-    default: 10,
-  },
-  target: {
-    type: String,
-    default: '',
-  },
-  offset: {
-    type: Number,
-    default: 0,
-  },
+interface ScrollProgressProps {
+  color: string
+  height: string
+  position: 'top' | 'bottom' | 'left' | 'right'
+  width: string
+  showPercentage: boolean
+  textColor: string
+  textSize: string
+  animation: boolean
+  animationDuration: number
+  gradient: boolean
+  gradientColors: string[]
+  glow: boolean
+  glowIntensity: number
+  target: string
+  offset: number
+}
+
+const props = withDefaults(defineProps<ScrollProgressProps>(), {
+  color: '#667eea',
+  height: '4px',
+  position: 'top',
+  width: '100%',
+  showPercentage: false,
+  textColor: '#333',
+  textSize: '12px',
+  animation: true,
+  animationDuration: 200,
+  gradient: false,
+  gradientColors: () => ['#667eea', '#764ba2'],
+  glow: false,
+  glowIntensity: 10,
+  target: '',
+  offset: 0,
 })
 
 const emit = defineEmits<{
-  'progress-change': [progress: number]
-  'scroll-start': []
-  'scroll-end': []
+  (e: 'progress-change', progress: number): void
+  (e: 'scroll-start'): void
+  (e: 'scroll-end'): void
 }>()
+
+const is_browser = typeof window !== 'undefined' && typeof document !== 'undefined'
 
 const container = ref<HTMLElement | null>(null)
 const progress = ref(0)
@@ -255,7 +230,10 @@ onUnmounted(() => {
 watch(
   () => props.target,
   () => {
-    updateProgress()
+    if (is_browser) {
+      window.removeEventListener('scroll', handleScroll)
+      window.addEventListener('scroll', handleScroll, { passive: true })
+    }
   }
 )
 

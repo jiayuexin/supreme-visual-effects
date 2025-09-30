@@ -70,7 +70,9 @@ describe('VParticleField', () => {
   it('initializes with default props', () => {
     const wrapper = mount(VParticleField)
 
-    expect(wrapper.props()).toMatchObject({
+    // 使用 any 类型来避免 TypeScript 错误
+    const props: any = wrapper.props()
+    expect(props).toMatchObject({
       particleCount: 100,
       particleColor: 'rgba(255, 255, 255, 0.8)',
       lineColor: 'rgba(255, 255, 255, 0.2)',
@@ -88,9 +90,10 @@ describe('VParticleField', () => {
       },
     })
 
-    expect(wrapper.props('particleCount')).toBe(50)
-    expect(wrapper.props('speed')).toBe(1.0)
-    expect(wrapper.props('particleColor')).toBe('#ff0000')
+    // 使用 any 类型来避免 TypeScript 错误
+    expect((wrapper.props() as any).particleCount).toBe(50)
+    expect((wrapper.props() as any).speed).toBe(1.0)
+    expect((wrapper.props() as any).particleColor).toBe('#ff0000')
   })
 
   it('handles window resize', async () => {

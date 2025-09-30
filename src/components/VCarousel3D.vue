@@ -76,65 +76,41 @@ interface CarouselItem {
   [key: string]: unknown
 }
 
-const props = defineProps({
-  items: {
-    type: Array as () => CarouselItem[],
-    required: true,
-  },
-  currentIndex: {
-    type: Number,
-    default: 0,
-  },
-  autoPlay: {
-    type: Boolean,
-    default: false,
-  },
-  autoPlayInterval: {
-    type: Number,
-    default: 3000,
-  },
-  showArrows: {
-    type: Boolean,
-    default: true,
-  },
-  showIndicators: {
-    type: Boolean,
-    default: true,
-  },
-  perspective: {
-    type: Number,
-    default: 1000,
-  },
-  itemSpacing: {
-    type: Number,
-    default: 200,
-  },
-  rotationY: {
-    type: Number,
-    default: 45,
-  },
-  scale: {
-    type: Number,
-    default: 0.8,
-  },
-  transitionDuration: {
-    type: Number,
-    default: 500,
-  },
-  loop: {
-    type: Boolean,
-    default: true,
-  },
-  touchSensitivity: {
-    type: Number,
-    default: 50,
-  },
+interface Props {
+  items: CarouselItem[]
+  currentIndex?: number
+  autoPlay?: boolean
+  autoPlayInterval?: number
+  showArrows?: boolean
+  showIndicators?: boolean
+  perspective?: number
+  itemSpacing?: number
+  rotationY?: number
+  scale?: number
+  transitionDuration?: number
+  loop?: boolean
+  touchSensitivity?: number
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  currentIndex: 0,
+  autoPlay: false,
+  autoPlayInterval: 3000,
+  showArrows: true,
+  showIndicators: true,
+  perspective: 1000,
+  itemSpacing: 200,
+  rotationY: 45,
+  scale: 0.8,
+  transitionDuration: 500,
+  loop: true,
+  touchSensitivity: 50,
 })
 
 const emit = defineEmits<{
-  'update:currentIndex': [index: number]
-  'item-change': [index: number, item: CarouselItem]
-  'item-click': [index: number, item: CarouselItem]
+  (e: 'update:currentIndex', index: number): void
+  (e: 'item-change', index: number, item: CarouselItem): void
+  (e: 'item-click', index: number, item: CarouselItem): void
 }>()
 
 const container = ref<HTMLElement | null>(null)
@@ -160,20 +136,20 @@ const wrapperStyle = computed(() => ({
 }))
 
 const canGoPrev = computed(() => {
-  return props.loop || currentIndex.value > 0
+  return props.loop || currentIndex.value! > 0
 })
 
 const canGoNext = computed(() => {
-  return props.loop || currentIndex.value < props.items.length - 1
+  return props.loop || currentIndex.value! < props.items.length - 1
 })
 
 const getItemStyle = (index: number) => {
   const totalItems = props.items.length
   const angle = (360 / totalItems) * index
-  const radius = props.itemSpacing
+  const radius = props.itemSpacing!
 
-  const x = Math.sin((angle * Math.PI) / 180) * radius
-  const z = Math.cos((angle * Math.PI) / 180) * radius
+  const x = Math.sin((angle * Math.PI) / 180) * radius!
+  const z = Math.cos((angle * Math.PI) / 180) * radius!
 
   const isActive = index === currentIndex.value
   const scale = isActive ? 1 : props.scale
@@ -203,14 +179,14 @@ const goToIndex = (index: number) => {
 const goToNext = () => {
   if (!canGoNext.value) return
 
-  const nextIndex = currentIndex.value === props.items.length - 1 ? 0 : currentIndex.value + 1
+  const nextIndex = currentIndex.value! === props.items.length - 1 ? 0 : currentIndex.value! + 1
   goToIndex(nextIndex)
 }
 
 const goToPrev = () => {
   if (!canGoPrev.value) return
 
-  const prevIndex = currentIndex.value === 0 ? props.items.length - 1 : currentIndex.value - 1
+  const prevIndex = currentIndex.value! === 0 ? props.items.length - 1 : currentIndex.value! - 1
   goToIndex(prevIndex)
 }
 
@@ -258,7 +234,7 @@ const handleTouchEnd = (e: TouchEvent) => {
   const deltaX = touchEndX - touchStartX.value
   const deltaTime = touchEndTime - touchStartTime.value
 
-  if (Math.abs(deltaX) > props.touchSensitivity && deltaTime < 500) {
+  if (Math.abs(deltaX) > props.touchSensitivity! && deltaTime < 500) {
     if (deltaX > 0) {
       goToPrev()
     } else {
@@ -283,7 +259,7 @@ onUnmounted(() => {
 
 watch(
   () => props.autoPlay,
-  newVal => {
+  (newVal: boolean) => {
     if (newVal && !isHovered.value) {
       startAutoPlay()
     } else {
@@ -294,7 +270,7 @@ watch(
 
 watch(
   () => props.currentIndex,
-  newVal => {
+  (newVal: number) => {
     if (newVal !== currentIndex.value) {
       goToIndex(newVal)
     }

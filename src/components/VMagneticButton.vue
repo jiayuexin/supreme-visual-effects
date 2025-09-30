@@ -27,66 +27,43 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 
-const props = defineProps({
-  magneticStrength: {
-    type: Number,
-    default: 0.3,
-  },
-  magneticRange: {
-    type: Number,
-    default: 100,
-  },
-  animationDuration: {
-    type: Number,
-    default: 300,
-  },
-  disabled: {
-    type: Boolean,
-    default: false,
-  },
-  ripple: {
-    type: Boolean,
-    default: true,
-  },
-  rippleColor: {
-    type: String,
-    default: 'rgba(255, 255, 255, 0.3)',
-  },
-  scale: {
-    type: Number,
-    default: 1.1,
-  },
-  backgroundColor: {
-    type: String,
-    default: '#4f46e5',
-  },
-  textColor: {
-    type: String,
-    default: '#ffffff',
-  },
-  borderRadius: {
-    type: String,
-    default: '8px',
-  },
-  padding: {
-    type: String,
-    default: '12px 24px',
-  },
-  fontSize: {
-    type: String,
-    default: '16px',
-  },
-  fontWeight: {
-    type: String,
-    default: '500',
-  },
+interface MagneticButtonProps {
+  magneticStrength: number
+  magneticRange: number
+  animationDuration: number
+  disabled: boolean
+  ripple: boolean
+  rippleColor: string
+  scale: number
+  backgroundColor: string
+  textColor: string
+  borderRadius: string
+  padding: string
+  fontSize: string
+  fontWeight: string
+}
+
+const props = withDefaults(defineProps<MagneticButtonProps>(), {
+  magneticStrength: 0.3,
+  magneticRange: 100,
+  animationDuration: 300,
+  disabled: false,
+  ripple: true,
+  rippleColor: 'rgba(255, 255, 255, 0.3)',
+  scale: 1.1,
+  backgroundColor: '#4f46e5',
+  textColor: '#ffffff',
+  borderRadius: '8px',
+  padding: '12px 24px',
+  fontSize: '16px',
+  fontWeight: '500',
 })
 
 const emit = defineEmits<{
-  click: [event: MouseEvent]
-  'mouse-enter': []
-  'mouse-leave': []
-  'mouse-move': [event: MouseEvent]
+  (e: 'click', event: MouseEvent): void
+  (e: 'mouse-enter'): void
+  (e: 'mouse-leave'): void
+  (e: 'mouse-move', event: MouseEvent): void
 }>()
 
 const container = ref<HTMLElement | null>(null)

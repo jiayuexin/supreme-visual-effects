@@ -27,63 +27,38 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 
-const props = defineProps({
-  type: {
-    type: String as () => 'line' | 'wave' | 'dots' | 'gradient' | 'animated',
-    default: 'line',
-  },
-  color: {
-    type: String,
-    default: '#e2e8f0',
-  },
-  width: {
-    type: String,
-    default: '100%',
-  },
-  height: {
-    type: String,
-    default: '1px',
-  },
-  strokeWidth: {
-    type: Number,
-    default: 2,
-  },
-  text: {
-    type: String,
-    default: '',
-  },
-  textColor: {
-    type: String,
-    default: '#666',
-  },
-  textSize: {
-    type: String,
-    default: '14px',
-  },
-  animation: {
-    type: Boolean,
-    default: true,
-  },
-  animationSpeed: {
-    type: Number,
-    default: 2,
-  },
-  gradientColors: {
-    type: Array as () => string[],
-    default: () => ['#667eea', '#764ba2'],
-  },
-  dotCount: {
-    type: Number,
-    default: 5,
-  },
-  dotSize: {
-    type: Number,
-    default: 6,
-  },
-  spacing: {
-    type: String,
-    default: '20px',
-  },
+interface DividerProps {
+  type: 'line' | 'wave' | 'dots' | 'gradient' | 'animated'
+  color: string
+  width: string
+  height: string
+  strokeWidth: number
+  text: string
+  textColor: string
+  textSize: string
+  animation: boolean
+  animationSpeed: number
+  gradientColors: string[]
+  dotCount: number
+  dotSize: number
+  spacing: string
+}
+
+const props = withDefaults(defineProps<DividerProps>(), {
+  type: 'line',
+  color: '#e2e8f0',
+  width: '100%',
+  height: '1px',
+  strokeWidth: 2,
+  text: '',
+  textColor: '#666',
+  textSize: '14px',
+  animation: true,
+  animationSpeed: 2,
+  gradientColors: () => ['#667eea', '#764ba2'],
+  dotCount: 5,
+  dotSize: 6,
+  spacing: '20px',
 })
 
 const container = ref<HTMLElement | null>(null)

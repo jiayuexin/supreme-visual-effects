@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, watch, useTemplateRef } from 'vue'
+import { onMounted, onUnmounted, watch, ref } from 'vue'
 
 interface Star {
   x: number
@@ -17,48 +17,33 @@ interface Star {
   twinkle: number
 }
 
-const props = defineProps({
-  starCount: {
-    type: Number,
-    default: 200,
-  },
-  speed: {
-    type: Number,
-    default: 0.5,
-  },
-  starColor: {
-    type: String,
-    default: '#ffffff',
-  },
-  backgroundColor: {
-    type: String,
-    default: 'transparent',
-  },
-  mouseInteraction: {
-    type: Boolean,
-    default: true,
-  },
-  twinkleSpeed: {
-    type: Number,
-    default: 2,
-  },
-  depth: {
-    type: Number,
-    default: 1000,
-  },
-  autoRotation: {
-    type: Boolean,
-    default: false,
-  },
-  rotationSpeed: {
-    type: Number,
-    default: 0.1,
-  },
+interface Props {
+  starCount: number
+  speed: number
+  starColor: string
+  backgroundColor: string
+  mouseInteraction: boolean
+  twinkleSpeed: number
+  depth: number
+  autoRotation: boolean
+  rotationSpeed: number
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  starCount: 200,
+  speed: 0.5,
+  starColor: '#ffffff',
+  backgroundColor: 'transparent',
+  mouseInteraction: true,
+  twinkleSpeed: 2,
+  depth: 1000,
+  autoRotation: false,
+  rotationSpeed: 0.1,
 })
 
 const is_browser = typeof window !== 'undefined' && typeof document !== 'undefined'
 
-const canvas = useTemplateRef<HTMLCanvasElement>('canvas')
+const canvas = ref<HTMLCanvasElement | null>(null)
 let animationId: number | null = null
 let stars: Star[] = []
 let mouseX = 0
@@ -244,7 +229,7 @@ defineExpose({
       }
     } else if (count < stars.length) {
       // Remove stars
-      stars.splice(count)
+      stars.splice(count, stars.length - count)
     }
   },
 })
