@@ -73,6 +73,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
+import { useReducedMotion } from '../composables/useReducedMotion'
 
 interface LightboxItem {
   src: string
@@ -83,20 +84,22 @@ interface LightboxItem {
 }
 
 interface LightboxProps {
-  isOpen: boolean
-  items: LightboxItem[]
-  currentIndex: number
-  showCloseButton: boolean
-  showNavigation: boolean
-  showCounter: boolean
-  closeOnOverlay: boolean
-  closeOnEscape: boolean
-  keyboardNavigation: boolean
-  animationType: 'fade' | 'scale' | 'slide'
-  animationDuration: number
-  backgroundColor: string
-  maxWidth: string
-  maxHeight: string
+  isOpen?: boolean
+  items?: LightboxItem[]
+  currentIndex?: number
+  showCloseButton?: boolean
+  showNavigation?: boolean
+  showCounter?: boolean
+  closeOnOverlay?: boolean
+  closeOnEscape?: boolean
+  keyboardNavigation?: boolean
+  animationType?: 'fade' | 'scale' | 'slide'
+  animationDuration?: number
+  backgroundColor?: string
+  maxWidth?: string
+  maxHeight?: string
+  respectReducedMotion?: boolean
+  trapFocus?: boolean
 }
 
 const props = withDefaults(defineProps<LightboxProps>(), {
@@ -114,6 +117,20 @@ const props = withDefaults(defineProps<LightboxProps>(), {
   backgroundColor: 'rgba(0, 0, 0, 0.9)',
   maxWidth: '90vw',
   maxHeight: '90vh',
+  respectReducedMotion: true,
+  trapFocus: true,
+})
+
+const { prefersReducedMotion } = useReducedMotion()
+
+// Check if animations should be simplified
+const shouldSimplifyAnimation = computed(() => {
+  return props.respectReducedMotion && prefersReducedMotion.value
+})
+
+// Effective animation duration
+const effectiveAnimationDuration = computed(() => {
+  return shouldSimplifyAnimation.value ? 0 : props.animationDuration
 })
 
 const emit = defineEmits<{
@@ -126,6 +143,8 @@ const emit = defineEmits<{
 
 const lightbox = ref<HTMLElement | null>(null)
 const currentIndex = ref(props.currentIndex)
+const previousActiveElement = ref<HTMLElement | null>(null)
+const focusableElements = ref<HTMLElement[]>([])
 
 const currentItem = computed(() => {
   return props.items[currentIndex.value] || null
@@ -141,22 +160,26 @@ const canGoNext = computed(() => {
 
 const overlayStyle = computed(() => ({
   backgroundColor: props.backgroundColor,
-  animationDuration: `${props.animationDuration}ms`,
+  animationDuration: `${effectiveAnimationDuration.value}ms`,
 }))
 
 const contentStyle = computed(() => ({
   maxWidth: props.maxWidth,
   maxHeight: props.maxHeight,
-  animationDuration: `${props.animationDuration}ms`,
+  animationDuration: `${effectiveAnimationDuration.value}ms`,
 }))
 
 const open = () => {
   emit('update:isOpen', true)
   emit('open')
 
+  // Store the previously focused element for restoration
+  previousActiveElement.value = document.activeElement as HTMLElement
+
   nextTick(() => {
     if (lightbox.value) {
       lightbox.value.focus()
+      updateFocusableElements()
     }
   })
 }
@@ -164,6 +187,45 @@ const open = () => {
 const close = () => {
   emit('update:isOpen', false)
   emit('close')
+
+  // Restore focus to the previously focused element
+  nextTick(() => {
+    if (previousActiveElement.value) {
+      previousActiveElement.value.focus()
+      previousActiveElement.value = null
+    }
+  })
+}
+
+// Focus trap implementation
+const updateFocusableElements = () => {
+  if (!lightbox.value) return
+
+  const selectors = [
+    'button:not([disabled])',
+    'a[href]',
+    'input:not([disabled])',
+    'select:not([disabled])',
+    'textarea:not([disabled])',
+    '[tabindex]:not([tabindex="-1"])',
+  ]
+
+  focusableElements.value = Array.from(lightbox.value.querySelectorAll<HTMLElement>(selectors.join(', ')))
+}
+
+const handleFocusTrap = (e: KeyboardEvent) => {
+  if (!props.trapFocus || focusableElements.value.length === 0) return
+
+  const firstElement = focusableElements.value[0]
+  const lastElement = focusableElements.value[focusableElements.value.length - 1]
+
+  if (e.shiftKey && document.activeElement === firstElement) {
+    e.preventDefault()
+    lastElement.focus()
+  } else if (!e.shiftKey && document.activeElement === lastElement) {
+    e.preventDefault()
+    firstElement.focus()
+  }
 }
 
 const goToIndex = (index: number) => {
@@ -217,6 +279,9 @@ const handleKeydown = (e: KeyboardEvent) => {
     case 'End':
       e.preventDefault()
       goToIndex(props.items.length - 1)
+      break
+    case 'Tab':
+      handleFocusTrap(e)
       break
   }
 }

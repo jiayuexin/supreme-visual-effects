@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
-import VScrollSnap from './VScrollSnap.vue'
+import VScrollSnap from '../../components/VScrollSnap.vue'
 
 describe('VScrollSnap', () => {
   const mockSections = [

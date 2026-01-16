@@ -26,6 +26,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { useReducedMotion } from '../composables/useReducedMotion'
 
 interface GlitchEffect {
   type: 'shake' | 'rgb' | 'noise' | 'scan' | 'distort'
@@ -34,19 +35,20 @@ interface GlitchEffect {
 }
 
 interface GlitchProps {
-  enabled: boolean
-  autoTrigger: boolean
-  triggerInterval: number
-  intensity: number
-  duration: number
-  effects: GlitchEffect[]
-  shakeIntensity: number
-  rgbIntensity: number
-  noiseIntensity: number
-  scanIntensity: number
-  distortIntensity: number
-  color: string
-  backgroundColor: string
+  enabled?: boolean
+  autoTrigger?: boolean
+  triggerInterval?: number
+  intensity?: number
+  duration?: number
+  effects?: GlitchEffect[]
+  shakeIntensity?: number
+  rgbIntensity?: number
+  noiseIntensity?: number
+  scanIntensity?: number
+  distortIntensity?: number
+  color?: string
+  backgroundColor?: string
+  respectReducedMotion?: boolean
 }
 
 const props = withDefaults(defineProps<GlitchProps>(), {
@@ -67,6 +69,14 @@ const props = withDefaults(defineProps<GlitchProps>(), {
   distortIntensity: 0.05,
   color: '#ff0000',
   backgroundColor: '#000000',
+  respectReducedMotion: true,
+})
+
+const { prefersReducedMotion } = useReducedMotion()
+
+// Check if glitch effects should be completely disabled
+const shouldDisableGlitch = computed(() => {
+  return props.respectReducedMotion && prefersReducedMotion.value
 })
 
 const emit = defineEmits<{
@@ -198,7 +208,7 @@ const getRandomSkew = () => {
 }
 
 const triggerGlitch = () => {
-  if (!props.enabled || isGlitching.value) return
+  if (!props.enabled || isGlitching.value || shouldDisableGlitch.value) return
 
   emit('glitch-trigger')
   startGlitch()
@@ -236,7 +246,7 @@ const stopGlitch = () => {
 
 const handleMouseEnter = () => {
   isHovered.value = true
-  if (props.enabled && !isGlitching.value) {
+  if (props.enabled && !isGlitching.value && !shouldDisableGlitch.value) {
     triggerGlitch()
   }
 }
@@ -246,10 +256,10 @@ const handleMouseLeave = () => {
 }
 
 const startAutoTrigger = () => {
-  if (!props.autoTrigger || !props.enabled) return
+  if (!props.autoTrigger || !props.enabled || shouldDisableGlitch.value) return
 
   const trigger = () => {
-    if (props.enabled && !isGlitching.value) {
+    if (props.enabled && !isGlitching.value && !shouldDisableGlitch.value) {
       triggerGlitch()
     }
 
@@ -280,13 +290,23 @@ onUnmounted(() => {
 watch(
   () => [props.enabled, props.autoTrigger],
   () => {
-    if (props.enabled && props.autoTrigger) {
+    if (props.enabled && props.autoTrigger && !shouldDisableGlitch.value) {
       startAutoTrigger()
     } else {
       stopAutoTrigger()
     }
   }
 )
+
+// Stop glitch when reduced motion preference changes
+watch(shouldDisableGlitch, disabled => {
+  if (disabled) {
+    stopGlitch()
+    stopAutoTrigger()
+  } else if (props.autoTrigger && props.enabled) {
+    startAutoTrigger()
+  }
+})
 </script>
 
 <style scoped>

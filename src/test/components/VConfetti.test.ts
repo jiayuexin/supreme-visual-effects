@@ -1,10 +1,9 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
-import VConfetti from './VConfetti.vue'
+import VConfetti from '../../components/VConfetti.vue'
 
 describe('VConfetti', () => {
   beforeEach(() => {
-    // Mock canvas getContext
     const mockGetContext = vi.fn().mockImplementation(() => ({
       fillRect: vi.fn(),
       beginPath: vi.fn(),
@@ -22,7 +21,6 @@ describe('VConfetti', () => {
 
     global.HTMLCanvasElement.prototype.getContext = mockGetContext
 
-    // Mock requestAnimationFrame
     global.requestAnimationFrame = vi.fn((cb: FrameRequestCallback) => {
       return window.setTimeout(cb, 16)
     }) as unknown as (callback: FrameRequestCallback) => number
@@ -33,7 +31,6 @@ describe('VConfetti', () => {
       }
     }) as unknown as (handle: number) => void
 
-    // Mock window methods
     global.window.innerWidth = 1024
     global.window.innerHeight = 768
   })
@@ -152,7 +149,6 @@ describe('VConfetti', () => {
       props: defaultProps,
     })
 
-    // Test that the method exists
     expect(typeof wrapper.vm.burst).toBe('function')
   })
 
@@ -161,7 +157,6 @@ describe('VConfetti', () => {
       props: defaultProps,
     })
 
-    // Test that the method exists
     expect(typeof wrapper.vm.stop).toBe('function')
   })
 })

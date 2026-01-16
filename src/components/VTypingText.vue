@@ -14,19 +14,19 @@ import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 
 interface TypingTextProps {
   text: string | string[]
-  speed: number
-  delay: number
-  pause: number
-  loop: boolean
-  cursor: boolean
-  cursorChar: string
-  cursorSpeed: number
-  eraseSpeed: number
-  eraseDelay: number
-  autoStart: boolean
-  color: string
-  fontSize: string
-  fontFamily: string
+  speed?: number
+  delay?: number
+  pause?: number
+  loop?: boolean
+  cursor?: boolean
+  cursorChar?: string
+  cursorSpeed?: number
+  eraseSpeed?: number
+  eraseDelay?: number
+  autoStart?: boolean
+  color?: string
+  fontSize?: string
+  fontFamily?: string
 }
 
 const props = withDefaults(defineProps<TypingTextProps>(), {

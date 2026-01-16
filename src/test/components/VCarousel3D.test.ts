@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import VCarousel3D from './VCarousel3D.vue'
+import VCarousel3D from '../../components/VCarousel3D.vue'
 
 describe('VCarousel3D', () => {
   const mockItems = [
@@ -91,9 +91,7 @@ describe('VCarousel3D', () => {
       },
     })
 
-    // 直接调用组件方法
     wrapper.vm.goToNext()
-    // 等待下一个tick
     await wrapper.vm.$nextTick()
     expect(wrapper.emitted('update:currentIndex')).toBeTruthy()
   })

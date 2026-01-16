@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import VScrollReveal from './VScrollReveal.vue'
+import VScrollReveal from '../../components/VScrollReveal.vue'
 
 describe('VScrollReveal', () => {
   it('renders slot content', () => {

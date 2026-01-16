@@ -67,6 +67,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { useReducedMotion } from '../composables/useReducedMotion'
 
 interface CarouselItem {
   id?: string | number
@@ -90,6 +91,7 @@ interface Props {
   transitionDuration?: number
   loop?: boolean
   touchSensitivity?: number
+  respectReducedMotion?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -105,6 +107,14 @@ const props = withDefaults(defineProps<Props>(), {
   transitionDuration: 500,
   loop: true,
   touchSensitivity: 50,
+  respectReducedMotion: true,
+})
+
+const { prefersReducedMotion } = useReducedMotion()
+
+// Check if 3D effects should be simplified
+const shouldSimplify = computed(() => {
+  return props.respectReducedMotion && prefersReducedMotion.value
 })
 
 const emit = defineEmits<{
@@ -130,9 +140,10 @@ const containerStyle = computed(() => ({
 
 const wrapperStyle = computed(() => ({
   transformStyle: 'preserve-3d',
-  transition: isTransitioning.value
-    ? `transform ${props.transitionDuration}ms cubic-bezier(0.25, 0.46, 0.45, 0.94)`
-    : 'none',
+  transition:
+    isTransitioning.value && !shouldSimplify.value
+      ? `transform ${props.transitionDuration}ms cubic-bezier(0.25, 0.46, 0.45, 0.94)`
+      : 'none',
 }))
 
 const canGoPrev = computed(() => {
@@ -144,6 +155,22 @@ const canGoNext = computed(() => {
 })
 
 const getItemStyle = (index: number) => {
+  const isActive = index === currentIndex.value
+
+  // Simplified style for reduced motion - no 3D transforms
+  if (shouldSimplify.value) {
+    return {
+      transform: 'none',
+      opacity: isActive ? 1 : 0,
+      zIndex: isActive ? 10 : 1,
+      position: 'absolute' as const,
+      top: '50%',
+      left: '50%',
+      marginLeft: '-150px',
+      marginTop: '-100px',
+    }
+  }
+
   const totalItems = props.items.length
   const angle = (360 / totalItems) * index
   const radius = props.itemSpacing!
@@ -151,7 +178,6 @@ const getItemStyle = (index: number) => {
   const x = Math.sin((angle * Math.PI) / 180) * radius!
   const z = Math.cos((angle * Math.PI) / 180) * radius!
 
-  const isActive = index === currentIndex.value
   const scale = isActive ? 1 : props.scale
   const opacity = isActive ? 1 : 0.6
 
@@ -191,7 +217,8 @@ const goToPrev = () => {
 }
 
 const startAutoPlay = () => {
-  if (!props.autoPlay || isHovered.value) return
+  // Disable autoplay when reduced motion is preferred
+  if (!props.autoPlay || isHovered.value || shouldSimplify.value) return
 
   autoPlayTimer = window.setInterval(() => {
     goToNext()

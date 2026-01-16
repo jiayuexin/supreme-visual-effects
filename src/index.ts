@@ -20,6 +20,35 @@ import VScrollProgress from './components/VScrollProgress.vue'
 import VConfetti from './components/VConfetti.vue'
 import './styles/themes.css'
 
+// Export composables
+export { useBrowser, isBrowser, isSSR, getElementRect, raf, cancelRaf } from './composables/useBrowser'
+
+export {
+  useAnimation,
+  easings,
+  type AnimationOptions,
+  type AnimationControls,
+  type EasingFunction,
+  type EasingName,
+} from './composables/useAnimation'
+
+export {
+  useIntersectionObserver,
+  isIntersectionObserverSupported,
+  type IntersectionObserverOptions,
+  type IntersectionObserverReturn,
+} from './composables/useIntersectionObserver'
+
+export {
+  useResizeObserver,
+  useWindowResize,
+  isResizeObserverSupported,
+  type ResizeObserverOptions,
+  type ResizeObserverReturn,
+} from './composables/useResizeObserver'
+
+export { useReducedMotion, checkReducedMotion } from './composables/useReducedMotion'
+
 const components = {
   VScrollReveal,
   VParticleField,

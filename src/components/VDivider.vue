@@ -28,20 +28,20 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 
 interface DividerProps {
-  type: 'line' | 'wave' | 'dots' | 'gradient' | 'animated'
-  color: string
-  width: string
-  height: string
-  strokeWidth: number
-  text: string
-  textColor: string
-  textSize: string
-  animation: boolean
-  animationSpeed: number
-  gradientColors: string[]
-  dotCount: number
-  dotSize: number
-  spacing: string
+  type?: 'line' | 'wave' | 'dots' | 'gradient' | 'animated'
+  color?: string
+  width?: string
+  height?: string
+  strokeWidth?: number
+  text?: string
+  textColor?: string
+  textSize?: string
+  animation?: boolean
+  animationSpeed?: number
+  gradientColors?: string[]
+  dotCount?: number
+  dotSize?: number
+  spacing?: string
 }
 
 const props = withDefaults(defineProps<DividerProps>(), {

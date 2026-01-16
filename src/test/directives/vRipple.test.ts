@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
-import { VRipple } from './vRipple'
+import { VRipple } from '../../directives/vRipple'
 
 const TestComponent = {
   template: '<button v-ripple>Click</button>',

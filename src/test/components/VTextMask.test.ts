@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import VTextMask from './VTextMask.vue'
+import VTextMask from '../../components/VTextMask.vue'
 
 describe('VTextMask', () => {
   it('should render correctly with default props', () => {

@@ -1,11 +1,15 @@
 <template>
-  <div ref="container" class="confetti-container" :style="containerStyle">
+  <div ref="container" class="confetti-container" :style="containerStyle" role="presentation" aria-hidden="true">
     <canvas ref="canvas" class="confetti-canvas" :style="canvasStyle"></canvas>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { useReducedMotion } from '../composables/useReducedMotion'
+import { useAnimation } from '../composables/useAnimation'
+import { useWindowResize } from '../composables/useResizeObserver'
+import { isBrowser } from '../composables/useBrowser'
 
 interface ConfettiParticle {
   x: number
@@ -22,21 +26,22 @@ interface ConfettiParticle {
 }
 
 interface ConfettiProps {
-  enabled: boolean
-  particleCount: number
-  colors: string[]
-  shapes: ('circle' | 'square' | 'triangle')[]
-  gravity: number
-  wind: number
-  speed: number
-  spread: number
-  size: number
-  duration: number
-  burst: boolean
-  continuous: boolean
-  continuousInterval: number
-  position: 'top' | 'center' | 'bottom' | 'random'
-  direction: 'up' | 'down' | 'left' | 'right' | 'random'
+  enabled?: boolean
+  particleCount?: number
+  colors?: string[]
+  shapes?: ('circle' | 'square' | 'triangle')[]
+  gravity?: number
+  wind?: number
+  speed?: number
+  spread?: number
+  size?: number
+  duration?: number
+  burst?: boolean
+  continuous?: boolean
+  continuousInterval?: number
+  position?: 'top' | 'center' | 'bottom' | 'random'
+  direction?: 'up' | 'down' | 'left' | 'right' | 'random'
+  respectReducedMotion?: boolean
 }
 
 const props = withDefaults(defineProps<ConfettiProps>(), {
@@ -55,6 +60,7 @@ const props = withDefaults(defineProps<ConfettiProps>(), {
   continuousInterval: 1000,
   position: 'top',
   direction: 'up',
+  respectReducedMotion: true,
 })
 
 const emit = defineEmits<{
@@ -64,14 +70,33 @@ const emit = defineEmits<{
   (e: 'particle-destroy', particle: ConfettiParticle): void
 }>()
 
-const is_browser = typeof window !== 'undefined' && typeof document !== 'undefined'
+const { prefersReducedMotion } = useReducedMotion()
+
+// Check if animations should be disabled
+const shouldDisableAnimation = computed(() => {
+  return props.respectReducedMotion && prefersReducedMotion.value
+})
 
 const container = ref<HTMLElement | null>(null)
 const canvas = ref<HTMLCanvasElement | null>(null)
 const particles = ref<ConfettiParticle[]>([])
-const animationId = ref<number | null>(null)
-const continuousTimer = ref<number | null>(null)
 const startTime = ref(0)
+let continuousTimer: number | null = null
+let ctx: CanvasRenderingContext2D | null = null
+
+// Use window resize for full-screen canvas
+useWindowResize({
+  onResize: resize,
+})
+
+// Animation loop
+const {
+  isRunning,
+  start: startAnimation,
+  stop: stopAnimation,
+} = useAnimation({
+  onFrame: animate,
+})
 
 const containerStyle = computed(() => ({
   position: 'fixed' as const,
@@ -139,7 +164,7 @@ const createParticle = (x: number, y: number): ConfettiParticle => {
 }
 
 const getBurstPosition = () => {
-  if (!is_browser || !canvas.value) return { x: 0, y: 0 }
+  if (!canvas.value) return { x: 0, y: 0 }
 
   const width = canvas.value.width
   const height = canvas.value.height
@@ -159,7 +184,14 @@ const getBurstPosition = () => {
 }
 
 const burst = () => {
-  if (!is_browser || !props.enabled) return
+  if (!isBrowser || !props.enabled) return
+
+  // Skip animation if reduced motion is preferred
+  if (shouldDisableAnimation.value) {
+    emit('confetti-start')
+    emit('confetti-end')
+    return
+  }
 
   emit('confetti-start')
   startTime.value = Date.now()
@@ -171,23 +203,20 @@ const burst = () => {
     particles.value.push(particle)
   }
 
-  if (!animationId.value) {
-    animate()
+  if (!isRunning.value) {
+    startAnimation()
   }
 }
 
-const animate = () => {
-  if (!is_browser || !canvas.value) return
-
-  const ctx = canvas.value.getContext('2d')
-  if (!ctx) return
+function animate() {
+  if (!canvas.value || !ctx) return
 
   ctx.clearRect(0, 0, canvas.value.width, canvas.value.height)
 
   const currentTime = Date.now()
   const elapsed = currentTime - startTime.value
 
-  // Remove particles that are too old or have no life left
+  // Remove old particles
   particles.value = particles.value.filter(particle => {
     particle.life -= 1 / (props.duration / 16)
     return particle.life > 0 && elapsed < props.duration
@@ -203,76 +232,72 @@ const animate = () => {
     particle.rotation += particle.rotationSpeed
 
     // Draw particle
-    ctx.save()
-    ctx.translate(particle.x, particle.y)
-    ctx.rotate((particle.rotation * Math.PI) / 180)
-    ctx.globalAlpha = particle.life
-    ctx.fillStyle = particle.color
+    ctx!.save()
+    ctx!.translate(particle.x, particle.y)
+    ctx!.rotate((particle.rotation * Math.PI) / 180)
+    ctx!.globalAlpha = particle.life
+    ctx!.fillStyle = particle.color
 
     switch (particle.shape) {
       case 'circle':
-        ctx.beginPath()
-        ctx.arc(0, 0, particle.size / 2, 0, Math.PI * 2)
-        ctx.fill()
+        ctx!.beginPath()
+        ctx!.arc(0, 0, particle.size / 2, 0, Math.PI * 2)
+        ctx!.fill()
         break
       case 'square':
-        ctx.fillRect(-particle.size / 2, -particle.size / 2, particle.size, particle.size)
+        ctx!.fillRect(-particle.size / 2, -particle.size / 2, particle.size, particle.size)
         break
       case 'triangle':
-        ctx.beginPath()
-        ctx.moveTo(0, -particle.size / 2)
-        ctx.lineTo(-particle.size / 2, particle.size / 2)
-        ctx.lineTo(particle.size / 2, particle.size / 2)
-        ctx.closePath()
-        ctx.fill()
+        ctx!.beginPath()
+        ctx!.moveTo(0, -particle.size / 2)
+        ctx!.lineTo(-particle.size / 2, particle.size / 2)
+        ctx!.lineTo(particle.size / 2, particle.size / 2)
+        ctx!.closePath()
+        ctx!.fill()
         break
     }
 
-    ctx.restore()
+    ctx!.restore()
   })
 
-  // Continue animation if there are particles or continuous mode
-  if (particles.value.length > 0 || (props.continuous && props.enabled)) {
-    animationId.value = requestAnimationFrame(animate)
-  } else {
-    animationId.value = null
+  // Stop animation if no particles and not continuous
+  if (particles.value.length === 0 && !props.continuous) {
+    stopAnimation()
     emit('confetti-end')
   }
 }
 
 const startContinuous = () => {
-  if (!is_browser || !props.continuous || !props.enabled) return
+  if (!isBrowser || !props.continuous || !props.enabled) return
+  if (shouldDisableAnimation.value) return
 
-  continuousTimer.value = window.setInterval(() => {
+  continuousTimer = window.setInterval(() => {
     burst()
   }, props.continuousInterval)
 }
 
 const stopContinuous = () => {
-  if (!is_browser || !continuousTimer.value) return
-  clearInterval(continuousTimer.value)
-  continuousTimer.value = null
+  if (continuousTimer !== null) {
+    clearInterval(continuousTimer)
+    continuousTimer = null
+  }
 }
 
 const stop = () => {
-  if (!is_browser) return
   particles.value = []
-  if (animationId.value) {
-    cancelAnimationFrame(animationId.value)
-    animationId.value = null
-  }
+  stopAnimation()
   stopContinuous()
 }
 
-const resize = () => {
-  if (!is_browser || !canvas.value || !container.value) return
+function resize() {
+  if (!canvas.value || !container.value) return
 
   const rect = container.value.getBoundingClientRect()
   canvas.value.width = rect.width
   canvas.value.height = rect.height
 }
 
-// 暴露方法给父组件
+// Expose methods
 defineExpose({
   burst,
   stop,
@@ -281,9 +306,10 @@ defineExpose({
 })
 
 onMounted(() => {
-  if (!is_browser) return
+  if (!isBrowser || !canvas.value) return
+
+  ctx = canvas.value.getContext('2d')
   resize()
-  window.addEventListener('resize', resize)
 
   if (props.continuous) {
     startContinuous()
@@ -291,15 +317,13 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  if (!is_browser) return
   stop()
-  window.removeEventListener('resize', resize)
 })
 
 watch(
   () => props.enabled,
   (newVal: boolean) => {
-    if (!is_browser) return
+    if (!isBrowser) return
     if (newVal && props.continuous) {
       startContinuous()
     } else {
@@ -311,7 +335,7 @@ watch(
 watch(
   () => props.continuous,
   (newVal: boolean) => {
-    if (!is_browser) return
+    if (!isBrowser) return
     if (newVal && props.enabled) {
       startContinuous()
     } else {

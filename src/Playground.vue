@@ -1,6 +1,6 @@
 <template>
   <div class="playground">
-    <VParticleField />
+    <VParticleField class="particle-bg" />
     <main>
       <h1>Supreme Visual Effects - Complete Playground</h1>
 
@@ -19,12 +19,13 @@
 
         <div class="demo-container">
           <h3>VStarfield</h3>
-          <VStarfield :star-count="150" :speed="0.3" :mouse-interaction="true" class="starfield-demo">
+          <div class="starfield-demo">
+            <VStarfield :star-count="150" :speed="0.3" :mouse-interaction="true" class="starfield-canvas" />
             <div class="starfield-content">
               <h4>3D Starfield</h4>
               <p>Interactive starfield background</p>
             </div>
-          </VStarfield>
+          </div>
         </div>
       </section>
 
@@ -260,9 +261,8 @@ const triggerConfetti = () => {
 
 <style>
 body {
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
+    'Helvetica Neue', sans-serif;
   background-color: #1a1a1a;
   color: #e2e8f0;
   line-height: 1.6;
@@ -275,6 +275,16 @@ body {
   position: relative;
 }
 
+.particle-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
 main {
   max-width: 1200px;
   margin: 0 auto;
@@ -284,6 +294,8 @@ main {
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  z-index: 1;
 }
 
 h1,
@@ -348,10 +360,19 @@ section {
 
 /* Starfield demo */
 .starfield-demo {
-  height: 200px;
+  height: 300px;
   border-radius: 8px;
   overflow: hidden;
   position: relative;
+  background: #000;
+}
+
+.starfield-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .starfield-content {
@@ -364,6 +385,7 @@ section {
   align-items: center;
   color: white;
   text-align: center;
+  pointer-events: none;
 }
 
 .starfield-content h4 {

@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
-import VParticleField from './VParticleField.vue'
+import VParticleField from '../../components/VParticleField.vue'
 
 describe('VParticleField', () => {
   // Mock the canvas API

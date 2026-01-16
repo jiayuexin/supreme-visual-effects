@@ -54,17 +54,17 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 interface ImageComparisonProps {
   beforeImage: string
   afterImage: string
-  beforeAlt: string
-  afterAlt: string
-  beforeLabel: string
-  afterLabel: string
-  initialPosition: number
-  sliderColor: string
-  sliderSize: number
-  handleSize: number
-  showLabels: boolean
-  keyboardControl: boolean
-  animationDuration: number
+  beforeAlt?: string
+  afterAlt?: string
+  beforeLabel?: string
+  afterLabel?: string
+  initialPosition?: number
+  sliderColor?: string
+  sliderSize?: number
+  handleSize?: number
+  showLabels?: boolean
+  keyboardControl?: boolean
+  animationDuration?: number
 }
 
 const props = withDefaults(defineProps<ImageComparisonProps>(), {

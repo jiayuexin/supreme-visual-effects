@@ -13,21 +13,23 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { useReducedMotion } from '../composables/useReducedMotion'
 
 interface NeonTextProps {
   text: string
-  color: string
-  glowColor: string
-  glowIntensity: number
-  glowSpread: number
-  animation: boolean
-  animationType: 'flicker' | 'pulse' | 'wave' | 'none'
-  animationSpeed: number
-  fontSize: string
-  fontFamily: string
-  fontWeight: string
-  hoverEffect: boolean
-  hoverGlowIntensity: number
+  color?: string
+  glowColor?: string
+  glowIntensity?: number
+  glowSpread?: number
+  animation?: boolean
+  animationType?: 'flicker' | 'pulse' | 'wave' | 'none'
+  animationSpeed?: number
+  fontSize?: string
+  fontFamily?: string
+  fontWeight?: string
+  hoverEffect?: boolean
+  hoverGlowIntensity?: number
+  respectReducedMotion?: boolean
 }
 
 const props = withDefaults(defineProps<NeonTextProps>(), {
@@ -43,6 +45,14 @@ const props = withDefaults(defineProps<NeonTextProps>(), {
   fontWeight: 'bold',
   hoverEffect: true,
   hoverGlowIntensity: 40,
+  respectReducedMotion: true,
+})
+
+const { prefersReducedMotion } = useReducedMotion()
+
+// Check if animations should be disabled
+const shouldDisableAnimation = computed(() => {
+  return props.respectReducedMotion && prefersReducedMotion.value
 })
 
 const emit = defineEmits<{
@@ -55,10 +65,10 @@ const animationId = ref<number | null>(null)
 const time = ref(0)
 
 const neonClasses = computed(() => ({
-  'neon-flicker': props.animation && props.animationType === 'flicker',
-  'neon-pulse': props.animation && props.animationType === 'pulse',
-  'neon-wave': props.animation && props.animationType === 'wave',
-  'neon-hover': isHovered.value && props.hoverEffect,
+  'neon-flicker': props.animation && props.animationType === 'flicker' && !shouldDisableAnimation.value,
+  'neon-pulse': props.animation && props.animationType === 'pulse' && !shouldDisableAnimation.value,
+  'neon-wave': props.animation && props.animationType === 'wave' && !shouldDisableAnimation.value,
+  'neon-hover': isHovered.value && props.hoverEffect && !shouldDisableAnimation.value,
 }))
 
 const containerStyle = computed(() => ({
@@ -82,7 +92,7 @@ const neonStyle = computed(() => {
 })
 
 const getAnimatedIntensity = (baseIntensity: number) => {
-  if (!props.animation) return baseIntensity
+  if (!props.animation || shouldDisableAnimation.value) return baseIntensity
 
   switch (props.animationType) {
     case 'flicker': {
@@ -158,7 +168,7 @@ const startAnimation = () => {
     cancelAnimationFrame(animationId.value)
   }
 
-  if (props.animation && props.animationType !== 'none') {
+  if (props.animation && props.animationType !== 'none' && !shouldDisableAnimation.value) {
     animate()
   }
 }
@@ -183,13 +193,22 @@ onUnmounted(() => {
 watch(
   () => [props.animation, props.animationType, props.animationSpeed],
   () => {
-    if (props.animation && props.animationType !== 'none') {
+    if (props.animation && props.animationType !== 'none' && !shouldDisableAnimation.value) {
       startAnimation()
     } else {
       stopAnimation()
     }
   }
 )
+
+// Stop animation when reduced motion preference changes
+watch(shouldDisableAnimation, disabled => {
+  if (disabled) {
+    stopAnimation()
+  } else if (props.animation && props.animationType !== 'none') {
+    startAnimation()
+  }
+})
 </script>
 
 <style scoped>

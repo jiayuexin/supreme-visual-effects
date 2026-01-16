@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import VScrollProgress from './VScrollProgress.vue'
+import VScrollProgress from '../../components/VScrollProgress.vue'
 
 describe('VScrollProgress', () => {
   it('should render correctly with default props', () => {

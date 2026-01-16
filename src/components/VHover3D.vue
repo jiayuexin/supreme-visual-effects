@@ -17,14 +17,14 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 
 interface Hover3DProps {
-  perspective: number
-  intensity: number
-  transition: string
-  resetOnLeave: boolean
-  axis: 'x' | 'y' | 'both'
-  reverse: boolean
-  scale: number
-  scaleOnHover: number
+  perspective?: number
+  intensity?: number
+  transition?: string
+  resetOnLeave?: boolean
+  axis?: 'x' | 'y' | 'both'
+  reverse?: boolean
+  scale?: number
+  scaleOnHover?: number
 }
 
 const props = withDefaults(defineProps<Hover3DProps>(), {

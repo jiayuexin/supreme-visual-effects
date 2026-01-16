@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
-import VStarfield from './VStarfield.vue'
+import VStarfield from '../../components/VStarfield.vue'
 
 describe('VStarfield', () => {
   beforeEach(() => {
@@ -13,6 +13,7 @@ describe('VStarfield', () => {
       save: vi.fn(),
       restore: vi.fn(),
       closePath: vi.fn(),
+      clearRect: vi.fn(),
     }))
 
     global.HTMLCanvasElement.prototype.getContext = mockGetContext
@@ -30,16 +31,23 @@ describe('VStarfield', () => {
       toJSON: vi.fn(),
     })
 
+    // Mock ResizeObserver
+    global.ResizeObserver = vi.fn().mockImplementation(_callback => ({
+      observe: vi.fn(),
+      unobserve: vi.fn(),
+      disconnect: vi.fn(),
+    }))
+
     // Mock requestAnimationFrame
     global.requestAnimationFrame = vi.fn((cb: FrameRequestCallback) => {
-      return window.setTimeout(cb, 16)
-    }) as unknown as (callback: FrameRequestCallback) => number
+      return window.setTimeout(cb, 16) as unknown as number
+    })
 
     global.cancelAnimationFrame = vi.fn((id: number) => {
       if (id) {
         clearTimeout(id)
       }
-    }) as unknown as (handle: number) => void
+    })
 
     // Mock window.addEventListener
     vi.spyOn(window, 'addEventListener').mockImplementation(() => {})
@@ -48,6 +56,7 @@ describe('VStarfield', () => {
 
   afterEach(() => {
     vi.restoreAllMocks()
+    vi.clearAllTimers()
   })
 
   it('should render correctly with default props', () => {

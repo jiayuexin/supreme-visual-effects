@@ -28,19 +28,19 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 
 interface MagneticButtonProps {
-  magneticStrength: number
-  magneticRange: number
-  animationDuration: number
-  disabled: boolean
-  ripple: boolean
-  rippleColor: string
-  scale: number
-  backgroundColor: string
-  textColor: string
-  borderRadius: string
-  padding: string
-  fontSize: string
-  fontWeight: string
+  magneticStrength?: number
+  magneticRange?: number
+  animationDuration?: number
+  disabled?: boolean
+  ripple?: boolean
+  rippleColor?: string
+  scale?: number
+  backgroundColor?: string
+  textColor?: string
+  borderRadius?: string
+  padding?: string
+  fontSize?: string
+  fontWeight?: string
 }
 
 const props = withDefaults(defineProps<MagneticButtonProps>(), {

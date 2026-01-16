@@ -17,21 +17,21 @@
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 
 interface ScrollProgressProps {
-  color: string
-  height: string
-  position: 'top' | 'bottom' | 'left' | 'right'
-  width: string
-  showPercentage: boolean
-  textColor: string
-  textSize: string
-  animation: boolean
-  animationDuration: number
-  gradient: boolean
-  gradientColors: string[]
-  glow: boolean
-  glowIntensity: number
-  target: string
-  offset: number
+  color?: string
+  height?: string
+  position?: 'top' | 'bottom' | 'left' | 'right'
+  width?: string
+  showPercentage?: boolean
+  textColor?: string
+  textSize?: string
+  animation?: boolean
+  animationDuration?: number
+  gradient?: boolean
+  gradientColors?: string[]
+  glow?: boolean
+  glowIntensity?: number
+  target?: string
+  offset?: number
 }
 
 const props = withDefaults(defineProps<ScrollProgressProps>(), {

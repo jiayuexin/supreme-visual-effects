@@ -19,10 +19,10 @@ interface ParallaxLayer {
 }
 
 interface ParallaxProps {
-  layers: ParallaxLayer[]
-  enabled: boolean
-  throttle: number
-  offset: number
+  layers?: ParallaxLayer[]
+  enabled?: boolean
+  throttle?: number
+  offset?: number
 }
 
 const props = withDefaults(defineProps<ParallaxProps>(), {
