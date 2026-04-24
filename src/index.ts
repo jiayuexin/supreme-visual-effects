@@ -18,6 +18,12 @@ import VLightbox from './components/VLightbox.vue'
 import VDivider from './components/VDivider.vue'
 import VScrollProgress from './components/VScrollProgress.vue'
 import VConfetti from './components/VConfetti.vue'
+import VCountUp from './components/VCountUp.vue'
+import VMarquee from './components/VMarquee.vue'
+import VTextReveal from './components/VTextReveal.vue'
+import VFlipCard from './components/VFlipCard.vue'
+import VCursor from './components/VCursor.vue'
+import VWaveBackground from './components/VWaveBackground.vue'
 import './styles/themes.css'
 
 // Export composables
@@ -68,6 +74,12 @@ const components = {
   VDivider,
   VScrollProgress,
   VConfetti,
+  VCountUp,
+  VMarquee,
+  VTextReveal,
+  VFlipCard,
+  VCursor,
+  VWaveBackground,
 }
 
 const directives = {
@@ -150,5 +162,11 @@ export {
   VDivider,
   VScrollProgress,
   VConfetti,
+  VCountUp,
+  VMarquee,
+  VTextReveal,
+  VFlipCard,
+  VCursor,
+  VWaveBackground,
   VRipple,
 }
