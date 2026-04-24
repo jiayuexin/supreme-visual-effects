@@ -16,8 +16,7 @@
         "types": "./dist/supreme-visual-effects.d.ts",
         "default": "./dist/supreme-visual-effects.cjs.js"
       }
-    },
-    "./styles/*": "./dist/styles/*"
+    }
   },
   "sideEffects": [
     "*.css"

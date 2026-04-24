@@ -10,6 +10,7 @@
     @touchstart="handleTouchStart"
     @touchmove="handleTouchMove"
     @touchend="handleTouchEnd"
+    @touchcancel="handleTouchEnd"
   >
     <!-- Before image -->
     <div class="image-before">
