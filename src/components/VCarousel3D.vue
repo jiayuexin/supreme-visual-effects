@@ -127,6 +127,7 @@ const container = ref<HTMLElement | null>(null)
 const currentIndex = ref(props.currentIndex)
 const isHovered = ref(false)
 const isTransitioning = ref(false)
+const isMounted = ref(true)
 const touchStartX = ref(0)
 const touchStartTime = ref(0)
 let autoPlayTimer: number | null = null
@@ -198,6 +199,7 @@ const goToIndex = (index: number) => {
   emit('item-change', index, props.items[index])
 
   setTimeout(() => {
+    if (!isMounted.value) return
     isTransitioning.value = false
   }, props.transitionDuration)
 }
@@ -275,12 +277,14 @@ const handleTouchEnd = (e: TouchEvent) => {
 }
 
 onMounted(() => {
+  isMounted.value = true
   if (props.autoPlay) {
     startAutoPlay()
   }
 })
 
 onUnmounted(() => {
+  isMounted.value = false
   stopAutoPlay()
 })
 

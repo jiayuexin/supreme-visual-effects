@@ -63,6 +63,7 @@ const emit = defineEmits<{
 const isHovered = ref(false)
 const animationId = ref<number | null>(null)
 const time = ref(0)
+const flickerValue = ref(1)
 
 const neonClasses = computed(() => ({
   'neon-flicker': props.animation && props.animationType === 'flicker' && !shouldDisableAnimation.value,
@@ -96,8 +97,7 @@ const getAnimatedIntensity = (baseIntensity: number) => {
 
   switch (props.animationType) {
     case 'flicker': {
-      const flicker = Math.random() > 0.5 ? 1 : 0.3
-      return baseIntensity * flicker
+      return baseIntensity * flickerValue.value
     }
     case 'pulse': {
       const pulse = 0.5 + 0.5 * Math.sin(time.value * props.animationSpeed * 2)
@@ -143,13 +143,11 @@ const animate = () => {
   time.value += 0.016 * props.animationSpeed // 约60fps
 
   if (props.animationType === 'flicker') {
-    // 闪烁效果需要更频繁的更新
+    flickerValue.value = Math.random() > 0.5 ? 1 : 0.3
+  }
+
+  if (props.animation && props.animationType !== 'none' && !shouldDisableAnimation.value) {
     animationId.value = requestAnimationFrame(animate)
-  } else {
-    // 其他效果可以降低更新频率
-    setTimeout(() => {
-      animationId.value = requestAnimationFrame(animate)
-    }, 16)
   }
 }
 

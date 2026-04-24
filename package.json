@@ -1,15 +1,56 @@
 {
   "name": "supreme-visual-effects",
   "version": "0.0.1",
-  "private": true,
+  "description": "A Vue 3 visual effects component library with 18+ GPU-accelerated components",
   "type": "module",
-  "main": "./dist/supreme-visual-effects.cjs",
-  "module": "./dist/supreme-visual-effects.js",
+  "main": "./dist/supreme-visual-effects.cjs.js",
+  "module": "./dist/supreme-visual-effects.mjs.js",
+  "types": "./dist/supreme-visual-effects.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/supreme-visual-effects.js",
-      "require": "./dist/supreme-visual-effects.cjs"
-    }
+      "import": {
+        "types": "./dist/supreme-visual-effects.d.ts",
+        "default": "./dist/supreme-visual-effects.mjs.js"
+      },
+      "require": {
+        "types": "./dist/supreme-visual-effects.d.ts",
+        "default": "./dist/supreme-visual-effects.cjs.js"
+      }
+    },
+    "./styles/*": "./dist/styles/*"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "files": [
+    "dist"
+  ],
+  "homepage": "https://github.com/jiayuexin/supreme-visual-effects",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jiayuexin/supreme-visual-effects.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jiayuexin/supreme-visual-effects/issues"
+  },
+  "keywords": [
+    "vue",
+    "vue3",
+    "effects",
+    "visual-effects",
+    "animation",
+    "transition",
+    "components",
+    "ui",
+    "typescript"
+  ],
+  "author": "Jaya",
+  "license": "MIT",
+  "peerDependencies": {
+    "vue": "^3.3.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
   },
   "scripts": {
     "dev": "vite",
@@ -25,8 +66,7 @@
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
     "prepare": "husky",
-    "precommit": "lint-staged",
-    "build:lib": "rollup -c"
+    "precommit": "lint-staged"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.2",
@@ -54,18 +94,11 @@
     "rollup-plugin-dts": "^6.1.0",
     "rollup-plugin-vue": "^6.0.0",
     "typescript": "^5.4.5",
-    "vite": "^5.2.13",
+    "vite": "^5.4.6",
+    "vite-plugin-dts": "^4.5.4",
     "vitepress": "^1.2.0",
     "vitest": "^1.4.0",
     "vue": "^3.5.22",
     "vue-eslint-parser": "^10.2.0"
-  },
-  "keywords": [
-    "vue",
-    "vue3",
-    "effects",
-    "visual-effects"
-  ],
-  "author": "Jaya",
-  "license": "MIT"
+  }
 }

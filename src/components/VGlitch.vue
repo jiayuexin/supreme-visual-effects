@@ -88,9 +88,18 @@ const emit = defineEmits<{
 const container = ref<HTMLElement | null>(null)
 const isGlitching = ref(false)
 const isHovered = ref(false)
-let glitchTimer: number | null = null
-let autoTimer: number | null = null
+const isMounted = ref(true)
+let glitchTimer: ReturnType<typeof setTimeout> | null = null
+let autoTimer: ReturnType<typeof setTimeout> | null = null
+let animationFrameId: number | null = null
 const currentEffect = ref<GlitchEffect | null>(null)
+
+// Random values updated by animation loop to avoid Math.random() in computed
+const randomOffsetX = ref(0)
+const randomOffsetY = ref(0)
+const randomHue = ref(0)
+const randomSkewX = ref(0)
+const randomSkewY = ref(0)
 
 const glitchClasses = computed(() => ({
   'glitch-active': isGlitching.value,
@@ -124,13 +133,13 @@ const contentStyle = computed(() => {
     case 'shake':
       return {
         ...baseStyle,
-        transform: `translate(${getRandomOffset()}px, ${getRandomOffset()}px)`,
-        filter: `hue-rotate(${getRandomHue()}deg)`,
+        transform: `translate(${randomOffsetX.value}px, ${randomOffsetY.value}px)`,
+        filter: `hue-rotate(${randomHue.value}deg)`,
       }
     case 'rgb':
       return {
         ...baseStyle,
-        filter: `sepia(1) hue-rotate(${getRandomHue()}deg) saturate(2)`,
+        filter: `sepia(1) hue-rotate(${randomHue.value}deg) saturate(2)`,
       }
     case 'noise':
       return {
@@ -145,7 +154,7 @@ const contentStyle = computed(() => {
     case 'distort':
       return {
         ...baseStyle,
-        transform: `skew(${getRandomSkew()}deg, ${getRandomSkew()}deg)`,
+        transform: `skew(${randomSkewX.value}deg, ${randomSkewY.value}deg)`,
       }
     default:
       return baseStyle
@@ -164,7 +173,7 @@ const redLayerStyle = computed(() => ({
   height: '100%',
   color: '#ff0000',
   mixBlendMode: 'screen',
-  transform: `translateX(${getRandomOffset()}px)`,
+  transform: `translateX(${randomOffsetX.value}px)`,
   opacity: 0.8,
   zIndex: 2,
 }))
@@ -177,7 +186,7 @@ const greenLayerStyle = computed(() => ({
   height: '100%',
   color: '#00ff00',
   mixBlendMode: 'screen',
-  transform: `translateX(${getRandomOffset()}px)`,
+  transform: `translateX(${randomOffsetX.value}px)`,
   opacity: 0.8,
   zIndex: 3,
 }))
@@ -190,21 +199,31 @@ const blueLayerStyle = computed(() => ({
   height: '100%',
   color: '#0000ff',
   mixBlendMode: 'screen',
-  transform: `translateX(${getRandomOffset()}px)`,
+  transform: `translateX(${randomOffsetX.value}px)`,
   opacity: 0.8,
   zIndex: 4,
 }))
 
-const getRandomOffset = () => {
-  return (Math.random() - 0.5) * props.shakeIntensity * 2
+const updateRandomValues = () => {
+  if (!isGlitching.value) return
+  randomOffsetX.value = (Math.random() - 0.5) * props.shakeIntensity * 2
+  randomOffsetY.value = (Math.random() - 0.5) * props.shakeIntensity * 2
+  randomHue.value = (Math.random() - 0.5) * 360
+  randomSkewX.value = (Math.random() - 0.5) * props.distortIntensity * 10
+  randomSkewY.value = (Math.random() - 0.5) * props.distortIntensity * 10
+  animationFrameId = requestAnimationFrame(updateRandomValues)
 }
 
-const getRandomHue = () => {
-  return (Math.random() - 0.5) * 360
+const startGlitchAnimation = () => {
+  stopGlitchAnimation()
+  animationFrameId = requestAnimationFrame(updateRandomValues)
 }
 
-const getRandomSkew = () => {
-  return (Math.random() - 0.5) * props.distortIntensity * 10
+const stopGlitchAnimation = () => {
+  if (animationFrameId) {
+    cancelAnimationFrame(animationFrameId)
+    animationFrameId = null
+  }
 }
 
 const triggerGlitch = () => {
@@ -219,6 +238,7 @@ const startGlitch = () => {
 
   isGlitching.value = true
   emit('glitch-start')
+  startGlitchAnimation()
 
   // 随机选择一个效果
   const randomEffect = props.effects[Math.floor(Math.random() * props.effects.length)]
@@ -228,6 +248,7 @@ const startGlitch = () => {
   const duration = randomEffect.duration * props.intensity
 
   glitchTimer = window.setTimeout(() => {
+    if (!isMounted.value) return
     stopGlitch()
   }, duration)
 }
@@ -235,6 +256,7 @@ const startGlitch = () => {
 const stopGlitch = () => {
   isGlitching.value = false
   currentEffect.value = null
+  stopGlitchAnimation()
 
   if (glitchTimer) {
     clearTimeout(glitchTimer)
@@ -277,13 +299,16 @@ const stopAutoTrigger = () => {
 }
 
 onMounted(() => {
+  isMounted.value = true
   if (props.autoTrigger) {
     startAutoTrigger()
   }
 })
 
 onUnmounted(() => {
+  isMounted.value = false
   stopGlitch()
+  stopGlitchAnimation()
   stopAutoTrigger()
 })
 
@@ -302,6 +327,7 @@ watch(
 watch(shouldDisableGlitch, disabled => {
   if (disabled) {
     stopGlitch()
+    stopGlitchAnimation()
     stopAutoTrigger()
   } else if (props.autoTrigger && props.enabled) {
     startAutoTrigger()

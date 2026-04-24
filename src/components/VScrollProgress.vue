@@ -15,6 +15,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { isBrowser } from '../composables/useBrowser'
 
 interface ScrollProgressProps {
   color?: string
@@ -57,8 +58,6 @@ const emit = defineEmits<{
   (e: 'scroll-start'): void
   (e: 'scroll-end'): void
 }>()
-
-const is_browser = typeof window !== 'undefined' && typeof document !== 'undefined'
 
 const container = ref<HTMLElement | null>(null)
 const progress = ref(0)
@@ -178,12 +177,32 @@ const textStyle = computed(() => ({
   textShadow: '0 1px 2px rgba(0, 0, 0, 0.5)',
 }))
 
+const isValidSelector = (selector: string): boolean => {
+  if (!selector || typeof selector !== 'string') return false
+  const validSelectorPattern = /^[#[\].="'\-_:\w>+~\s(),]+$/
+  return validSelectorPattern.test(selector) && selector.length < 200
+}
+
 const updateProgress = () => {
-  const target = props.target ? document.querySelector(props.target) : document.documentElement
-  if (!target) return
+  let target: Element | null = document.documentElement
+
+  if (props.target) {
+    if (!isValidSelector(props.target)) {
+      console.warn(`[VScrollProgress] Invalid selector: "${props.target}"`)
+      return
+    }
+    target = document.querySelector(props.target)
+    if (!target) return
+  }
 
   const scrollTop = window.pageYOffset || document.documentElement.scrollTop
   const scrollHeight = target.scrollHeight - window.innerHeight
+
+  if (scrollHeight <= 0) {
+    progress.value = 0
+    return
+  }
+
   const newProgress = Math.min(100, Math.max(0, (scrollTop / scrollHeight) * 100))
 
   progress.value = newProgress
@@ -230,7 +249,7 @@ onUnmounted(() => {
 watch(
   () => props.target,
   () => {
-    if (is_browser) {
+    if (isBrowser) {
       window.removeEventListener('scroll', handleScroll)
       window.addEventListener('scroll', handleScroll, { passive: true })
     }

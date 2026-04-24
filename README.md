@@ -4,7 +4,7 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Vue Version](https://img.shields.io/badge/vue-3.x-brightgreen.svg)](https://v3.vuejs.org/)
-[![Build](https://github.com/yourname/supreme-visual-effects/actions/workflows/ci.yml/badge.svg)](https://github.com/yourname/supreme-visual-effects/actions)
+[![Build](https://github.com/jiayuexin/supreme-visual-effects/actions/workflows/ci.yml/badge.svg)](https://github.com/jiayuexin/supreme-visual-effects/actions)
 
 ---
 
@@ -190,4 +190,4 @@ pnpm release       # 一键版本号 & 发布
 
 ## 📄 License
 
-MIT © 2024 YourName
+MIT © 2024 Jaya

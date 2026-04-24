@@ -17,7 +17,6 @@ global.ResizeObserver = vi.fn().mockImplementation(() => ({
 
 // Mock requestAnimationFrame
 global.requestAnimationFrame = vi.fn((callback: FrameRequestCallback) => {
-  // 确保callback是函数
   if (typeof callback === 'function') {
     return window.setTimeout(() => callback(Date.now()), 16)
   }
@@ -46,6 +45,7 @@ Object.defineProperty(window, 'matchMedia', {
 })
 
 // Global test configuration
+config.global.stubs = {}
 config.global.mocks = {
   $t: (key: string) => key,
 }

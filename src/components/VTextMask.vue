@@ -70,7 +70,7 @@ const props = withDefaults(defineProps<TextMaskProps>(), {
   height: 100,
 })
 
-const maskId = ref(`text-mask-${Math.random().toString(36).substr(2, 9)}`)
+const maskId = ref(`text-mask-${crypto.randomUUID?.() || Math.random().toString(36).substr(2, 9)}`)
 const animationId = ref<number | null>(null)
 const progress = ref(0)
 
@@ -78,8 +78,16 @@ const svgWidth = computed(() => props.width)
 const svgHeight = computed(() => props.height)
 
 const pathData = computed(() => {
+  const sanitizeSvgPath = (path: string): string => {
+    if (/<script|javascript:|on\w+\s*=/gi.test(path)) {
+      console.warn('[VTextMask] Potentially dangerous content detected in path, using default')
+      return 'M 0,50 L 100,50'
+    }
+    return path
+  }
+
   if (typeof props.path === 'string') {
-    return props.path
+    return sanitizeSvgPath(props.path)
   }
 
   // 将点数组转换为路径字符串
@@ -87,7 +95,13 @@ const pathData = computed(() => {
     let path = `M ${props.path[0].x},${props.path[0].y}`
 
     for (let i = 1; i < props.path.length; i++) {
-      path += ` L ${props.path[i].x},${props.path[i].y}`
+      const x = Number(props.path[i].x)
+      const y = Number(props.path[i].y)
+      if (isNaN(x) || isNaN(y)) {
+        console.warn('[VTextMask] Invalid coordinates in path array, using default')
+        return 'M 0,50 L 100,50'
+      }
+      path += ` L ${x},${y}`
     }
 
     return path

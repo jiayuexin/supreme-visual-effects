@@ -2,7 +2,7 @@
   <div ref="container" class="parallax-container" :style="containerStyle">
     <div v-for="(layer, index) in layers" :key="index" class="parallax-layer" :style="getLayerStyle(layer, index)">
       <slot :name="`layer-${index}`" :layer="layer" :index="index">
-        <div v-html="layer.content"></div>
+        <!-- Content must be provided via named slot -->
       </slot>
     </div>
   </div>
@@ -10,6 +10,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { isBrowser } from '../composables/useBrowser'
 
 interface ParallaxLayer {
   speed: number
@@ -32,14 +33,12 @@ const props = withDefaults(defineProps<ParallaxProps>(), {
   offset: 0,
 })
 
-const is_browser = typeof window !== 'undefined' && typeof document !== 'undefined'
-
 const container = ref<HTMLElement | null>(null)
 const scrollY = ref(0)
 const containerTop = ref(0)
 const containerHeight = ref(0)
 const windowHeight = ref(0)
-let throttleTimer: number | null = null
+let throttleTimer: ReturnType<typeof setTimeout> | null = null
 
 const containerStyle = computed(() => ({
   position: 'relative' as const,
@@ -107,7 +106,7 @@ const calculateParallaxOffset = (layer: ParallaxLayer, progress: number) => {
 }
 
 const handleScroll = () => {
-  if (!is_browser || throttleTimer) return
+  if (!isBrowser || throttleTimer) return
 
   throttleTimer = window.setTimeout(() => {
     scrollY.value = window.pageYOffset || document.documentElement.scrollTop
@@ -117,7 +116,7 @@ const handleScroll = () => {
 }
 
 const updateContainerInfo = () => {
-  if (!is_browser || !container.value) return
+  if (!isBrowser || !container.value) return
 
   const rect = container.value.getBoundingClientRect()
   containerTop.value = rect.top + scrollY.value
@@ -126,13 +125,13 @@ const updateContainerInfo = () => {
 }
 
 const handleResize = () => {
-  if (is_browser) {
+  if (isBrowser) {
     updateContainerInfo()
   }
 }
 
 onMounted(() => {
-  if (!is_browser || !props.enabled) return
+  if (!isBrowser || !props.enabled) return
 
   updateContainerInfo()
   window.addEventListener('scroll', handleScroll, { passive: true })
@@ -140,7 +139,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  if (!is_browser) return
+  if (!isBrowser) return
   if (throttleTimer) {
     clearTimeout(throttleTimer)
   }
@@ -152,7 +151,7 @@ onUnmounted(() => {
 watch(
   () => props.enabled,
   (newVal: boolean) => {
-    if (!is_browser) return
+    if (!isBrowser) return
     if (newVal) {
       updateContainerInfo()
       window.addEventListener('scroll', handleScroll, { passive: true })

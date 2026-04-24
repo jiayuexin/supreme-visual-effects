@@ -13,7 +13,17 @@
   >
     <!-- Before image -->
     <div class="image-before">
-      <img :src="beforeImage" :alt="beforeAlt" class="comparison-image" :style="beforeImageStyle" />
+      <img
+        :src="beforeImage"
+        :alt="beforeAlt"
+        class="comparison-image"
+        :style="beforeImageStyle"
+        loading="lazy"
+        @load="beforeLoaded = true"
+        @error="beforeError = true"
+      />
+      <div v-if="!beforeLoaded" class="image-loading">Loading...</div>
+      <div v-if="beforeError" class="image-error">Failed to load</div>
       <div v-if="beforeLabel" class="image-label image-label-before">
         {{ beforeLabel }}
       </div>
@@ -21,7 +31,17 @@
 
     <!-- After image -->
     <div class="image-after">
-      <img :src="afterImage" :alt="afterAlt" class="comparison-image" :style="afterImageStyle" />
+      <img
+        :src="afterImage"
+        :alt="afterAlt"
+        class="comparison-image"
+        :style="afterImageStyle"
+        loading="lazy"
+        @load="afterLoaded = true"
+        @error="afterError = true"
+      />
+      <div v-if="!afterLoaded" class="image-loading">Loading...</div>
+      <div v-if="afterError" class="image-error">Failed to load</div>
       <div v-if="afterLabel" class="image-label image-label-after">
         {{ afterLabel }}
       </div>
@@ -92,6 +112,10 @@ const position = ref(props.initialPosition)
 const isDragging = ref(false)
 const startX = ref(0)
 const startPosition = ref(0)
+const beforeLoaded = ref(false)
+const beforeError = ref(false)
+const afterLoaded = ref(false)
+const afterError = ref(false)
 
 const containerStyle = computed(() => ({
   position: 'relative',
@@ -264,6 +288,8 @@ onUnmounted(() => {
   document.removeEventListener('keydown', handleKeydown)
   document.removeEventListener('mousemove', handleMouseMove)
   document.removeEventListener('mouseup', handleMouseUp)
+  document.removeEventListener('touchmove', handleTouchMove)
+  document.removeEventListener('touchend', handleTouchEnd)
 })
 </script>
 
@@ -295,6 +321,17 @@ onUnmounted(() => {
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.image-loading,
+.image-error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #999;
+  font-size: 0.9rem;
+  z-index: 1;
 }
 
 .slider-line {

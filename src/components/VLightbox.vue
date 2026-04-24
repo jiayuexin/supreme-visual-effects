@@ -47,12 +47,22 @@
           <div class="lightbox-body">
             <slot :item="currentItem" :index="currentIndex" :close="close">
               <div v-if="currentItem" class="lightbox-default-content">
+                <div v-if="imageLoading" class="lightbox-loading">
+                  <span>Loading...</span>
+                </div>
                 <img
-                  v-if="currentItem.image"
-                  :src="currentItem.image"
+                  v-if="currentItem?.image || currentItem?.src"
+                  v-show="!imageLoading && !imageError"
+                  :src="currentItem?.image || currentItem?.src"
                   :alt="currentItem.alt || 'Lightbox image'"
                   class="lightbox-image"
+                  loading="lazy"
+                  @load="onImageLoad"
+                  @error="onImageError"
                 />
+                <div v-if="imageError" class="lightbox-image-error">
+                  <span>Failed to load image</span>
+                </div>
                 <div v-if="currentItem.title || currentItem.description" class="lightbox-text">
                   <h3 v-if="currentItem.title" class="lightbox-title">{{ currentItem.title }}</h3>
                   <p v-if="currentItem.description" class="lightbox-description">{{ currentItem.description }}</p>
@@ -76,11 +86,11 @@ import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useReducedMotion } from '../composables/useReducedMotion'
 
 interface LightboxItem {
-  src: string
+  src?: string
+  image?: string
   title?: string
   description?: string
   alt?: string
-  [key: string]: unknown
 }
 
 interface LightboxProps {
@@ -145,6 +155,8 @@ const lightbox = ref<HTMLElement | null>(null)
 const currentIndex = ref(props.currentIndex)
 const previousActiveElement = ref<HTMLElement | null>(null)
 const focusableElements = ref<HTMLElement[]>([])
+const imageLoading = ref(false)
+const imageError = ref(false)
 
 const currentItem = computed(() => {
   return props.items[currentIndex.value] || null
@@ -157,6 +169,16 @@ const canGoPrev = computed(() => {
 const canGoNext = computed(() => {
   return currentIndex.value < props.items.length - 1
 })
+
+const onImageLoad = () => {
+  imageLoading.value = false
+  imageError.value = false
+}
+
+const onImageError = () => {
+  imageLoading.value = false
+  imageError.value = true
+}
 
 const overlayStyle = computed(() => ({
   backgroundColor: props.backgroundColor,
@@ -313,6 +335,14 @@ watch(
   }
 )
 
+watch(
+  () => currentItem.value?.image || currentItem.value?.src,
+  () => {
+    imageLoading.value = true
+    imageError.value = false
+  }
+)
+
 onMounted(() => {
   if (props.isOpen) {
     preventBodyScroll()
@@ -432,6 +462,16 @@ defineExpose({
   max-height: 70vh;
   object-fit: contain;
   display: block;
+}
+
+.lightbox-loading,
+.lightbox-image-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: #999;
+  font-size: 1rem;
 }
 
 .lightbox-text {
