@@ -4,6 +4,14 @@ VMarquee 是一个无限水平滚动组件，常用于展示跑马灯效果。
 
 ## 基础用法
 
+<div class="demo">
+  <VMarquee>
+    <span style="padding: 0 1rem; font-size: 1.2rem;">内容一</span>
+    <span style="padding: 0 1rem; font-size: 1.2rem;">内容二</span>
+    <span style="padding: 0 1rem; font-size: 1.2rem;">内容三</span>
+  </VMarquee>
+</div>
+
 ```vue
 <template>
   <VMarquee>
@@ -47,6 +55,12 @@ import { VMarquee } from 'supreme-visual-effects'
 
 ### 反向滚动
 
+<div class="demo">
+  <VMarquee direction="right" :speed="30">
+    <span style="padding: 0 1rem; font-size: 1.2rem;">向左滚动的内容</span>
+  </VMarquee>
+</div>
+
 ```vue
 <template>
   <VMarquee direction="right" :speed="30">
@@ -56,6 +70,12 @@ import { VMarquee } from 'supreme-visual-effects'
 ```
 
 ### 带渐变边缘
+
+<div class="demo">
+  <VMarquee :gradient="true" gradient-width="150px">
+    <span style="padding: 0 1rem; font-size: 1.2rem;">渐变边缘效果</span>
+  </VMarquee>
+</div>
 
 ```vue
 <template>
@@ -76,3 +96,13 @@ import { VMarquee } from 'supreme-visual-effects'
 1. 内容会被复制 3 份实现无缝循环
 2. 组件自动检测系统 `prefers-reduced-motion` 设置，用户偏好减少动画时会暂停动画
 3. `pauseOnHover` 为 true 时鼠标悬停会暂停
+
+<script setup>
+import { VMarquee } from '../../src/index'
+</script>
+
+<style>
+.demo {
+  margin: 2rem 0;
+}
+</style>

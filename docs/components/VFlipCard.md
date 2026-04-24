@@ -4,6 +4,23 @@ VFlipCard 是一个3D翻转卡片组件，支持 hover 和 click 两种触发方
 
 ## 基础用法
 
+<div class="demo">
+  <div style="width: 300px; height: 200px;">
+    <VFlipCard>
+      <template #front>
+        <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: #667eea; color: white; border-radius: 8px; font-size: 1.2rem;">
+          正面内容
+        </div>
+      </template>
+      <template #back>
+        <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: #764ba2; color: white; border-radius: 8px; font-size: 1.2rem;">
+          背面内容
+        </div>
+      </template>
+    </VFlipCard>
+  </div>
+</div>
+
 ```vue
 <template>
   <VFlipCard>
@@ -57,6 +74,23 @@ import { VFlipCard } from 'supreme-visual-effects'
 
 ### 点击触发
 
+<div class="demo">
+  <div style="width: 300px; height: 200px;">
+    <VFlipCard trigger="click">
+      <template #front>
+        <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: #4ecdc4; color: white; border-radius: 8px;">
+          点击翻转
+        </div>
+      </template>
+      <template #back>
+        <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: #ff6b6b; color: white; border-radius: 8px;">
+          背面信息
+        </div>
+      </template>
+    </VFlipCard>
+  </div>
+</div>
+
 ```vue
 <template>
   <VFlipCard trigger="click">
@@ -71,6 +105,23 @@ import { VFlipCard } from 'supreme-visual-effects'
 ```
 
 ### X轴翻转
+
+<div class="demo">
+  <div style="width: 300px; height: 200px;">
+    <VFlipCard direction="x">
+      <template #front>
+        <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: #f093fb; color: white; border-radius: 8px;">
+          X轴翻转
+        </div>
+      </template>
+      <template #back>
+        <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: #fcb69f; color: white; border-radius: 8px;">
+          上下翻转效果
+        </div>
+      </template>
+    </VFlipCard>
+  </div>
+</div>
 
 ```vue
 <template>
@@ -96,3 +147,13 @@ import { VFlipCard } from 'supreme-visual-effects'
 1. `trigger: 'hover'` 模式下使用 CSS hover 动画，`trigger: 'click'` 使用 JS 控制
 2. 使用 `perspective` 控制 3D 效果强度，值越小效果越明显
 3. 组件使用 `transform-style: preserve-3d` 和 `backface-visibility: hidden` 实现翻转
+
+<script setup>
+import { VFlipCard } from '../../src/index'
+</script>
+
+<style>
+.demo {
+  margin: 2rem 0;
+}
+</style>

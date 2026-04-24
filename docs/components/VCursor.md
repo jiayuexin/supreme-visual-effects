@@ -4,6 +4,13 @@ VCursor 是一个自定义光标组件，提供平滑跟踪和拖尾效果。
 
 ## 基础用法
 
+<div class="demo">
+  <div style="height: 200px; border: 2px dashed #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #999;">
+    移动鼠标查看自定义光标效果
+  </div>
+  <VCursor />
+</div>
+
 ```vue
 <template>
   <VCursor />
@@ -46,6 +53,13 @@ import { VCursor } from 'supreme-visual-effects'
 
 ### 自定义大小和颜色
 
+<div class="demo">
+  <div style="height: 200px; border: 2px dashed #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #999;">
+    移动鼠标查看红色大光标效果
+  </div>
+  <VCursor :size="30" color="#ff6b6b" />
+</div>
+
 ```vue
 <template>
   <VCursor :size="30" color="#ff6b6b" />
@@ -54,6 +68,13 @@ import { VCursor } from 'supreme-visual-effects'
 
 ### 不带拖尾
 
+<div class="demo">
+  <div style="height: 200px; border: 2px dashed #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #999;">
+    移动鼠标查看无拖尾光标效果
+  </div>
+  <VCursor :show-trailer="false" />
+</div>
+
 ```vue
 <template>
   <VCursor :show-trailer="false" />
@@ -61,6 +82,13 @@ import { VCursor } from 'supreme-visual-effects'
 ```
 
 ### 差值混合模式
+
+<div class="demo">
+  <div style="height: 200px; border: 2px dashed #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: linear-gradient(45deg, #667eea, #764ba2); color: white;">
+    移动鼠标查看差值混合模式效果
+  </div>
+  <VCursor color="white" blend-mode="difference" />
+</div>
 
 ```vue
 <template>
@@ -80,3 +108,13 @@ import { VCursor } from 'supreme-visual-effects'
 2. 启用 `respectReducedMotion` 且用户偏好减少动画时不会渲染自定义光标
 3. 组件卸载时会自动恢复原始光标
 4. 仅支持桌面端，SSR 环境下不会渲染
+
+<script setup>
+import { VCursor } from '../../src/index'
+</script>
+
+<style>
+.demo {
+  margin: 2rem 0;
+}
+</style>
