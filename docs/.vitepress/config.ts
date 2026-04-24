@@ -30,6 +30,7 @@ export default defineConfig({
             { text: 'VParticleField 粒子场', link: '/components/VParticleField' },
             { text: 'VGradientBackground 渐变背景', link: '/components/VGradientBackground' },
             { text: 'VStarfield 星空背景', link: '/components/VStarfield' },
+            { text: 'VWaveBackground 波浪背景', link: '/components/VWaveBackground' },
           ],
         },
         {
@@ -47,6 +48,8 @@ export default defineConfig({
             { text: 'VTypingText 打字机效果', link: '/components/VTypingText' },
             { text: 'VTextMask 文字遮罩', link: '/components/VTextMask' },
             { text: 'VNeonText 霓虹文字', link: '/components/VNeonText' },
+            { text: 'VCountUp 数字滚动', link: '/components/VCountUp' },
+            { text: 'VTextReveal 文字出现', link: '/components/VTextReveal' },
           ],
         },
         {
@@ -56,6 +59,8 @@ export default defineConfig({
             { text: 'VMagneticButton 磁性按钮', link: '/components/VMagneticButton' },
             { text: 'VRipple 水波纹效果', link: '/components/vripple' },
             { text: 'VGlitch 故障效果', link: '/components/VGlitch' },
+            { text: 'VFlipCard 3D翻转卡片', link: '/components/VFlipCard' },
+            { text: 'VCursor 自定义光标', link: '/components/VCursor' },
           ],
         },
         {
@@ -71,6 +76,7 @@ export default defineConfig({
           items: [
             { text: 'VDivider 分割线', link: '/components/VDivider' },
             { text: 'VConfetti 彩纸效果', link: '/components/VConfetti' },
+            { text: 'VMarquee 无限滚动', link: '/components/VMarquee' },
           ],
         },
       ],
